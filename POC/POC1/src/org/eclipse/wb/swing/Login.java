@@ -18,6 +18,9 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import org.eclipse.wb.swing.Administrator.*;
+import Models.*;
+
 public class Login {
 
 	private JFrame frmLogin;
@@ -63,6 +66,10 @@ public class Login {
 		JButton btnPrijava = new JButton("Prijava");
 		btnPrijava.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frmLogin.setVisible(false);
+				Main forma = new Main();
+				forma.main(null);
+				frmLogin.setVisible(true);
 			}
 		});
 		
