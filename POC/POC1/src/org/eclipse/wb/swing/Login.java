@@ -2,6 +2,8 @@ package org.eclipse.wb.swing;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -15,17 +17,21 @@ import java.awt.Window.Type;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 import org.eclipse.wb.swing.Administrator.*;
+
 import Models.*;
 
 public class Login {
 
 	private JFrame frmLogin;
-	private JTextField textField;
-	private JPasswordField passwordField;
+	private JTextField t_korisnickoIme;
+	private JPasswordField t_sifra;
+	private static ArrayList<Zaposlenik> zaposlenici;
 
 	/**
 	 * Launch the application.
@@ -34,6 +40,17 @@ public class Login {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					zaposlenici = new ArrayList<Zaposlenik>();
+					Zaposlenik novi = new Zaposlenik();
+					novi.setAdresa("Sarajevo bb");
+					novi.setBrojTelefona("387 69 999 999");
+					novi.setEmail("mail@com.com");
+					novi.setIme("Mujo");
+					novi.setKorisnickaSifra("sifra");
+					novi.setKorisnickoIme("admin");
+					novi.setPrezime("Mujica");
+					novi.setPrivilegija("administrator");
+					zaposlenici.add(novi);
 					Login window = new Login();
 					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
@@ -50,6 +67,10 @@ public class Login {
 		initialize();
 	}
 
+	public static void infoBox(String infoMessage, String naslov)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
+    }
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -66,10 +87,23 @@ public class Login {
 		JButton btnPrijava = new JButton("Prijava");
 		btnPrijava.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frmLogin.setVisible(false);
-				Main forma = new Main();
-				forma.main(null);
-				frmLogin.setVisible(true);
+				String username = t_korisnickoIme.getText();
+				String password = t_sifra.getText();
+				Boolean nadjen = false;
+				//infoBox(password, "SIFRA");
+				for (int i = 0; i<zaposlenici.size(); i++) {
+					//infoBox(zaposlenici.get(i).getKorisnickoIme() , zaposlenici.get(i).getKorisnickaSifra());
+					if (zaposlenici.get(i).getKorisnickoIme().equals(username) 
+							&& zaposlenici.get(i).getKorisnickaSifra().equals(password)) 
+						nadjen = true;
+				}
+				if (nadjen) {
+					frmLogin.setVisible(false);
+					Main forma = new Main();
+					forma.main(null);
+					frmLogin.setVisible(true);
+				}
+				else infoBox("Pogrešni podaci za prijavu", "Greška");
 			}
 		});
 		
@@ -108,10 +142,10 @@ public class Login {
 		
 		JLabel lblLozinka = new JLabel("\u0160ifra:");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		t_korisnickoIme = new JTextField();
+		t_korisnickoIme.setColumns(10);
 		
-		passwordField = new JPasswordField();
+		t_sifra = new JPasswordField();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -122,8 +156,8 @@ public class Login {
 						.addComponent(lblKorisnikoIme))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(passwordField, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-						.addComponent(textField, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+						.addComponent(t_sifra, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+						.addComponent(t_korisnickoIme, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -132,15 +166,15 @@ public class Login {
 					.addGap(20)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblKorisnikoIme)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(t_korisnickoIme, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblLozinka)
-						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(t_sifra, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(29, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		frmLogin.getContentPane().setLayout(groupLayout);
-		frmLogin.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmLogin.getContentPane(), panel, lblLozinka, lblKorisnikoIme, textField}));
+		frmLogin.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmLogin.getContentPane(), panel, lblLozinka, lblKorisnikoIme, t_korisnickoIme}));
 	}
 }

@@ -1,6 +1,6 @@
 package Models;
 
-import sun.util.calendar.BaseCalendar.Date;
+import java.sql.Date;
 
 public class Zalba {
 

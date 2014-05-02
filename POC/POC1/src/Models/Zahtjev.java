@@ -1,6 +1,8 @@
 package Models;
 
-import sun.util.calendar.BaseCalendar.Date;
+import java.sql.Date;
+
+
 
 public class Zahtjev {
 	private long _id;
