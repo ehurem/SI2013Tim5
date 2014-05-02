@@ -31,7 +31,7 @@ public class Login {
 	private JFrame frmLogin;
 	private JTextField t_korisnickoIme;
 	private JPasswordField t_sifra;
-	private static ArrayList<Zaposlenik> zaposlenici;
+	private static ArrayList<Zaposlenik> _zaposlenici;
 
 	/**
 	 * Launch the application.
@@ -40,7 +40,7 @@ public class Login {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					zaposlenici = new ArrayList<Zaposlenik>();
+					set_zaposlenici(new ArrayList<Zaposlenik>());
 					Zaposlenik novi = new Zaposlenik();
 					novi.setAdresa("Sarajevo bb");
 					novi.setBrojTelefona("387 69 999 999");
@@ -49,8 +49,8 @@ public class Login {
 					novi.setKorisnickaSifra("sifra");
 					novi.setKorisnickoIme("admin");
 					novi.setPrezime("Mujica");
-					novi.setPrivilegija("administrator");
-					zaposlenici.add(novi);
+					novi.setPrivilegija("Administrator");
+					get_zaposlenici().add(novi);
 					Login window = new Login();
 					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
@@ -90,18 +90,30 @@ public class Login {
 				String username = t_korisnickoIme.getText();
 				String password = t_sifra.getText();
 				Boolean nadjen = false;
+				int index = 0;
 				//infoBox(password, "SIFRA");
-				for (int i = 0; i<zaposlenici.size(); i++) {
+				for (int i = 0; i<get_zaposlenici().size(); i++) {
 					//infoBox(zaposlenici.get(i).getKorisnickoIme() , zaposlenici.get(i).getKorisnickaSifra());
-					if (zaposlenici.get(i).getKorisnickoIme().equals(username) 
-							&& zaposlenici.get(i).getKorisnickaSifra().equals(password)) 
+					if (get_zaposlenici().get(i).getKorisnickoIme().equals(username) 
+							&& get_zaposlenici().get(i).getKorisnickaSifra().equals(password)) {
 						nadjen = true;
+						index = i;
+					}
 				}
 				if (nadjen) {
-					frmLogin.setVisible(false);
-					Main forma = new Main();
-					forma.main(null);
-					frmLogin.setVisible(true);
+					if (get_zaposlenici().get(index).gePrivilegija().equals("Administrator"))
+					{
+						Main forma = new Main();
+						forma.main(null, get_zaposlenici());
+					}
+					else if (get_zaposlenici().get(index).gePrivilegija().equals("Serviser"))
+					{
+						infoBox("Nije implementiran panel za servisera", "Uzbuna");
+					}
+					else if (get_zaposlenici().get(index).gePrivilegija().equals("Operater"))
+					{
+						infoBox("Nije implementiran panel za operatera", "Uzbuna");
+					}
 				}
 				else infoBox("Pogrešni podaci za prijavu", "Greška");
 			}
@@ -176,5 +188,13 @@ public class Login {
 		panel.setLayout(gl_panel);
 		frmLogin.getContentPane().setLayout(groupLayout);
 		frmLogin.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmLogin.getContentPane(), panel, lblLozinka, lblKorisnikoIme, t_korisnickoIme}));
+	}
+
+	private static ArrayList<Zaposlenik> get_zaposlenici() {
+		return _zaposlenici;
+	}
+
+	private static void set_zaposlenici(ArrayList<Zaposlenik> _zaposlenici) {
+		Login._zaposlenici = _zaposlenici;
 	}
 }

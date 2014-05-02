@@ -24,8 +24,10 @@ import javax.swing.border.EtchedBorder;
 
  
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 import Models.*;
 
@@ -46,16 +48,20 @@ public class Main {
 	private JTextField textField_19;
 	private JTextField textField_20;
 	private JComboBox c_privilegije;
+	
+	private static ArrayList<Zaposlenik> _zaposlenici;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, ArrayList<Zaposlenik> zaposlenik) {
+		set_zaposlenici(zaposlenik);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Main window = new Main();
 					window.frmDodavanjeZaposlenika.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -106,7 +112,9 @@ public class Main {
 					novi.setKorisnickoIme(t_korisnickoIme.getText());
 					novi.setPrezime(t_imeIPrezime.getText());
 					novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
-					infoBox("Uspješno dodan novi zaposlenik","O Zaposleniku");
+					get_zaposlenici().add(novi);
+					
+					infoBox("Uspješno dodan novi zaposlenik", get_zaposlenici().size() + "");
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
@@ -569,5 +577,13 @@ public class Main {
 		);
 		panel_7.setLayout(gl_panel_7);
 		panel_2.setLayout(gl_panel_2);
+	}
+
+	private static ArrayList<Zaposlenik> get_zaposlenici() {
+		return _zaposlenici;
+	}
+
+	private static void set_zaposlenici(ArrayList<Zaposlenik> _zaposlenici) {
+		Main._zaposlenici = _zaposlenici;
 	}
 }
