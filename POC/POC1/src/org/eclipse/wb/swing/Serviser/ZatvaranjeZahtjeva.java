@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ZatvaranjeZahtjeva {
 
@@ -38,6 +40,15 @@ public class ZatvaranjeZahtjeva {
 			}
 		});
 	}
+	public void Show()
+	{
+		frmZatvaranjeZahtjeva.setVisible(true);
+	}
+	
+	public void Close()
+	{
+		frmZatvaranjeZahtjeva.dispose();
+	}
 
 	/**
 	 * Create the application.
@@ -59,6 +70,13 @@ public class ZatvaranjeZahtjeva {
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
 		JButton btnZatvoriZahtjev = new JButton("Zatvori zahtjev");
+		btnZatvoriZahtjev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				serviser s = new serviser();
+				frmZatvaranjeZahtjeva.dispose();
+				s.Show();
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmZatvaranjeZahtjeva.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

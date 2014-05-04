@@ -18,6 +18,8 @@ import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class serviser {
 
@@ -40,6 +42,11 @@ public class serviser {
 		});
 	}
 
+	public void Show()
+	{
+		frmInterfejsZaServisera.setVisible(true);
+	}
+	
 	/**
 	 * Create the application.
 	 */
@@ -128,6 +135,15 @@ public class serviser {
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
 		JButton btnNewButton = new JButton("Odaberi");
+		/* Launches ZatvaranjeZahtjeva.java with selected Zahtjev */
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Code is here
+				ZatvaranjeZahtjeva jf = new ZatvaranjeZahtjeva();
+				frmInterfejsZaServisera.dispose();
+				jf.Show();
+			}
+		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
