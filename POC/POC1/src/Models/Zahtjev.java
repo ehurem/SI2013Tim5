@@ -13,6 +13,9 @@ public class Zahtjev {
 	private Date _datumZatvaranja;
 	private Date _datumOtvaranja;
 	private Zaposlenik _zaposlenik;
+	private String Status;
+	
+	public Zahtjev(){}
 
 	public long getID() {
 		return _id;
@@ -76,5 +79,13 @@ public class Zahtjev {
 
 	public void setZaposlenik(Zaposlenik _zaposlenik) {
 		this._zaposlenik = _zaposlenik;
+	}
+
+	public String getStatus() {
+		return Status;
+	}
+
+	public void setStatus(String status) {
+		Status = status;
 	}
 }

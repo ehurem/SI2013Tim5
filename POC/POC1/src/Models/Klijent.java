@@ -1,23 +1,17 @@
 package Models;
 
 public class Klijent {
-	private String _ime;
-	private String _prezime;
+	private String _imeIPrezime;
+	private String _adresa;
 	private String _brojTelefona;
 	private String _email;
 
-	public String getPrezime() {
-		return _prezime;
+	public Klijent()
+	{
+		
 	}
-	public void setPrezime(String _prezime) {
-		this._prezime = _ime;
-	}
-	public String getIme() {
-		return _ime;
-	}
-	public void setIme(String _ime) {
-		this._ime = _ime;
-	}
+	
+	
 	public String getBrojTelefona() {
 		return _brojTelefona;
 	}
@@ -30,5 +24,32 @@ public class Klijent {
 	public void setEmail(String _email) {
 		this._email = _email;
 	}
+
+
+	public String get_imeIPrezime() {
+		return _imeIPrezime;
+	}
+
+
+	public void set_imeIPrezime(String _imeIPrezime) {
+		this._imeIPrezime = _imeIPrezime;
+	}
+
+
+	public String get_adresa() {
+		return _adresa;
+	}
+
+
+	public void set_adresa(String _adresa) {
+		this._adresa = _adresa;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return _imeIPrezime;
+	}
+	
 
 }
