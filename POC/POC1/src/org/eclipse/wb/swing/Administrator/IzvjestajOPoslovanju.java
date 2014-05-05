@@ -1,6 +1,8 @@
 package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
+import java.awt.List;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -15,6 +17,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
+import Models.Zahtjev;
 public class IzvjestajOPoslovanju {
 
 	private JFrame frmIzvjestajOPoslovanju;
@@ -22,6 +26,7 @@ public class IzvjestajOPoslovanju {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTable table;
+	private ArrayList<Zahtjev> zahtjevi;
 
 	/**
 	 * Launch the application.
@@ -44,6 +49,8 @@ public class IzvjestajOPoslovanju {
 	 */
 	public IzvjestajOPoslovanju() {
 		initialize();
+		zahtjevi=new ArrayList<Zahtjev>();
+	  
 	}
 
 	/**
