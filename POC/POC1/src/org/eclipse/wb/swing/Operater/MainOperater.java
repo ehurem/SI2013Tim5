@@ -30,6 +30,8 @@ import java.sql.Date;
 import java.util.Enumeration;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainOperater {
 
@@ -39,7 +41,7 @@ public class MainOperater {
 	private static ArrayList<Klijent>_klijenti;
 	private static ArrayList<Zahtjev>_zahtjevi;
 	//the client we make if there is no one in the database already
-	private static Klijent _novi;
+	private static Klijent _noviKlijent;
 	/**
 	 * Launch the application.
 	 */
@@ -49,7 +51,6 @@ public class MainOperater {
 				try {
 					set_klijenti(new ArrayList<Klijent>());
 					set_zahtjevi(new ArrayList<Zahtjev>());
-					set_novi(new Klijent());
 
 					//an example of a client that we input into list
 					Klijent primjer = new Klijent();
@@ -109,9 +110,16 @@ public class MainOperater {
 		tabbedPane.addTab("Unos zahtjeva", null, panel, null);
 		
 		final JComboBox comboBox_1 = new JComboBox();
-		for (Klijent k : _klijenti) {
-			comboBox_1.addItem(k);
-		}
+		comboBox_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				comboBox_1.removeAllItems();
+				for (Klijent k : _klijenti) {
+					comboBox_1.addItem(k);
+				}
+			}
+		});
+		
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -120,8 +128,9 @@ public class MainOperater {
 		
 		btnNoviKlijent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				set_noviKlijent(new Klijent());
 				DodajKlijenta zaDodavanje = new DodajKlijenta();
-				zaDodavanje.main(null, get_klijenti(), get_novi());
+				zaDodavanje.main(null, get_klijenti(), get_noviKlijent());
 			}
 		});
 		
@@ -167,16 +176,6 @@ public class MainOperater {
 					Zahtjev noviZahtjev = new Zahtjev();
 					noviZahtjev.setID(Long.parseLong(textField_1.getText()));
 					
-					//try{String imeIzabranog = Object.toString(comboBox_1.getSelectedItem());
-					/*for(Klijent k : _klijenti){
-						if(k.get_imeIPrezime() == imeIzabranog){
-							noviZahtjev.setKlijent(k);
-							break;
-						}
-					}}
-					catch(Exception ex) {infoBox(ex.getMessage(), "greska kod konverzije");}
-					*/
-					
 					noviZahtjev.setKlijent((Klijent)comboBox_1.getSelectedItem());
 					noviZahtjev.setTipUredaja(textField_2.getText());
 
@@ -197,12 +196,12 @@ public class MainOperater {
 					
 					noviZahtjev.setDatumOtvaranja(datumO);
 					
-					infoBox(Integer.toString(today.getMonth()), "Datum otvaranja");
-					infoBox(Integer.toString(today.getYear()), "Datum otvaranja");
-					
+					noviZahtjev.set_cijena(0);
+					noviZahtjev.setPrioritet(1);
 					noviZahtjev.setStatus("otvoren");
 					
 					get_zahtjevi().add(noviZahtjev);
+					infoBox("Zahtjev uspješno unesen!", "Zahtjev unesen");
 					
 				}
 				catch(Exception izuzetak)
@@ -397,11 +396,12 @@ public class MainOperater {
 		MainOperater._zahtjevi = _zahtjevi;
 	}
 
-	public static Klijent get_novi() {
-		return _novi;
+
+	public static Klijent get_noviKlijent() {
+		return _noviKlijent;
 	}
 
-	public static void set_novi(Klijent _novi) {
-		MainOperater._novi = _novi;
+	public static void set_noviKlijent(Klijent _noviKlijent) {
+		MainOperater._noviKlijent = _noviKlijent;
 	}
 }
