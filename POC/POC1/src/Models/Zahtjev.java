@@ -15,6 +15,8 @@ public class Zahtjev {
 	private Zaposlenik _zaposlenik;
 	private String _status;
 	private int _prioritet;
+	private double _cijena;
+	
 	public Zahtjev(){}
     
 	public long getID() {
@@ -95,5 +97,13 @@ public class Zahtjev {
 
 	public void setPrioritet(int _prioritet) {
 		this._prioritet = _prioritet;
+	}
+
+	public double get_cijena() {
+		return _cijena;
+	}
+
+	public void set_cijena(double _cijena) {
+		this._cijena = _cijena;
 	}
 }
