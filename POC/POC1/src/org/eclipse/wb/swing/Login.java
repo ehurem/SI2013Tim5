@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import org.eclipse.wb.swing.Administrator.*;
+import org.eclipse.wb.swing.Operater.*;
+import org.eclipse.wb.swing.Serviser.*;
 
 import Models.*;
 
@@ -108,11 +110,15 @@ public class Login {
 					}
 					else if (get_zaposlenici().get(index).gePrivilegija().equals("Serviser"))
 					{
-						infoBox("Nije implementiran panel za servisera", "Uzbuna");
+						MainOperater forma = new MainOperater();
+						forma.main(null);
+						//infoBox("Nije implementiran panel za servisera", "Uzbuna");
 					}
 					else if (get_zaposlenici().get(index).gePrivilegija().equals("Operater"))
 					{
-						infoBox("Nije implementiran panel za operatera", "Uzbuna");
+						serviser forma = new serviser();
+						forma.main(null);
+						//infoBox("Nije implementiran panel za operatera", "Uzbuna");
 					}
 				}
 				else infoBox("Pogrešni podaci za prijavu", "Greška");
