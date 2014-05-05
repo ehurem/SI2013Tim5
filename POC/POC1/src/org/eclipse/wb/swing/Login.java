@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import org.eclipse.wb.swing.Administrator.*;
+import org.eclipse.wb.swing.Operater.*;
+import org.eclipse.wb.swing.Serviser.*;
 
 import Models.*;
 
@@ -51,6 +53,18 @@ public class Login {
 					novi.setPrezime("Mujica");
 					novi.setPrivilegija("Administrator");
 					get_zaposlenici().add(novi);
+					
+					Zaposlenik novi2 = new Zaposlenik();
+					novi2.setAdresa("Sarajevo bb");
+					novi2.setBrojTelefona("387 69 999 999");
+					novi2.setEmail("mail@com.com");
+					novi2.setIme("Šefik");
+					novi2.setKorisnickaSifra("sifra");
+					novi2.setKorisnickoIme("operater");
+					novi2.setPrezime("Šefko");
+					novi2.setPrivilegija("Operater");
+					get_zaposlenici().add(novi2);
+					
 					Login window = new Login();
 					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
@@ -108,11 +122,15 @@ public class Login {
 					}
 					else if (get_zaposlenici().get(index).gePrivilegija().equals("Serviser"))
 					{
-						infoBox("Nije implementiran panel za servisera", "Uzbuna");
+						MainOperater forma = new MainOperater();
+						forma.main(null);
+						//infoBox("Nije implementiran panel za servisera", "Uzbuna");
 					}
 					else if (get_zaposlenici().get(index).gePrivilegija().equals("Operater"))
 					{
-						infoBox("Nije implementiran panel za operatera", "Uzbuna");
+						serviser forma = new serviser();
+						forma.main(null);
+						//infoBox("Nije implementiran panel za operatera", "Uzbuna");
 					}
 				}
 				else infoBox("Pogrešni podaci za prijavu", "Greška");
