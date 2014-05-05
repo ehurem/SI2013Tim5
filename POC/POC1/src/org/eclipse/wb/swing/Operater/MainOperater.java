@@ -197,7 +197,8 @@ public class MainOperater {
 					
 					noviZahtjev.setDatumOtvaranja(datumO);
 					
-					//infoBox(Integer.toString(noviZahtjev.getDatumOtvaranja().getYear()), "Datum otvaranja");
+					infoBox(Integer.toString(today.getMonth()), "Datum otvaranja");
+					infoBox(Integer.toString(today.getYear()), "Datum otvaranja");
 					
 					noviZahtjev.setStatus("otvoren");
 					
