@@ -178,7 +178,7 @@ public class IzvjestajOPoslovanju {
 				{null, null, null, null},
 			},
 			new String[] {
-				"ID zahtjeva", "Datum otvaranja", "Datum zatvaranja", "org.eclipse.wb.swing.Serviser"
+				"ID zahtjeva", "Datum otvaranja", "Datum zatvaranja", "Serviser"
 			}
 		));
 		table.getColumnModel().getColumn(1).setPreferredWidth(103);
