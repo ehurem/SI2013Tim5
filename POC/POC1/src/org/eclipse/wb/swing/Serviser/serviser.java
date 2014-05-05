@@ -18,14 +18,23 @@ import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
+
+import Models.Klijent;
+import Models.Zahtjev;
+import Models.Zaposlenik;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.util.ArrayList;
 
 public class serviser {
 
 	private JFrame frmInterfejsZaServisera;
 	private JTable table;
-
+	private static ArrayList<Zahtjev> _zahtjevi;
 	/**
 	 * Launch the application.
 	 */
@@ -58,6 +67,86 @@ public class serviser {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// Hard coded list of Zahtjev for prototype functionality purpose 
+		ArrayList<Zahtjev> lz = new ArrayList<Zahtjev>();
+		
+		Zahtjev z1 = new Zahtjev();
+		
+		Date dat = new Date(System.currentTimeMillis());
+		
+		Klijent _klijent = new Klijent();
+		_klijent.set_imeIPrezime("Imenko");
+		_klijent.setEmail("imenko@test.ba");
+		_klijent.setBrojTelefona("061 123-456");
+		_klijent.set_adresa("Ulica klijenta prvog");
+		Zaposlenik _zaposlenik = new Zaposlenik();
+		_zaposlenik.setAdresa("Adresa Stanovanja 5");
+		_zaposlenik.setBrojTelefona("061 321-654");
+		_zaposlenik.setEmail("zaposlenik@test.ba");
+		_zaposlenik.setIme("Nadimko");
+		_zaposlenik.setPrezime("Nadimkovic");
+		
+		z1.setID(1);
+		z1.setGarancija(true);
+		z1.setTipUredaja("Samsunka");
+		z1.setDatumOtvaranja(dat);
+		z1.setKlijent(_klijent);
+		z1.setZaposlenik(_zaposlenik);
+		z1.setKomentar("komentar");
+		lz.add(z1);
+		
+		Zahtjev z2 = new Zahtjev();
+		
+		Date dat2 = new Date(System.currentTimeMillis());
+		
+		Klijent _klijent2 = new Klijent();
+		_klijent2.set_imeIPrezime("Imenkovev");
+		_klijent2.set_adresa("Ulica klijenta drugog");
+		_klijent2.setEmail("imenkovev@test.ba");
+		_klijent2.setBrojTelefona("061 098-345");
+		
+		Zaposlenik _zaposlenik2 = new Zaposlenik();
+		_zaposlenik2.setAdresa("Bulevar Nestanovanja 5");
+		_zaposlenik2.setBrojTelefona("065 987-679");
+		_zaposlenik2.setEmail("zaposlenik2@test.ba");
+		_zaposlenik2.setIme("Nadimkovec");
+		_zaposlenik2.setPrezime("Nadimkovicevic");
+		
+		z2.setID(2);
+		z2.setGarancija(true);
+		z2.setTipUredaja("Sonijevka");
+		z2.setDatumOtvaranja(dat2);
+		z2.setKlijent(_klijent2);
+		z2.setZaposlenik(_zaposlenik2);
+		z2.setKomentar("komentar");
+		lz.add(z2);
+		
+		Zahtjev z3 = new Zahtjev();
+		
+		Date dat3 = new Date(System.currentTimeMillis());
+		
+		Klijent _klijent3 = new Klijent();
+		_klijent3.set_imeIPrezime("Nemenko");
+		_klijent3.set_adresa("Ulica klijenta treceg");
+		_klijent3.setEmail("neimenko@test.ba");
+		_klijent3.setBrojTelefona("062 112-223");
+		
+		Zaposlenik _zaposlenik3 = new Zaposlenik();
+		_zaposlenik3.setAdresa("Trg Stanovanja 25");
+		_zaposlenik3.setBrojTelefona("063 322-090");
+		_zaposlenik3.setEmail("nezaposlenik@test.ba");
+		_zaposlenik3.setIme("Nenadimko");
+		_zaposlenik3.setPrezime("Nenadimkovic");
+		
+		z3.setID(3);
+		z3.setGarancija(false);
+		z3.setTipUredaja("Panasonka");
+		z3.setDatumOtvaranja(dat3);
+		z3.setKlijent(_klijent3);
+		z3.setZaposlenik(_zaposlenik3);
+		z3.setKomentar("komentar");
+		lz.add(z3);
+		set_zahtjevi(lz);
 		frmInterfejsZaServisera = new JFrame();
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
 		frmInterfejsZaServisera.setBounds(100, 100, 332, 357);
@@ -99,33 +188,40 @@ public class serviser {
 					.addComponent(btnOdaberi)
 					.addContainerGap(42, Short.MAX_VALUE))
 		);
-		
+	    DefaultTableModel t = new DefaultTableModel() {
+	   	    public boolean isCellEditable(int row, int column){return false;}	
+	    };
 		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{"", null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-			},
-			new String[] {
-				"ID Zahtjeva", "Prioritet"
-			}
-		));
+		table.setModel(t);
+		t.addColumn("ID");
+		t.addColumn("Prioritet");
+		for (int i=0; i<get_zahtjevi().size(); i++) {
+		t.addRow(new Object[] {get_zahtjevi().get(i).getID(), get_zahtjevi().get(i).getID()});
+		}
+		
 		table.getColumnModel().getColumn(0).setPreferredWidth(101);
 		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		scrollPane.setViewportView(table);
+		 table.addMouseListener(new MouseAdapter() {
+			   public void mouseClicked(MouseEvent e) {
+			      if (e.getClickCount() == 2) {
+			         JTable target = (JTable)e.getSource();
+			         int row = target.getSelectedRow();
+			         int column = target.getSelectedColumn();
+			         String s = target.getValueAt(row, 0).toString();
+			         int index = 0;
+			        for (int i=0; i<get_zahtjevi().size(); i++) {
+			        	 if (get_zahtjevi().get(i).getID()==Integer.parseInt(s)) {
+			        		 index=i;
+			        		 break;
+			        	 } 
+			         }
+			         PregledOdabranogZahtjeva forma = new PregledOdabranogZahtjeva();
+			         forma.main(null, get_zahtjevi().get(index));
+			         
+			         }
+			   }
+			});
 		panel.setLayout(gl_panel);
 		
 		JPanel panel_1 = new JPanel();
@@ -198,5 +294,13 @@ public class serviser {
 		panel_3.setLayout(gl_panel_3);
 		panel_1.setLayout(gl_panel_1);
 		frmInterfejsZaServisera.getContentPane().setLayout(groupLayout);
+	}
+
+	public static ArrayList<Zahtjev> get_zahtjevi() {
+		return _zahtjevi;
+	}
+
+	public static void set_zahtjevi(ArrayList<Zahtjev> _zahtjevi) {
+		serviser._zahtjevi = _zahtjevi;
 	}
 }

@@ -13,10 +13,10 @@ public class Zahtjev {
 	private Date _datumZatvaranja;
 	private Date _datumOtvaranja;
 	private Zaposlenik _zaposlenik;
-	private String Status;
+	private String _status;
 	
 	public Zahtjev(){}
-
+    
 	public long getID() {
 		return _id;
 	}
@@ -82,10 +82,10 @@ public class Zahtjev {
 	}
 
 	public String getStatus() {
-		return Status;
+		return _status;
 	}
 
 	public void setStatus(String status) {
-		Status = status;
+		_status = status;
 	}
 }
