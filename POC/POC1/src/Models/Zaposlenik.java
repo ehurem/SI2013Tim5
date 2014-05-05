@@ -14,7 +14,7 @@ public class Zaposlenik {
 		return _prezime;
 	}
 	public void setPrezime(String _prezime) {
-		this._prezime = _ime;
+		this._prezime = _prezime;
 	}
 	public String getIme() {
 		return _ime;

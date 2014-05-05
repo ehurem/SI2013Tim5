@@ -1,4 +1,6 @@
 package org.eclipse.wb.swing.Administrator;
+import java.sql.Date;
+
 
 import java.awt.EventQueue;
 import java.awt.List;
@@ -19,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 import Models.Zahtjev;
+import Models.Zaposlenik;
 public class IzvjestajOPoslovanju {
 
 	private JFrame frmIzvjestajOPoslovanju;
@@ -26,7 +29,9 @@ public class IzvjestajOPoslovanju {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTable table;
-	private ArrayList<Zahtjev> zahtjevi;
+	//kreiranje liste zahtjeva
+	private  ArrayList<Zahtjev> zahtjevi;
+
 
 	/**
 	 * Launch the application.
@@ -49,14 +54,42 @@ public class IzvjestajOPoslovanju {
 	 */
 	public IzvjestajOPoslovanju() {
 		initialize();
-		zahtjevi=new ArrayList<Zahtjev>();
-	  
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//dodavanje zahtjeva u listu
+				setZahtjevi(new ArrayList<Zahtjev>());
+			    Zahtjev zahtjev1 = new Zahtjev();
+			    Zahtjev zahtjev2 = new Zahtjev();
+			    Zahtjev zahtjev3 = new Zahtjev();
+			    zahtjev1.setID(1);
+			    zahtjev2.setID(2);
+			    zahtjev3.setID(3);
+			    Date now1 = new Date(2013,3,18);
+			    Date now2 = new Date(2013,3,21);
+			    Date now3 = new Date(2013,4,18);
+				zahtjev1.setDatumOtvaranja(now1);
+				zahtjev2.setDatumOtvaranja(now2);
+				zahtjev3.setDatumOtvaranja(now3);
+			    Date now11 = new Date(2014,3,18);
+			    Date now22 = new Date(2014,3,21);
+				Date now33 = new Date(2014,4,18);
+				zahtjev1.setDatumZatvaranja(now11);
+				zahtjev2.setDatumZatvaranja(now22);
+				zahtjev3.setDatumZatvaranja(now33);
+		        Zaposlenik z = new Zaposlenik();
+		        z.setIme("Alan");
+		        z.setPrezime("Prost");
+		        zahtjev1.setZaposlenik(z);
+		        zahtjev2.setZaposlenik(z);
+		        zahtjev3.setZaposlenik(z);
+		        getZahtjevi().add(zahtjev1);
+		        getZahtjevi().add(zahtjev2);
+		        getZahtjevi().add(zahtjev3);
+		        
 		frmIzvjestajOPoslovanju = new JFrame();
 		frmIzvjestajOPoslovanju.setTitle("Izvje\u0161taj o poslovanju");
 		frmIzvjestajOPoslovanju.setBounds(100, 100, 452, 394);
@@ -72,21 +105,24 @@ public class IzvjestajOPoslovanju {
 		JLabel label = new JLabel("Ukupno:");
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		textField = new JTextField();
+		//za potrebe prototipa uneseno, inaèe se raèuna
+        textField = new JTextField("3");
 		textField.setEditable(false);
 		textField.setColumns(10);
 		
 		JLabel label_1 = new JLabel("Zatvorenih:");
 		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		textField_1 = new JTextField();
+		//za potrebe prototipa uneseno, inaèe se raèuna
+		textField_1 = new JTextField("2");
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
 		
 		JLabel label_2 = new JLabel("Otvorenih:");
 		label_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		textField_2 = new JTextField();
+		//za potrebe prototipa uneseno, inaèe se raèuna
+		textField_2 = new JTextField("1");
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -163,11 +199,10 @@ public class IzvjestajOPoslovanju {
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
+					//izlistavanje liste zahtjeva u tabeli
+				{zahtjevi.get(0).getID(), zahtjevi.get(0).getDatumOtvaranja(), zahtjevi.get(0).getDatumZatvaranja() , zahtjevi.get(0).getZaposlenik().getIme() + " " + zahtjevi.get(0).getZaposlenik().getPrezime()},
+				{zahtjevi.get(1).getID(), zahtjevi.get(1).getDatumOtvaranja(), zahtjevi.get(1).getDatumZatvaranja() , zahtjevi.get(1).getZaposlenik().getIme() + " " + zahtjevi.get(1).getZaposlenik().getPrezime()},
+				{zahtjevi.get(2).getID(), zahtjevi.get(2).getDatumOtvaranja(), zahtjevi.get(2).getDatumZatvaranja() , zahtjevi.get(2).getZaposlenik().getIme() + " " + zahtjevi.get(2).getZaposlenik().getPrezime()},
 				{null, null, null, null},
 				{null, null, null, null},
 				{null, null, null, null},
@@ -198,5 +233,13 @@ public class IzvjestajOPoslovanju {
 				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
 		);
 		frmIzvjestajOPoslovanju.getContentPane().setLayout(groupLayout);
+	}
+
+	private ArrayList<Zahtjev> getZahtjevi() {
+		return zahtjevi;
+	}
+
+	private void setZahtjevi(ArrayList<Zahtjev> zahtjevi) {
+		this.zahtjevi = zahtjevi;
 	}
 }

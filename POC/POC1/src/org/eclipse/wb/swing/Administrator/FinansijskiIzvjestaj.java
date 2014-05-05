@@ -1,7 +1,8 @@
 package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
-
+import java.sql.Date;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -12,11 +13,17 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 
+import Models.Zahtjev;
+import Models.Zaposlenik;
+
 public class FinansijskiIzvjestaj {
 
 	private JFrame frmFinansijskiIzvjestaj;
 	private JTable table;
 	private JTextField textField;
+	//kreiranje liste zahtjeva
+	private  ArrayList<Zahtjev> zahtjevi;
+
 
 	/**
 	 * Launch the application.
@@ -44,7 +51,30 @@ public class FinansijskiIzvjestaj {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
 	private void initialize() {
+		//dodavanje zahtjeva u listu
+		setZahtjevi(new ArrayList<Zahtjev>());
+	    Zahtjev zahtjev1 = new Zahtjev();
+	    Zahtjev zahtjev2 = new Zahtjev();
+	    Zahtjev zahtjev3 = new Zahtjev();
+	    zahtjev1.setID(1);
+	    zahtjev2.setID(2);
+	    zahtjev3.setID(3);
+	    Date now1 = new Date(2013,3,18);
+	    Date now2 = new Date(2013,3,21);
+	    Date now3 = new Date(2013,4,18);
+		zahtjev1.setDatumZatvaranja(now1);
+		zahtjev2.setDatumZatvaranja(now2);
+		zahtjev3.setDatumZatvaranja(now3);
+		zahtjev1.set_cijena(100);
+		zahtjev2.set_cijena(200);
+		zahtjev3.set_cijena(50000);
+        zahtjevi.add(zahtjev1);
+        zahtjevi.add(zahtjev2);
+        zahtjevi.add(zahtjev3);
+
+
 		frmFinansijskiIzvjestaj = new JFrame();
 		frmFinansijskiIzvjestaj.setTitle("Finansijski izvjestaj");
 		frmFinansijskiIzvjestaj.setBounds(100, 100, 367, 346);
@@ -54,7 +84,8 @@ public class FinansijskiIzvjestaj {
 		
 		JLabel lblUkupnaZaradaOdabrane = new JLabel("Ukupna zarada odabrane sedmice:");
 		
-		textField = new JTextField();
+		//za potrebe prototipa uneseno, inaèe se raèuna
+		textField = new JTextField("5300");
 		textField.setEditable(false);
 		textField.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(frmFinansijskiIzvjestaj.getContentPane());
@@ -85,9 +116,9 @@ public class FinansijskiIzvjestaj {
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
+				{zahtjevi.get(0).getID(), zahtjevi.get(0).getDatumZatvaranja(), zahtjevi.get(0).get_cijena()},
+				{zahtjevi.get(1).getID(), zahtjevi.get(1).getDatumZatvaranja(), zahtjevi.get(1).get_cijena()},
+				{zahtjevi.get(2).getID(), zahtjevi.get(2).getDatumZatvaranja(), zahtjevi.get(2).get_cijena()},
 				{null, null, null},
 				{null, null, null},
 				{null, null, null},
@@ -113,5 +144,13 @@ public class FinansijskiIzvjestaj {
 		table.getColumnModel().getColumn(1).setPreferredWidth(151);
 		scrollPane.setViewportView(table);
 		frmFinansijskiIzvjestaj.getContentPane().setLayout(groupLayout);
+	}
+
+	private ArrayList<Zahtjev> getZahtjevi() {
+		return zahtjevi;
+	}
+
+	private void setZahtjevi(ArrayList<Zahtjev> zahtjevi) {
+		this.zahtjevi = zahtjevi;
 	}
 }
