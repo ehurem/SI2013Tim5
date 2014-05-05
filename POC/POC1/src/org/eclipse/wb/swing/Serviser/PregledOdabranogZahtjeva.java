@@ -67,7 +67,7 @@ public class PregledOdabranogZahtjeva {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		
+		//event za zatvaranje forme klikom na dugme zatvori
 		JButton btnOk = new JButton("Zatvori");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -105,7 +105,7 @@ public class PregledOdabranogZahtjeva {
 		
 		JLabel lblDodatniKomentar = new JLabel("Dodatni komentar:");
 		lblDodatniKomentar.setHorizontalAlignment(SwingConstants.RIGHT);
-		
+		//dodavanje na formu detalja o zahtjevu
 		textField = new JTextField(imeiprezime);
 		textField.setEditable(false);
 		textField.setColumns(10);

@@ -65,6 +65,16 @@ public class Login {
 					novi2.setPrivilegija("Operater");
 					get_zaposlenici().add(novi2);
 					
+					Zaposlenik novi3 = new Zaposlenik();
+					novi3.setAdresa("Sarajevo bb");
+					novi3.setBrojTelefona("387 69 999 999");
+					novi3.setEmail("mail@com.com");
+					novi3.setIme("Suljo");
+					novi3.setKorisnickaSifra("sifra");
+					novi3.setKorisnickoIme("serviser");
+					novi3.setPrezime("Suljica");
+					novi3.setPrivilegija("Serviser");
+					get_zaposlenici().add(novi3);
 					Login window = new Login();
 					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
@@ -120,13 +130,13 @@ public class Login {
 						Main forma = new Main();
 						forma.main(null, get_zaposlenici());
 					}
-					else if (get_zaposlenici().get(index).gePrivilegija().equals("Serviser"))
+					else if (get_zaposlenici().get(index).gePrivilegija().equals("Operater"))
 					{
 						MainOperater forma = new MainOperater();
 						forma.main(null);
 						//infoBox("Nije implementiran panel za servisera", "Uzbuna");
 					}
-					else if (get_zaposlenici().get(index).gePrivilegija().equals("Operater"))
+					else if (get_zaposlenici().get(index).gePrivilegija().equals("Serviser"))
 					{
 						serviser forma = new serviser();
 						forma.main(null);
