@@ -53,6 +53,18 @@ public class Login {
 					novi.setPrezime("Mujica");
 					novi.setPrivilegija("Administrator");
 					get_zaposlenici().add(novi);
+					
+					Zaposlenik novi2 = new Zaposlenik();
+					novi2.setAdresa("Sarajevo bb");
+					novi2.setBrojTelefona("387 69 999 999");
+					novi2.setEmail("mail@com.com");
+					novi2.setIme("Šefik");
+					novi2.setKorisnickaSifra("sifra");
+					novi2.setKorisnickoIme("operater");
+					novi2.setPrezime("Šefko");
+					novi2.setPrivilegija("Operater");
+					get_zaposlenici().add(novi2);
+					
 					Login window = new Login();
 					window.frmLogin.setVisible(true);
 				} catch (Exception e) {

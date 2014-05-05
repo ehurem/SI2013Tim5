@@ -1,5 +1,6 @@
 package org.eclipse.wb.swing.Administrator;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -25,11 +26,18 @@ import javax.swing.border.EtchedBorder;
  
 
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import Models.*;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
 
 public class Main {
 
@@ -41,27 +49,30 @@ public class Main {
 	private JTextField t_emailAdresa;
 	private JTextField t_korisnickoIme;
 	private JTextField t_korisnickaSifra;
-	private JTextField textField_15;
-	private JTextField textField_16;
-	private JTextField textField_17;
-	private JTextField textField_18;
-	private JTextField textField_19;
-	private JTextField textField_20;
+	private JTextField t_i_DatumRodjenja;
+	private JTextField t_i_adresaStanovanja;
+	private JTextField t_i_brojTelefona;
+	private JTextField t_i_email;
+	private JTextField t_i_korisnickoIme;
+	private JTextField t_i_korisnickaSifra;
 	private JComboBox c_privilegije;
 	
 	private static ArrayList<Zaposlenik> _zaposlenici;
+	private static String [] niz = new String[1000];
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args, ArrayList<Zaposlenik> zaposlenik) {
 		set_zaposlenici(zaposlenik);
+		niz[0] = "Odaberite";
+		for (int i = 0; i < get_zaposlenici().size(); i++) niz[i+1] = get_zaposlenici().get(i).getPrezime() + " " +
+																	get_zaposlenici().get(i).getIme();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Main window = new Main();
 					window.frmDodavanjeZaposlenika.setVisible(true);
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -80,6 +91,7 @@ public class Main {
     {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -189,6 +201,7 @@ public class Main {
 		t_korisnickaSifra = new JTextField();
 		t_korisnickaSifra.setColumns(10);
 		
+		
 		c_privilegije = new JComboBox();
 		c_privilegije.setModel(new DefaultComboBoxModel(new String[] {"Administrator", "Serviser", "Operater"}));
 		GroupLayout gl_panel_4 = new GroupLayout(panel_4);
@@ -201,7 +214,7 @@ public class Main {
 							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
 							.addComponent(t_imeIPrezime, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
+							.addGap(10)
 							.addComponent(label_10, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(t_emailAdresa, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE))
@@ -232,7 +245,7 @@ public class Main {
 									.addComponent(t_korisnickaSifra, Alignment.LEADING)
 									.addComponent(t_korisnickoIme, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE))
 								.addComponent(c_privilegije, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE))))
-					.addGap(178))
+					.addGap(186))
 		);
 		gl_panel_4.setVerticalGroup(
 			gl_panel_4.createParallelGroup(Alignment.LEADING)
@@ -297,14 +310,15 @@ public class Main {
 		JLabel label_15 = new JLabel("Datum ro\u0111enja:");
 		label_15.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		textField_15 = new JTextField();
-		textField_15.setColumns(10);
+		t_i_DatumRodjenja = new JTextField();
+		t_i_DatumRodjenja.setText("nije implementirano");
+		t_i_DatumRodjenja.setColumns(10);
 		
-		textField_16 = new JTextField();
-		textField_16.setColumns(10);
+		t_i_adresaStanovanja = new JTextField();
+		t_i_adresaStanovanja.setColumns(10);
 		
-		textField_17 = new JTextField();
-		textField_17.setColumns(10);
+		t_i_brojTelefona = new JTextField();
+		t_i_brojTelefona.setColumns(50);
 		
 		JLabel label_16 = new JLabel("Korisni\u010Dka \u0161ifra:");
 		label_16.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -318,19 +332,44 @@ public class Main {
 		JLabel label_19 = new JLabel("Korisni\u010Dko ime:");
 		label_19.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		textField_18 = new JTextField();
-		textField_18.setColumns(10);
+		t_i_email = new JTextField();
+		t_i_email.setColumns(10);
 		
-		textField_19 = new JTextField();
-		textField_19.setColumns(10);
+		t_i_korisnickoIme = new JTextField();
+		t_i_korisnickoIme.setColumns(10);
 		
-		textField_20 = new JTextField();
-		textField_20.setColumns(10);
+		t_i_korisnickaSifra = new JTextField();
+		t_i_korisnickaSifra.setColumns(10);
 		
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Administrator", "org.eclipse.wb.swing.Serviser", "org.eclipse.wb.swing.Operater"}));
+		JComboBox c_i_Privilegije = new JComboBox();
+		c_i_Privilegije.setModel(new DefaultComboBoxModel(new String[] {"Administrator", "org.eclipse.wb.swing.Serviser", "org.eclipse.wb.swing.Operater"}));
 		
-		JComboBox comboBox_1 = new JComboBox();
+		final JComboBox c_i_ImeIPrezime = new JComboBox(niz);
+		c_i_ImeIPrezime.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuCanceled(PopupMenuEvent arg0) {
+			}
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
+				String selektovan = c_i_ImeIPrezime.getSelectedItem().toString();
+				int index = -1;
+				for (int i = 0; i<get_zaposlenici().size(); i++) 
+					if (selektovan.equals(get_zaposlenici().get(i).getPrezime() + " " + get_zaposlenici().get(i).getIme())) {
+						index = i;
+					}
+				if (index == -1) return;
+				infoBox(index+ "", null);
+				t_i_brojTelefona.setText(get_zaposlenici().get(index).getBrojTelefona());
+				t_i_adresaStanovanja.setText(get_zaposlenici().get(index).getAdresa());
+				t_i_email.setText(get_zaposlenici().get(index).getEmail());
+				t_i_korisnickaSifra.setText(get_zaposlenici().get(index).getKorisnickaSifra());
+				t_i_korisnickoIme.setText(get_zaposlenici().get(index).getKorisnickoIme());
+				
+				
+			}
+			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
+				//c_i_ImeIPrezime.add(new Compon);
+			}
+		});
+
 		GroupLayout gl_panel_5 = new GroupLayout(panel_5);
 		gl_panel_5.setHorizontalGroup(
 			gl_panel_5.createParallelGroup(Alignment.LEADING)
@@ -348,14 +387,14 @@ public class Main {
 									.addComponent(label_12, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)))
 							.addGap(10)
 							.addGroup(gl_panel_5.createParallelGroup(Alignment.LEADING)
-								.addComponent(textField_15, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textField_16, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textField_17, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_panel_5.createSequentialGroup()
-							.addGap(20)
+								.addComponent(t_i_DatumRodjenja, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
+								.addComponent(t_i_adresaStanovanja, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
+								.addComponent(t_i_brojTelefona, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(Alignment.TRAILING, gl_panel_5.createSequentialGroup()
+							.addContainerGap()
 							.addComponent(label_14, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(c_i_ImeIPrezime, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_panel_5.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel_5.createSequentialGroup()
@@ -367,13 +406,13 @@ public class Main {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_panel_5.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panel_5.createParallelGroup(Alignment.TRAILING, false)
-									.addComponent(textField_20, Alignment.LEADING)
-									.addComponent(textField_19, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE))
-								.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(t_i_korisnickaSifra, Alignment.LEADING)
+									.addComponent(t_i_korisnickoIme, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE))
+								.addComponent(c_i_Privilegije, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_panel_5.createSequentialGroup()
 							.addComponent(label_18, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField_18, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(t_i_email, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))
 					.addGap(186))
 		);
 		gl_panel_5.setVerticalGroup(
@@ -381,18 +420,18 @@ public class Main {
 				.addGroup(gl_panel_5.createSequentialGroup()
 					.addGap(16)
 					.addGroup(gl_panel_5.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label_14)
-						.addComponent(textField_18, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(t_i_email, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(label_18)
-						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(c_i_ImeIPrezime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_14))
 					.addGap(11)
 					.addGroup(gl_panel_5.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel_5.createSequentialGroup()
-							.addComponent(textField_19, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(t_i_korisnickoIme, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(11)
-							.addComponent(textField_20, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(t_i_korisnickaSifra, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(11)
-							.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(c_i_Privilegije, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel_5.createSequentialGroup()
 							.addGap(3)
 							.addComponent(label_15)
@@ -402,15 +441,15 @@ public class Main {
 							.addComponent(label_12))
 						.addGroup(gl_panel_5.createSequentialGroup()
 							.addGroup(gl_panel_5.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textField_15, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(t_i_DatumRodjenja, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(label_19))
 							.addGap(11)
 							.addGroup(gl_panel_5.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textField_16, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(t_i_adresaStanovanja, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(label_16))
 							.addGap(11)
 							.addGroup(gl_panel_5.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textField_17, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(t_i_brojTelefona, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(label_17)))))
 		);
 		panel_5.setLayout(gl_panel_5);
@@ -439,6 +478,11 @@ public class Main {
 		tabbedPane.addTab("Deaktivacija ra\u010Duna", null, panel_3, null);
 		
 		JButton btnDeaktivirajRaun = new JButton("Deaktiviraj ra\u010Dun");
+		btnDeaktivirajRaun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				infoBox("Nije implementirano", null);
+			}
+		});
 		
 		JPanel panel_6 = new JPanel();
 		panel_6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -464,9 +508,10 @@ public class Main {
 		
 		JLabel lblIzaberiZaposlenike = new JLabel("Izaberi zaposlenike:");
 		
-		JList list = new JList();
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Zaposlenik 1", "Zaposlenik 2", "Zaposlenik 3"};
+		
+		JList list_zaposlenici = new JList(niz);
+		list_zaposlenici.setModel(new AbstractListModel() {
+			String[] values = niz;
 			public int getSize() {
 				return values.length;
 			}
@@ -481,7 +526,7 @@ public class Main {
 					.addContainerGap()
 					.addComponent(lblIzaberiZaposlenike)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(list, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+					.addComponent(list_zaposlenici, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		gl_panel_6.setVerticalGroup(
@@ -490,7 +535,7 @@ public class Main {
 					.addContainerGap()
 					.addGroup(gl_panel_6.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblIzaberiZaposlenike)
-						.addComponent(list, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE))
+						.addComponent(list_zaposlenici, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(133, Short.MAX_VALUE))
 		);
 		panel_6.setLayout(gl_panel_6);
