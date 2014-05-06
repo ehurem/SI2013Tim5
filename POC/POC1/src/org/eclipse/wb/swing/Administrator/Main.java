@@ -59,6 +59,7 @@ public class Main {
 	
 	private static ArrayList<Zaposlenik> _zaposlenici;
 	private static String [] niz = new String[1000];
+	private static ArrayList<Zalba> _listaZalbi;
 
 	/**
 	 * Launch the application.
@@ -598,6 +599,11 @@ public class Main {
 		JButton btnFinansijskiIzvjetaj = new JButton("Finansijski izvje\u0161taj");
 		
 		JButton btnalbe = new JButton("\u017Dalbe");
+		btnalbe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Zalbe.main(null, get_listaZalbi(), get_zaposlenici());
+			}
+		});
 		GroupLayout gl_panel_7 = new GroupLayout(panel_7);
 		gl_panel_7.setHorizontalGroup(
 			gl_panel_7.createParallelGroup(Alignment.LEADING)
@@ -630,5 +636,13 @@ public class Main {
 
 	private static void set_zaposlenici(ArrayList<Zaposlenik> _zaposlenici) {
 		Main._zaposlenici = _zaposlenici;
+	}
+
+	public static ArrayList<Zalba> get_listaZalbi() {
+		return _listaZalbi;
+	}
+
+	public static void set_listaZalbi(ArrayList<Zalba> _listaZalbi) {
+		Main._listaZalbi = _listaZalbi;
 	}
 }
