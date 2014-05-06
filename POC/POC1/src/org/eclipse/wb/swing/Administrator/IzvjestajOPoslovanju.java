@@ -4,6 +4,8 @@ import java.sql.Date;
 
 import java.awt.EventQueue;
 import java.awt.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -167,6 +169,11 @@ public class IzvjestajOPoslovanju {
 		panel_1.setLayout(gl_panel_1);
 		
 		JButton btnZatvori = new JButton("Zatvori");
+		btnZatvori.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmIzvjestajOPoslovanju.dispose();
+			}
+		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
