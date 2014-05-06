@@ -23,10 +23,6 @@ import javax.swing.AbstractListModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
- 
-
-
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -595,11 +591,21 @@ public class Main {
 		panel_8.setLayout(gl_panel_8);
 		
 		JButton btnNewButton = new JButton("Izvje\u0161taj o nalozima");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				IzvjestajOPoslovanju.main(null);
+			}
+		});
 		
 		JButton btnFinansijskiIzvjetaj = new JButton("Finansijski izvje\u0161taj");
+		btnFinansijskiIzvjetaj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FinansijskiIzvjestaj.main(null);
+			}
+		});
 		
-		JButton btnalbe = new JButton("\u017Dalbe");
-		btnalbe.addActionListener(new ActionListener() {
+		JButton btnZalbe = new JButton("\u017Dalbe");
+		btnZalbe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Zalbe.main(null, get_listaZalbi(), get_zaposlenici());
 			}
@@ -610,7 +616,7 @@ public class Main {
 				.addGroup(gl_panel_7.createSequentialGroup()
 					.addGap(41)
 					.addGroup(gl_panel_7.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnalbe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnZalbe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnFinansijskiIzvjetaj, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnNewButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addContainerGap(37, Short.MAX_VALUE))
@@ -623,7 +629,7 @@ public class Main {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnFinansijskiIzvjetaj)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnalbe)
+					.addComponent(btnZalbe)
 					.addContainerGap(20, Short.MAX_VALUE))
 		);
 		panel_7.setLayout(gl_panel_7);
