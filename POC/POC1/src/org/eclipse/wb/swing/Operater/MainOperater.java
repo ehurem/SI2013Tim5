@@ -7,6 +7,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxEditor;
 import javax.swing.JLabel;
@@ -38,6 +40,7 @@ public class MainOperater {
 	private JFrame frmInterfejsZaOperatera;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	private ArrayList<Zaposlenik>_zaposlenici;
 	private static ArrayList<Klijent>_klijenti;
 	private static ArrayList<Zahtjev>_zahtjevi;
 	//the client we make if there is no one in the database already
@@ -313,6 +316,19 @@ public class MainOperater {
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Unos \u017Ealbe", null, panel_1, null);
 		
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+		        int index = sourceTabbedPane.getSelectedIndex();
+		        //System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
+		        
+		        
+		      }
+		    };
+		tabbedPane.addChangeListener(changeListener);
+		
+		
+		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
@@ -342,7 +358,7 @@ public class MainOperater {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setEditable(true);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Niko Niki\u0107"}));
+		//comboBox.setModel(new DefaultComboBoxModel(new String[] {"Niko Niki\u0107"}));
 		
 		JLabel lblKomentar = new JLabel("Komentar:");
 		lblKomentar.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -404,4 +420,14 @@ public class MainOperater {
 	public static void set_noviKlijent(Klijent _noviKlijent) {
 		MainOperater._noviKlijent = _noviKlijent;
 	}
+	
+	public ArrayList<Zaposlenik> get_zaposlenici() {
+		return _zaposlenici;
+	}
+
+	public void set_zaposlenici(ArrayList<Zaposlenik> _zaposlenici) {
+		this._zaposlenici = _zaposlenici;
+	}
+
+
 }

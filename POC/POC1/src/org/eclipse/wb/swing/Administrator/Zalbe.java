@@ -1,7 +1,9 @@
 package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 
+import javax.swing.ComboBoxEditor;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -14,15 +16,22 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
+import Models.Zalba;
+import Models.Zaposlenik;
+
 public class Zalbe {
 
 	private JFrame frmzalbe;
 	private JTable table;
+	static ArrayList<Zalba> _zalbe;
+	static ArrayList<Zaposlenik> _zaposlenici;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, ArrayList<Zalba> _zal, ArrayList<Zaposlenik> _zap) {
+		 _zalbe=_zal;
+		 _zaposlenici=_zap;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -55,6 +64,10 @@ public class Zalbe {
 		lblZaposlenik.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		JComboBox comboBox = new JComboBox();
+		
+		for(Zaposlenik z: _zaposlenici){
+			comboBox.addItem(z);
+		}
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
