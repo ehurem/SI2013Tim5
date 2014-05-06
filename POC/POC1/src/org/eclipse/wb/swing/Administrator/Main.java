@@ -607,6 +607,7 @@ public class Main {
 		JButton btnZalbe = new JButton("\u017Dalbe");
 		btnZalbe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			
 				Zalbe.main(null, get_listaZalbi(), get_zaposlenici());
 			}
 		});

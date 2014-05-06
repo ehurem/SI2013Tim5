@@ -1,6 +1,7 @@
 package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.ComboBoxEditor;
@@ -21,6 +22,8 @@ import Models.Zaposlenik;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Zalbe {
 
@@ -33,8 +36,18 @@ public class Zalbe {
 	 * Launch the application.
 	 */
 	public static void main(String[] args, ArrayList<Zalba> _zal, ArrayList<Zaposlenik> _zap) {
-		 _zalbe=_zal;
+		_zalbe = new ArrayList<Zalba>();
+		 Zalba _nova_zalba = new Zalba();
+		 Date dat = new Date(System.currentTimeMillis());
+		 _nova_zalba.setDatumPodnosenja(dat);
+		 _nova_zalba.setKomentar("Ovo je komentar žalbe!");
+		 _nova_zalba.setZaposlenik(_zap.get(0));
+		 
+		 _zalbe.add(_nova_zalba);
+		 
+		
 		 _zaposlenici=_zap;
+		 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -91,7 +104,7 @@ public class Zalbe {
 				Zaposlenik z = new Zaposlenik();
 				z = (Zaposlenik) comboBox.getSelectedItem();
 				for (Zalba zalba: _zalbe ){
-					if(zalba.getZaposlenik()==z)
+					if(zalba.getZaposlenik() == _zaposlenici.get(0))
 					{
 						t.addRow(new Object[] { zalba.getDatumPodnosenja(), zalba.getKomentar()});
 					}
@@ -99,6 +112,15 @@ public class Zalbe {
 			}
 				
 		});
+		
+		table.addMouseListener(new MouseAdapter() {
+			   public void mouseClicked(MouseEvent e) {
+				   
+			         Komentar forma = new Komentar();
+			         forma.main(null);
+		      
+			   }
+			});
 		
 		
 		

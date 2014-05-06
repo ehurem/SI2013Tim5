@@ -15,6 +15,7 @@ public class Komentar {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -44,6 +45,7 @@ public class Komentar {
 		frmKomentar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setText("Ovo æe biti implementirano");
 		textArea.setEditable(false);
 		GroupLayout groupLayout = new GroupLayout(frmKomentar.getContentPane());
 		groupLayout.setHorizontalGroup(
