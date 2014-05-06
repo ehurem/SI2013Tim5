@@ -62,7 +62,7 @@ public class Main {
 	 */
 	public static void main(String[] args, ArrayList<Zaposlenik> zaposlenik) {
 		set_zaposlenici(zaposlenik);
-		niz[0] = "Odaberite";
+		niz[0] = "";
 		for (int i = 0; i < get_zaposlenici().size(); i++) niz[i+1] = get_zaposlenici().get(i).getPrezime() + " " +
 																	get_zaposlenici().get(i).getIme();
 		EventQueue.invokeLater(new Runnable() {
@@ -353,7 +353,7 @@ public class Main {
 						index = i;
 					}
 				if (index == -1) return;
-				infoBox(index+ "", null);
+				//infoBox(index+ "", null);
 				t_i_brojTelefona.setText(get_zaposlenici().get(index).getBrojTelefona());
 				t_i_adresaStanovanja.setText(get_zaposlenici().get(index).getAdresa());
 				t_i_email.setText(get_zaposlenici().get(index).getEmail());
