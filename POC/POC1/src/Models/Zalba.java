@@ -7,6 +7,9 @@ public class Zalba {
 	private Zaposlenik _zaposlenik;
 	private String _komentar;
 	private Date _datumPodnosenja;
+	
+	public Zalba(){}
+	
 	public Zaposlenik getZaposlenik() {
 		return _zaposlenik;
 	}

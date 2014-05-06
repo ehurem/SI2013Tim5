@@ -40,8 +40,10 @@ public class MainOperater {
 	private JFrame frmInterfejsZaOperatera;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private ArrayList<Zaposlenik>_zaposlenici;
-	private static ArrayList<Klijent>_klijenti;
+	private static Zaposlenik _zaposlenik;
+	private static Zaposlenik _zaposlenik2;
+	private static Zalba _zalba;
+		private static ArrayList<Klijent>_klijenti;
 	private static ArrayList<Zahtjev>_zahtjevi;
 	//the client we make if there is no one in the database already
 	private static Klijent _noviKlijent;
@@ -49,6 +51,27 @@ public class MainOperater {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		_zaposlenik = new Zaposlenik();
+		_zaposlenik.setAdresa("Adresa Stanovanja 5");
+		_zaposlenik.setBrojTelefona("061 321-654");
+		_zaposlenik.setEmail("zaposlenik@test.ba");
+		_zaposlenik.setIme("Nadimko");
+		_zaposlenik.setPrezime("Nadimkovic");
+		
+		_zaposlenik2 = new Zaposlenik();
+		_zaposlenik2.setAdresa("Bulevar Nestanovanja 5");
+		_zaposlenik2.setBrojTelefona("065 987-679");
+		_zaposlenik2.setEmail("zaposlenik2@test.ba");
+		_zaposlenik2.setIme("Nadimkovec");
+		_zaposlenik2.setPrezime("Nadimkovicevic");
+		
+		_zalba = new Zalba();
+		Date dat = new Date(System.currentTimeMillis());
+		_zalba.setDatumPodnosenja(dat);
+		_zalba.setKomentar("Ovo je komentar!");
+		_zalba.setZaposlenik(_zaposlenik);
+	
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -194,10 +217,9 @@ public class MainOperater {
 					
 					noviZahtjev.setKomentar(textArea.getText());
 					
-					java.util.Date today = new java.util.Date();
-					java.sql.Date datumO = new java.sql.Date(today.getTime());
 					
-					noviZahtjev.setDatumOtvaranja(datumO);
+					Date dat = new Date(System.currentTimeMillis());
+					noviZahtjev.setDatumOtvaranja(dat);
 					
 					noviZahtjev.set_cijena(0);
 					noviZahtjev.setPrioritet(1);
@@ -316,12 +338,22 @@ public class MainOperater {
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Unos \u017Ealbe", null, panel_1, null);
 		
+		final JTextArea textArea_1 = new JTextArea();
+		
+		final JComboBox comboBox = new JComboBox();
+		comboBox.setEditable(true);
+		//comboBox.setModel(new DefaultComboBoxModel(new String[] {"Niko Niki\u0107"}));
+		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 		        int index = sourceTabbedPane.getSelectedIndex();
 		        //System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
-		        
+		        /*for(Zaposlenik z: _zaposlenici){
+		        	comboBox.addItem(z);
+		        }*/
+		        comboBox.addItem(_zaposlenik);
+		        comboBox.addItem(_zaposlenik2);
 		        
 		      }
 		    };
@@ -333,6 +365,16 @@ public class MainOperater {
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
 		JButton btnZabiljeialbu = new JButton("Zabilje\u017Ei \u017Ealbu");
+		btnZabiljeialbu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+	
+				Date dat = new Date(System.currentTimeMillis());
+				_zalba.setDatumPodnosenja(dat);
+				_zalba.setKomentar(textArea_1.getText());
+				_zalba.setZaposlenik((Zaposlenik)comboBox.getSelectedItem());
+				infoBox("Žalba uspješno dodana!", "Žalba dodana");
+			}
+		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -356,14 +398,12 @@ public class MainOperater {
 		JLabel lblZaposlenik = new JLabel("Zaposlenik:");
 		lblZaposlenik.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setEditable(true);
-		//comboBox.setModel(new DefaultComboBoxModel(new String[] {"Niko Niki\u0107"}));
+		
 		
 		JLabel lblKomentar = new JLabel("Komentar:");
 		lblKomentar.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		JTextArea textArea_1 = new JTextArea();
+		
 		GroupLayout gl_panel_4 = new GroupLayout(panel_4);
 		gl_panel_4.setHorizontalGroup(
 			gl_panel_4.createParallelGroup(Alignment.LEADING)
@@ -421,13 +461,23 @@ public class MainOperater {
 		MainOperater._noviKlijent = _noviKlijent;
 	}
 	
-	public ArrayList<Zaposlenik> get_zaposlenici() {
-		return _zaposlenici;
+	public static Zaposlenik get_zaposlenik() {
+		return _zaposlenik;
 	}
 
-	public void set_zaposlenici(ArrayList<Zaposlenik> _zaposlenici) {
-		this._zaposlenici = _zaposlenici;
+	public static void set_zaposlenik(Zaposlenik _zaposlenik) {
+		MainOperater._zaposlenik = _zaposlenik;
 	}
+
+	public static Zalba get_zalba() {
+		return _zalba;
+	}
+
+	public static void set_zalba(Zalba _zalba) {
+		MainOperater._zalba = _zalba;
+	}
+
+
 
 
 }

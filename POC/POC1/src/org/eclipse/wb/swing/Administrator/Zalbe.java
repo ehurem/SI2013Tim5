@@ -19,6 +19,9 @@ import javax.swing.JButton;
 import Models.Zalba;
 import Models.Zaposlenik;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class Zalbe {
 
 	private JFrame frmzalbe;
@@ -62,8 +65,20 @@ public class Zalbe {
 		
 		JLabel lblZaposlenik = new JLabel("Zaposlenik:");
 		lblZaposlenik.setHorizontalAlignment(SwingConstants.RIGHT);
+		final DefaultTableModel t = new DefaultTableModel() {
+	   	    // zabranjeno editovanje celije u tabeli kad se dva puta klikne na celiju
+	    	public boolean isCellEditable(int row, int column){
+	    		return false;
+	    		}
+	   	    
+	    };
+		table = new JTable();
+		table.setModel(t);
+		t.addColumn("Datum podnošenja");
+		t.addColumn("Komentar");
 		
-		JComboBox comboBox = new JComboBox();
+		
+		final JComboBox comboBox = new JComboBox();
 		
 		for(Zaposlenik z: _zaposlenici){
 			comboBox.addItem(z);
@@ -71,7 +86,32 @@ public class Zalbe {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Zaposlenik z = new Zaposlenik();
+				z = (Zaposlenik) comboBox.getSelectedItem();
+				for (Zalba zalba: _zalbe ){
+					if(zalba.getZaposlenik()==z)
+					{
+						t.addRow(new Object[] { zalba.getDatumPodnosenja(), zalba.getKomentar()});
+					}
+				}
+			}
+				
+		});
+		
+		
+		
+		
+		
 		JButton btnOk = new JButton("Zatvori");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmzalbe.dispose();
+				
+				
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmzalbe.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -99,24 +139,9 @@ public class Zalbe {
 					.addContainerGap(26, Short.MAX_VALUE))
 		);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-			},
-			new String[] {
-				"Datum podno\u0161enja", "Komentar"
-			}
-		));
+		
+		
+		
 		table.getColumnModel().getColumn(0).setPreferredWidth(113);
 		scrollPane.setViewportView(table);
 		frmzalbe.getContentPane().setLayout(groupLayout);

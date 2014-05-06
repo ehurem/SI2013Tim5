@@ -58,4 +58,9 @@ public class Zaposlenik {
 	public void setPrivilegija(String _privilegija) {
 		this._privilegija = _privilegija;
 	}
+	
+	@Override
+	public String toString(){
+		return _ime+" "+_prezime;
+	}
 }
