@@ -56,15 +56,15 @@ public class MainOperater {
 		_zaposlenik.setAdresa("Adresa Stanovanja 5");
 		_zaposlenik.setBrojTelefona("061 321-654");
 		_zaposlenik.setEmail("zaposlenik@test.ba");
-		_zaposlenik.setIme("Nadimko");
-		_zaposlenik.setPrezime("Nadimkovic");
+		_zaposlenik.set_imeIPrezime("Nadimko");
+		
 		
 		_zaposlenik2 = new Zaposlenik();
 		_zaposlenik2.setAdresa("Bulevar Nestanovanja 5");
 		_zaposlenik2.setBrojTelefona("065 987-679");
 		_zaposlenik2.setEmail("zaposlenik2@test.ba");
-		_zaposlenik2.setIme("Nadimkovec");
-		_zaposlenik2.setPrezime("Nadimkovicevic");
+		_zaposlenik2.set_imeIPrezime("Nadimkovec");
+
 		
 		_zalba = new Zalba();
 		Date dat = new Date(System.currentTimeMillis());
@@ -226,7 +226,7 @@ public class MainOperater {
 					noviZahtjev.setStatus("otvoren");
 					
 					get_zahtjevi().add(noviZahtjev);
-					infoBox("Zahtjev uspješno unesen!", "Zahtjev unesen");
+					infoBox("Zahtjev uspjeï¿½no unesen!", "Zahtjev unesen");
 					
 				}
 				catch(Exception izuzetak)
@@ -372,7 +372,7 @@ public class MainOperater {
 				_zalba.setDatumPodnosenja(dat);
 				_zalba.setKomentar(textArea_1.getText());
 				_zalba.setZaposlenik((Zaposlenik)comboBox.getSelectedItem());
-				infoBox("Žalba uspješno dodana!", "Žalba dodana");
+				infoBox("ï¿½alba uspjeï¿½no dodana!", "ï¿½alba dodana");
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);

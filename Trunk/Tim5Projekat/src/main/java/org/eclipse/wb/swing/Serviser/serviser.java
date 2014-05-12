@@ -86,8 +86,7 @@ public class serviser {
 		_zaposlenik.setAdresa("Adresa Stanovanja 5");
 		_zaposlenik.setBrojTelefona("061 321-654");
 		_zaposlenik.setEmail("zaposlenik@test.ba");
-		_zaposlenik.setIme("Nadimko");
-		_zaposlenik.setPrezime("Nadimkovic");
+		_zaposlenik.set_imeIPrezime("Nadimko Nadimkovic");
 		
 		z1.setID(1);
 		z1.setGarancija(true);
@@ -114,8 +113,8 @@ public class serviser {
 		_zaposlenik2.setAdresa("Bulevar Nestanovanja 5");
 		_zaposlenik2.setBrojTelefona("065 987-679");
 		_zaposlenik2.setEmail("zaposlenik2@test.ba");
-		_zaposlenik2.setIme("Nadimkovec");
-		_zaposlenik2.setPrezime("Nadimkovicevic");
+		_zaposlenik2.set_imeIPrezime("Nadimkovec Nadimkovicevic");
+		
 		
 		z2.setID(2);
 		z2.setGarancija(true);
@@ -142,8 +141,7 @@ public class serviser {
 		_zaposlenik3.setAdresa("Trg Stanovanja 25");
 		_zaposlenik3.setBrojTelefona("063 322-090");
 		_zaposlenik3.setEmail("nezaposlenik@test.ba");
-		_zaposlenik3.setIme("Nenadimko");
-		_zaposlenik3.setPrezime("Nenadimkovic");
+		_zaposlenik3.set_imeIPrezime("Nenadimko Nenadimkovic");
 		
 		z3.setID(3);
 		z3.setGarancija(false);

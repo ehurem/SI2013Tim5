@@ -7,6 +7,7 @@ public class Zalba {
 	private Zaposlenik _zaposlenik;
 	private String _komentar;
 	private Date _datumPodnosenja;
+	private Klijent _klijent;
 	
 	public Zalba(){}
 	
@@ -32,5 +33,13 @@ public class Zalba {
 
 	public void setDatumPodnosenja(Date _datumPodnosenja) {
 		this._datumPodnosenja = _datumPodnosenja;
+	}
+
+	public Klijent get_klijent() {
+		return _klijent;
+	}
+
+	public void set_klijent(Klijent _klijent) {
+		this._klijent = _klijent;
 	}
 }

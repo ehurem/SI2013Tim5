@@ -47,10 +47,9 @@ public class Login {
 					novi.setAdresa("Sarajevo bb");
 					novi.setBrojTelefona("387 69 999 999");
 					novi.setEmail("mail@com.com");
-					novi.setIme("Mujo");
+					novi.set_imeIPrezime("Mujo Mujica");
 					novi.setKorisnickaSifra("sifra");
 					novi.setKorisnickoIme("admin");
-					novi.setPrezime("Mujica");
 					novi.setPrivilegija("Administrator");
 					get_zaposlenici().add(novi);
 					
@@ -58,10 +57,9 @@ public class Login {
 					novi2.setAdresa("Sarajevo bb");
 					novi2.setBrojTelefona("387 69 999 999");
 					novi2.setEmail("mail@com.com");
-					novi2.setIme("�efik");
+					novi2.set_imeIPrezime("Šefik Šefko");
 					novi2.setKorisnickaSifra("sifra");
 					novi2.setKorisnickoIme("operater");
-					novi2.setPrezime("�efko");
 					novi2.setPrivilegija("Operater");
 					get_zaposlenici().add(novi2);
 					
@@ -69,10 +67,9 @@ public class Login {
 					novi3.setAdresa("Sarajevo bb");
 					novi3.setBrojTelefona("387 69 999 999");
 					novi3.setEmail("mail@com.com");
-					novi3.setIme("Suljo");
+					novi3.set_imeIPrezime("Suljo Suljica");
 					novi3.setKorisnickaSifra("sifra");
 					novi3.setKorisnickoIme("serviser");
-					novi3.setPrezime("Suljica");
 					novi3.setPrivilegija("Serviser");
 					get_zaposlenici().add(novi3);
 					Login window = new Login();

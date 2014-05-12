@@ -63,8 +63,7 @@ public class Main {
 	public static void main(String[] args, ArrayList<Zaposlenik> zaposlenik) {
 		set_zaposlenici(zaposlenik);
 		niz[0] = "";
-		for (int i = 0; i < get_zaposlenici().size(); i++) niz[i+1] = get_zaposlenici().get(i).getPrezime() + " " +
-																	get_zaposlenici().get(i).getIme();
+		for (int i = 0; i < get_zaposlenici().size(); i++) niz[i+1] = get_zaposlenici().get(i).get_imeIPrezime();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -116,14 +115,13 @@ public class Main {
 					novi.setAdresa(t_mjestoStanovanja.getText());
 					novi.setBrojTelefona(t_brojTelefona.getText());
 					novi.setEmail(t_emailAdresa.getText());
-					novi.setIme(t_imeIPrezime.getText());
+					novi.set_imeIPrezime(t_imeIPrezime.getText());
 					novi.setKorisnickaSifra(t_korisnickaSifra.getText());
 					novi.setKorisnickoIme(t_korisnickoIme.getText());
-					novi.setPrezime(t_imeIPrezime.getText());
 					novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
 					get_zaposlenici().add(novi);
 					
-					infoBox("Uspješno dodan novi zaposlenik", get_zaposlenici().size() + "");
+					infoBox("Uspjeï¿½no dodan novi zaposlenik", get_zaposlenici().size() + "");
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
@@ -349,7 +347,7 @@ public class Main {
 				String selektovan = c_i_ImeIPrezime.getSelectedItem().toString();
 				int index = -1;
 				for (int i = 0; i<get_zaposlenici().size(); i++) 
-					if (selektovan.equals(get_zaposlenici().get(i).getPrezime() + " " + get_zaposlenici().get(i).getIme())) {
+					if (selektovan.equals(get_zaposlenici().get(i).get_imeIPrezime())) {
 						index = i;
 					}
 				if (index == -1) return;

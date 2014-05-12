@@ -83,8 +83,7 @@ public class IzvjestajOPoslovanju {
 				zahtjev2.setDatumZatvaranja(now22);
 				zahtjev3.setDatumZatvaranja(now33);
 		        Zaposlenik z = new Zaposlenik();
-		        z.setIme("Alan");
-		        z.setPrezime("Prost");
+		        z.set_imeIPrezime("Alan Prost");
 		        zahtjev1.setZaposlenik(z);
 		        zahtjev2.setZaposlenik(z);
 		        zahtjev3.setZaposlenik(z);
@@ -107,7 +106,7 @@ public class IzvjestajOPoslovanju {
 		JLabel label = new JLabel("Ukupno:");
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		//za potrebe prototipa uneseno, inaèe se raèuna
+		//za potrebe prototipa uneseno, inaï¿½e se raï¿½una
         textField = new JTextField("3");
 		textField.setEditable(false);
 		textField.setColumns(10);
@@ -115,7 +114,7 @@ public class IzvjestajOPoslovanju {
 		JLabel label_1 = new JLabel("Zatvorenih:");
 		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		//za potrebe prototipa uneseno, inaèe se raèuna
+		//za potrebe prototipa uneseno, inaï¿½e se raï¿½una
 		textField_1 = new JTextField("2");
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
@@ -123,7 +122,7 @@ public class IzvjestajOPoslovanju {
 		JLabel label_2 = new JLabel("Otvorenih:");
 		label_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		//za potrebe prototipa uneseno, inaèe se raèuna
+		//za potrebe prototipa uneseno, inaï¿½e se raï¿½una
 		textField_2 = new JTextField("1");
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
@@ -207,9 +206,9 @@ public class IzvjestajOPoslovanju {
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 					//izlistavanje liste zahtjeva u tabeli
-				{zahtjevi.get(0).getID(), zahtjevi.get(0).getDatumOtvaranja(), zahtjevi.get(0).getDatumZatvaranja() , zahtjevi.get(0).getZaposlenik().getIme() + " " + zahtjevi.get(0).getZaposlenik().getPrezime()},
-				{zahtjevi.get(1).getID(), zahtjevi.get(1).getDatumOtvaranja(), zahtjevi.get(1).getDatumZatvaranja() , zahtjevi.get(1).getZaposlenik().getIme() + " " + zahtjevi.get(1).getZaposlenik().getPrezime()},
-				{zahtjevi.get(2).getID(), zahtjevi.get(2).getDatumOtvaranja(), zahtjevi.get(2).getDatumZatvaranja() , zahtjevi.get(2).getZaposlenik().getIme() + " " + zahtjevi.get(2).getZaposlenik().getPrezime()},
+				{zahtjevi.get(0).getID(), zahtjevi.get(0).getDatumOtvaranja(), zahtjevi.get(0).getDatumZatvaranja() , zahtjevi.get(0).getZaposlenik().get_imeIPrezime()},
+				{zahtjevi.get(1).getID(), zahtjevi.get(1).getDatumOtvaranja(), zahtjevi.get(1).getDatumZatvaranja() , zahtjevi.get(1).getZaposlenik().get_imeIPrezime()},
+				{zahtjevi.get(2).getID(), zahtjevi.get(2).getDatumOtvaranja(), zahtjevi.get(2).getDatumZatvaranja() , zahtjevi.get(2).getZaposlenik().get_imeIPrezime()},
 				{null, null, null, null},
 				{null, null, null, null},
 				{null, null, null, null},

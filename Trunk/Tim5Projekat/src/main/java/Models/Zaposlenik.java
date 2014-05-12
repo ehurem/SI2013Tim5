@@ -1,8 +1,7 @@
 package Models;
 
 public class Zaposlenik {
-	private String _ime;
-	private String _prezime;
+	private String _imeIPrezime;
 	private String _brojTelefona;
 	private String _email;
 	private String _adresaStanovanja;
@@ -10,18 +9,7 @@ public class Zaposlenik {
 	private String _korisnickaSifra;
 	private String _privilegija;	
 
-	public String getPrezime() {
-		return _prezime;
-	}
-	public void setPrezime(String _prezime) {
-		this._prezime = _prezime;
-	}
-	public String getIme() {
-		return _ime;
-	}
-	public void setIme(String _ime) {
-		this._ime = _ime;
-	}
+	
 	public String getBrojTelefona() {
 		return _brojTelefona;
 	}
@@ -61,6 +49,12 @@ public class Zaposlenik {
 	
 	@Override
 	public String toString(){
-		return _ime+" "+_prezime;
+		return _imeIPrezime;
+	}
+	public String get_imeIPrezime() {
+		return _imeIPrezime;
+	}
+	public void set_imeIPrezime(String _imeIPrezime) {
+		this._imeIPrezime = _imeIPrezime;
 	}
 }
