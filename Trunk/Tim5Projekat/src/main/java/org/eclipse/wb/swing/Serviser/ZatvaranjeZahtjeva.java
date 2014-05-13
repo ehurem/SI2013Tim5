@@ -62,6 +62,7 @@ public class ZatvaranjeZahtjeva {
 	 */
 	private void initialize() {
 		frmZatvaranjeZahtjeva = new JFrame();
+		frmZatvaranjeZahtjeva.setResizable(false);
 		frmZatvaranjeZahtjeva.setTitle("Zatvaranje zahtjeva");
 		frmZatvaranjeZahtjeva.setBounds(100, 100, 336, 373);
 		frmZatvaranjeZahtjeva.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

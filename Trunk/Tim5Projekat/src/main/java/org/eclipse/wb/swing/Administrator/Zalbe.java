@@ -24,13 +24,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JTextField;
 
 public class Zalbe {
 
 	private JFrame frmzalbe;
-	private JTable table;
 	static ArrayList<Zalba> _zalbe;
 	static ArrayList<Zaposlenik> _zaposlenici;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -40,7 +41,7 @@ public class Zalbe {
 		 Zalba _nova_zalba = new Zalba();
 		 Date dat = new Date(System.currentTimeMillis());
 		 _nova_zalba.setDatumPodnosenja(dat);
-		 _nova_zalba.setKomentar("Ovo je komentar žalbe!");
+		 _nova_zalba.setKomentar("Ovo je komentar ï¿½albe!");
 		 _nova_zalba.setZaposlenik(_zap.get(0));
 		 
 		 _zalbe.add(_nova_zalba);
@@ -72,8 +73,9 @@ public class Zalbe {
 	 */
 	private void initialize() {
 		frmzalbe = new JFrame();
+		frmzalbe.setResizable(false);
 		frmzalbe.setTitle("Pregled \u017Ealbi");
-		frmzalbe.setBounds(100, 100, 372, 318);
+		frmzalbe.setBounds(100, 100, 405, 350);
 		frmzalbe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JLabel lblZaposlenik = new JLabel("Zaposlenik:");
@@ -85,9 +87,7 @@ public class Zalbe {
 	    		}
 	   	    
 	    };
-		table = new JTable();
-		table.setModel(t);
-		t.addColumn("Datum podnošenja");
+		t.addColumn("Datum podnoï¿½enja");
 		t.addColumn("Komentar");
 		
 		
@@ -96,8 +96,6 @@ public class Zalbe {
 		for(Zaposlenik z: _zaposlenici){
 			comboBox.addItem(z);
 		}
-		
-		JScrollPane scrollPane = new JScrollPane();
 		
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -113,15 +111,6 @@ public class Zalbe {
 				
 		});
 		
-		table.addMouseListener(new MouseAdapter() {
-			   public void mouseClicked(MouseEvent e) {
-				   
-			         Komentar forma = new Komentar();
-			         forma.main(null);
-		      
-			   }
-			});
-		
 		
 		
 		
@@ -134,18 +123,25 @@ public class Zalbe {
 				
 			}
 		});
+		
+		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout groupLayout = new GroupLayout(frmzalbe.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblZaposlenik, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 245, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnOk, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(27, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(10)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 373, GroupLayout.PREFERRED_SIZE))
+							.addContainerGap(35, Short.MAX_VALUE))
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addComponent(lblZaposlenik)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+							.addGap(141))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -154,17 +150,29 @@ public class Zalbe {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblZaposlenik)
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
+					.addGap(13)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnOk)
-					.addContainerGap(26, Short.MAX_VALUE))
+					.addGap(18))
 		);
 		
-		
-		
-		
-		table.getColumnModel().getColumn(0).setPreferredWidth(113);
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+			},
+			new String[] {
+				"Klijent", "Komentar", "Datum podno\u0161enja"
+			}
+		));
 		scrollPane.setViewportView(table);
 		frmzalbe.getContentPane().setLayout(groupLayout);
 	}

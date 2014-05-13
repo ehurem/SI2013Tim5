@@ -71,6 +71,7 @@ public class DodajKlijenta {
 	
 	private void initialize() {
 		frmUnosNovogKlijenta = new JFrame();
+		frmUnosNovogKlijenta.setResizable(false);
 		frmUnosNovogKlijenta.setTitle("Unos novog klijenta");
 		frmUnosNovogKlijenta.setBounds(100, 100, 298, 217);
 		//frmUnosNovogKlijenta.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

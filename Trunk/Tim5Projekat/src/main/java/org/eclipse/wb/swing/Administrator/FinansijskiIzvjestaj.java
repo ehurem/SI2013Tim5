@@ -76,6 +76,7 @@ public class FinansijskiIzvjestaj {
 
 
 		frmFinansijskiIzvjestaj = new JFrame();
+		frmFinansijskiIzvjestaj.setResizable(false);
 		frmFinansijskiIzvjestaj.setTitle("Finansijski izvjestaj");
 		frmFinansijskiIzvjestaj.setBounds(100, 100, 367, 346);
 		frmFinansijskiIzvjestaj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +85,7 @@ public class FinansijskiIzvjestaj {
 		
 		JLabel lblUkupnaZaradaOdabrane = new JLabel("Ukupna zarada odabrane sedmice:");
 		
-		//za potrebe prototipa uneseno, inaèe se raèuna
+		//za potrebe prototipa uneseno, inaï¿½e se raï¿½una
 		textField = new JTextField("5300");
 		textField.setEditable(false);
 		textField.setColumns(10);

@@ -40,12 +40,13 @@ public class Komentar {
 	 */
 	private void initialize() {
 		frmKomentar = new JFrame();
+		frmKomentar.setResizable(false);
 		frmKomentar.setTitle("Komentar");
 		frmKomentar.setBounds(100, 100, 322, 247);
 		frmKomentar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setText("Ovo æe biti implementirano");
+		textArea.setText("Ovo Ä‡e biti implementirano");
 		textArea.setEditable(false);
 		GroupLayout groupLayout = new GroupLayout(frmKomentar.getContentPane());
 		groupLayout.setHorizontalGroup(

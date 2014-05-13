@@ -92,6 +92,7 @@ public class IzvjestajOPoslovanju {
 		        getZahtjevi().add(zahtjev3);
 		        
 		frmIzvjestajOPoslovanju = new JFrame();
+		frmIzvjestajOPoslovanju.setResizable(false);
 		frmIzvjestajOPoslovanju.setTitle("Izvje\u0161taj o poslovanju");
 		frmIzvjestajOPoslovanju.setBounds(100, 100, 452, 394);
 		frmIzvjestajOPoslovanju.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

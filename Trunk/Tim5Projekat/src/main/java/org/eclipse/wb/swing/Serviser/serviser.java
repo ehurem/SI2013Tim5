@@ -155,6 +155,7 @@ public class serviser {
 		lz.add(z3);
 		set_zahtjevi(lz);
 		frmInterfejsZaServisera = new JFrame();
+		frmInterfejsZaServisera.setResizable(false);
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
 		frmInterfejsZaServisera.setBounds(100, 100, 332, 357);
 		frmInterfejsZaServisera.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -94,6 +94,7 @@ public class Main {
 	 */
 	private void initialize() {
 		frmDodavanjeZaposlenika = new JFrame();
+		frmDodavanjeZaposlenika.setResizable(false);
 		frmDodavanjeZaposlenika.setTitle("Administratorski panel");
 		frmDodavanjeZaposlenika.setBounds(100, 100, 579, 284);
 		//frmDodavanjeZaposlenika.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
