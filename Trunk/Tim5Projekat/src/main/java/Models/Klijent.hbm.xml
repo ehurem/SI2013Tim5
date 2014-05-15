@@ -3,22 +3,22 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 15, 2014 11:11:16 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Models.Klijent" table="KLIJENT">
+    <class name="Models.Klijent" table="tblklijenti">
         <id name="id" type="long">
-            <column name="ID" />
+            <column name="id" />
             <generator class="native" />
         </id>
         <property name="_imeIPrezime" type="java.lang.String">
-            <column name="_IMEIPREZIME" />
+            <column name="imeIPrezime" />
         </property>
         <property name="_adresa" type="java.lang.String">
-            <column name="_ADRESA" />
+            <column name="adresa" />
         </property>
         <property name="_brojTelefona" type="java.lang.String" access="field">
-            <column name="_BROJTELEFONA" />
+            <column name="telefon" />
         </property>
         <property name="_email" type="java.lang.String" access="field">
-            <column name="_EMAIL" />
+            <column name="email" />
         </property>
     </class>
 </hibernate-mapping>

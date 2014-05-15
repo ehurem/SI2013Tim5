@@ -3,40 +3,40 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 15, 2014 11:11:16 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Models.Zahtjev" table="ZAHTJEV">
+    <class name="Models.Zahtjev" table="tblzahtjevi">
         <id name="_id" type="long" access="field">
-            <column name="_ID" />
+            <column name="id" />
             <generator class="native" />
         </id>
         <many-to-one name="_klijent" class="Models.Klijent" access="field" fetch="join">
-            <column name="_KLIJENT" />
+            <column name="klijent_id" />
         </many-to-one>
         <property name="_tipUredaja" type="java.lang.String" access="field">
-            <column name="_TIPUREDAJA" />
+            <column name="tipUredjaja" />
         </property>
         <property name="_garancija" type="boolean" access="field">
-            <column name="_GARANCIJA" />
+            <column name="garancija" />
         </property>
         <property name="_komentar" type="java.lang.String" access="field">
-            <column name="_KOMENTAR" />
+            <column name="komentar" />
         </property>
         <property name="_datumZatvaranja" type="java.sql.Date" access="field">
-            <column name="_DATUMZATVARANJA" />
+            <column name="datumZatvaranja" />
         </property>
         <property name="_datumOtvaranja" type="java.sql.Date" access="field">
-            <column name="_DATUMOTVARANJA" />
+            <column name="datumOtvaranja" />
         </property>
         <many-to-one name="_zaposlenik" class="Models.Zaposlenik" access="field" fetch="join">
-            <column name="_ZAPOSLENIK" />
+            <column name="zaposlenik_id" />
         </many-to-one>
         <property name="_status" type="java.lang.String" access="field">
-            <column name="_STATUS" />
+            <column name="status" />
         </property>
         <property name="_prioritet" type="int" access="field">
-            <column name="_PRIORITET" />
+            <column name="prioritet" />
         </property>
         <property name="_cijena" type="double">
-            <column name="_CIJENA" />
+            <column name="cijena" />
         </property>
     </class>
 </hibernate-mapping>

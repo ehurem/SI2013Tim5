@@ -3,22 +3,22 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 15, 2014 11:11:16 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Models.Zalba" table="ZALBA">
+    <class name="Models.Zalba" table="tblzalbe">
         <id name="id" type="long">
-            <column name="ID" />
+            <column name="id" />
             <generator class="native" />
         </id>
         <many-to-one name="_zaposlenik" class="Models.Zaposlenik" access="field" fetch="join">
-            <column name="_ZAPOSLENIK" />
+            <column name="zaposlenik_id" />
         </many-to-one>
         <property name="_komentar" type="java.lang.String" access="field">
-            <column name="_KOMENTAR" />
+            <column name="komentar" />
         </property>
         <property name="_datumPodnosenja" type="java.sql.Date" access="field">
-            <column name="_DATUMPODNOSENJA" />
+            <column name="datumPodnosenja" />
         </property>
         <many-to-one name="_klijent" class="Models.Klijent" fetch="join">
-            <column name="_KLIJENT" />
+            <column name="klijent_id" />
         </many-to-one>
     </class>
 </hibernate-mapping>
