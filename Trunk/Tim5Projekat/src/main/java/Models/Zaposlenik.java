@@ -58,10 +58,10 @@ public class Zaposlenik {
 	public void set_imeIPrezime(String _imeIPrezime) {
 		this._imeIPrezime = _imeIPrezime;
 	}
-	private long getId() {
+	public long getId() {
 		return id;
 	}
-	private void setId(long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 }

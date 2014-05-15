@@ -6,13 +6,13 @@ import java.sql.Date;
 
 public class Zahtjev {
 	private long _id;
-	private Klijent _klijent;
+	private long _klijentId;
 	private String _tipUredaja;
 	private boolean _garancija;
 	private String _komentar;
 	private Date _datumZatvaranja;
 	private Date _datumOtvaranja;
-	private Zaposlenik _zaposlenik;
+	private long _zaposlenikId;
 	private String _status;
 	private int _prioritet;
 	private double _cijena;
@@ -27,12 +27,12 @@ public class Zahtjev {
 		this._id = _id;
 	}
 
-	public Klijent getKlijent() {
-		return _klijent;
+	public long getKlijent() {
+		return _klijentId;
 	}
 
-	public void setKlijent(Klijent _klijent) {
-		this._klijent = _klijent;
+	public void setKlijent(long _klijent) {
+		this._klijentId = _klijent;
 	}
 
 	public String getTipUredaja() {
@@ -75,12 +75,12 @@ public class Zahtjev {
 		this._datumOtvaranja = _datumOtvaranja;
 	}
 
-	public Zaposlenik getZaposlenik() {
-		return _zaposlenik;
+	public Long getZaposlenik() {
+		return _zaposlenikId;
 	}
 
-	public void setZaposlenik(Zaposlenik _zaposlenik) {
-		this._zaposlenik = _zaposlenik;
+	public void setZaposlenik(Long _zaposlenik) {
+		this._zaposlenikId = _zaposlenik;
 	}
 
 	public String getStatus() {

@@ -4,19 +4,19 @@ import java.sql.Date;
 
 public class Zalba {
 	private long id;
-	private Zaposlenik _zaposlenik;
+	private long _zaposlenikId;
 	private String _komentar;
 	private Date _datumPodnosenja;
-	private Klijent _klijent;
+	private long _klijentId;
 	
 	public Zalba(){}
 	
-	public Zaposlenik getZaposlenik() {
-		return _zaposlenik;
+	public long getZaposlenik() {
+		return _zaposlenikId;
 	}
 
-	public void setZaposlenik(Zaposlenik _zaposlenik) {
-		this._zaposlenik = _zaposlenik;
+	public void setZaposlenik(long _zaposlenik) {
+		this._zaposlenikId = _zaposlenik;
 	}
 
 	public String getKomentar() {
@@ -35,12 +35,12 @@ public class Zalba {
 		this._datumPodnosenja = _datumPodnosenja;
 	}
 
-	public Klijent get_klijent() {
-		return _klijent;
+	public long get_klijent() {
+		return _klijentId;
 	}
 
-	public void set_klijent(Klijent _klijent) {
-		this._klijent = _klijent;
+	public void set_klijent(long _klijent) {
+		this._klijentId = _klijent;
 	}
 
 	private long getId() {
