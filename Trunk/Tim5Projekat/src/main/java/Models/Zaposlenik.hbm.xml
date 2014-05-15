@@ -3,31 +3,31 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 15, 2014 11:11:16 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Models.Zaposlenik" table="ZAPOSLENIK">
+    <class name="Models.Zaposlenik" table="tblzaposlenici">
         <id name="id" type="long">
-            <column name="ID" />
+            <column name="id" />
             <generator class="native" />
         </id>
         <property name="_imeIPrezime" type="java.lang.String">
-            <column name="_IMEIPREZIME" />
+            <column name="imeIPrezime" />
         </property>
         <property name="_brojTelefona" type="java.lang.String" access="field">
-            <column name="_BROJTELEFONA" />
+            <column name="telefon" />
         </property>
         <property name="_email" type="java.lang.String" access="field">
-            <column name="_EMAIL" />
+            <column name="email" />
         </property>
         <property name="_adresaStanovanja" type="java.lang.String" access="field">
-            <column name="_ADRESASTANOVANJA" />
+            <column name="adresa" />
         </property>
         <property name="_korisnickoIme" type="java.lang.String" access="field">
-            <column name="_KORISNICKOIME" />
+            <column name="korisnickoIme" />
         </property>
         <property name="_korisnickaSifra" type="java.lang.String" access="field">
-            <column name="_KORISNICKASIFRA" />
+            <column name="sifra" />
         </property>
         <property name="_privilegija" type="java.lang.String" access="field">
-            <column name="_PRIVILEGIJA" />
+            <column name="privilegija" />
         </property>
     </class>
 </hibernate-mapping>
