@@ -35,6 +35,11 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+
 public class Main {
 
 	private JFrame frmDodavanjeZaposlenika;
@@ -111,7 +116,31 @@ public class Main {
 		JButton btnUnesi = new JButton("Unesi");
 		btnUnesi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				try {
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					
+					
+						Transaction t = session.beginTransaction(); 
+						
+						Zaposlenik novi = new Zaposlenik();
+						novi.set_imeIPrezime("Alen Ismic");
+						novi.setAdresa("Adresa 32");
+						novi.setBrojTelefona("0622145245");
+						novi.setEmail("asdasda@sdaf.com");
+						novi.setKorisnickaSifra("sifra");
+						novi.setKorisnickoIme("Alen");
+						novi.setPrivilegija("Administrator");
+						
+							 
+						Long id = (Long) session.save(novi); 
+						infoBox("Dodan zaposlenik sa IDom "+id , null); 
+						t.commit(); 
+
+						session.close();
+					
+					
+					/*
 					Zaposlenik novi = new Zaposlenik();
 					novi.setAdresa(t_mjestoStanovanja.getText());
 					novi.setBrojTelefona(t_brojTelefona.getText());
@@ -123,6 +152,7 @@ public class Main {
 					get_zaposlenici().add(novi);
 					
 					infoBox("Uspje�no dodan novi zaposlenik", get_zaposlenici().size() + "");
+					*/
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");

@@ -22,7 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/eclipse/mysql_connector_java_5.1.30_bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Alen/Downloads/hibernate-core-4.3.0.Beta1.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse/hibernate-core-4.3.0.Beta1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
