@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 15, 2014 11:11:16 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Models.Zahtjev" table="ZAHTJEV">
+        <id name="_id" type="long" access="field">
+            <column name="_ID" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="_klijent" class="Models.Klijent" access="field" fetch="join">
+            <column name="_KLIJENT" />
+        </many-to-one>
+        <property name="_tipUredaja" type="java.lang.String" access="field">
+            <column name="_TIPUREDAJA" />
+        </property>
+        <property name="_garancija" type="boolean" access="field">
+            <column name="_GARANCIJA" />
+        </property>
+        <property name="_komentar" type="java.lang.String" access="field">
+            <column name="_KOMENTAR" />
+        </property>
+        <property name="_datumZatvaranja" type="java.sql.Date" access="field">
+            <column name="_DATUMZATVARANJA" />
+        </property>
+        <property name="_datumOtvaranja" type="java.sql.Date" access="field">
+            <column name="_DATUMOTVARANJA" />
+        </property>
+        <many-to-one name="_zaposlenik" class="Models.Zaposlenik" access="field" fetch="join">
+            <column name="_ZAPOSLENIK" />
+        </many-to-one>
+        <property name="_status" type="java.lang.String" access="field">
+            <column name="_STATUS" />
+        </property>
+        <property name="_prioritet" type="int" access="field">
+            <column name="_PRIORITET" />
+        </property>
+        <property name="_cijena" type="double">
+            <column name="_CIJENA" />
+        </property>
+    </class>
+</hibernate-mapping>

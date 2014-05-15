@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 15, 2014 11:11:16 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Models.Zalba" table="ZALBA">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="_zaposlenik" class="Models.Zaposlenik" access="field" fetch="join">
+            <column name="_ZAPOSLENIK" />
+        </many-to-one>
+        <property name="_komentar" type="java.lang.String" access="field">
+            <column name="_KOMENTAR" />
+        </property>
+        <property name="_datumPodnosenja" type="java.sql.Date" access="field">
+            <column name="_DATUMPODNOSENJA" />
+        </property>
+        <many-to-one name="_klijent" class="Models.Klijent" fetch="join">
+            <column name="_KLIJENT" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

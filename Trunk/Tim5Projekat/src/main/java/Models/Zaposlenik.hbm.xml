@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 15, 2014 11:11:16 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Models.Zaposlenik" table="ZAPOSLENIK">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="_imeIPrezime" type="java.lang.String">
+            <column name="_IMEIPREZIME" />
+        </property>
+        <property name="_brojTelefona" type="java.lang.String" access="field">
+            <column name="_BROJTELEFONA" />
+        </property>
+        <property name="_email" type="java.lang.String" access="field">
+            <column name="_EMAIL" />
+        </property>
+        <property name="_adresaStanovanja" type="java.lang.String" access="field">
+            <column name="_ADRESASTANOVANJA" />
+        </property>
+        <property name="_korisnickoIme" type="java.lang.String" access="field">
+            <column name="_KORISNICKOIME" />
+        </property>
+        <property name="_korisnickaSifra" type="java.lang.String" access="field">
+            <column name="_KORISNICKASIFRA" />
+        </property>
+        <property name="_privilegija" type="java.lang.String" access="field">
+            <column name="_PRIVILEGIJA" />
+        </property>
+    </class>
+</hibernate-mapping>

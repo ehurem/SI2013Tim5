@@ -1,6 +1,7 @@
 package Models;
 
-public class Klijent {
+public class Klijent implements java.io.Serializable {
+	private long id;
 	private String _imeIPrezime;
 	private String _adresa;
 	private String _brojTelefona;
@@ -49,6 +50,16 @@ public class Klijent {
 	public String toString()
 	{
 		return _imeIPrezime;
+	}
+
+
+	long getId() {
+		return id;
+	}
+
+
+	void setId(long id) {
+		this.id = id;
 	}
 	
 

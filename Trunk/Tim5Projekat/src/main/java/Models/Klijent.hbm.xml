@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 15, 2014 11:11:16 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Models.Klijent" table="KLIJENT">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="_imeIPrezime" type="java.lang.String">
+            <column name="_IMEIPREZIME" />
+        </property>
+        <property name="_adresa" type="java.lang.String">
+            <column name="_ADRESA" />
+        </property>
+        <property name="_brojTelefona" type="java.lang.String" access="field">
+            <column name="_BROJTELEFONA" />
+        </property>
+        <property name="_email" type="java.lang.String" access="field">
+            <column name="_EMAIL" />
+        </property>
+    </class>
+</hibernate-mapping>

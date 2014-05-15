@@ -1,6 +1,7 @@
 package Models;
 
 public class Zaposlenik {
+	private long id;
 	private String _imeIPrezime;
 	private String _brojTelefona;
 	private String _email;
@@ -56,5 +57,11 @@ public class Zaposlenik {
 	}
 	public void set_imeIPrezime(String _imeIPrezime) {
 		this._imeIPrezime = _imeIPrezime;
+	}
+	private long getId() {
+		return id;
+	}
+	private void setId(long id) {
+		this.id = id;
 	}
 }

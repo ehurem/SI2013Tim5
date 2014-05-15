@@ -3,7 +3,7 @@ package Models;
 import java.sql.Date;
 
 public class Zalba {
-
+	private long id;
 	private Zaposlenik _zaposlenik;
 	private String _komentar;
 	private Date _datumPodnosenja;
@@ -41,5 +41,13 @@ public class Zalba {
 
 	public void set_klijent(Klijent _klijent) {
 		this._klijent = _klijent;
+	}
+
+	private long getId() {
+		return id;
+	}
+
+	private void setId(long id) {
+		this.id = id;
 	}
 }
