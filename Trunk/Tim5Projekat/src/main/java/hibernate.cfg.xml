@@ -10,5 +10,8 @@
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
   <property name="hibernate.hbm2ddl.auto">update</property>
   <mapping resource="Models/Zaposlenik.hbm.xml"/>
+  <mapping resource="Models/Klijent.hbm.xml"/>
+  <mapping resource="Models/Zahtjev.hbm.xml"/>
+  <mapping resource="Models/Zalba.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

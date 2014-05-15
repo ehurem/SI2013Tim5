@@ -99,9 +99,7 @@ public class DodajKlijenta {
 					Session sesija = HibernateUtil.getSessionFactory().openSession(); 
 					
 					Transaction transakcija = sesija.beginTransaction(); 
-					
-					
-					
+										
 					Long id = (Long)sesija.save(_klijent); 
 					transakcija.commit(); 
 					
