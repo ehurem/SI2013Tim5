@@ -92,8 +92,8 @@ public class serviser {
 		z1.setGarancija(true);
 		z1.setTipUredaja("Samsunka");
 		z1.setDatumOtvaranja(dat);
-		z1.setKlijent(_klijent);
-		z1.setZaposlenik(_zaposlenik);
+		//z1.setKlijent(_klijent);
+		//z1.setZaposlenik(_zaposlenik);
 		z1.setKomentar("komentar");
 		z1.setStatus("Otvoren");
 		z1.setPrioritet(1);
@@ -120,7 +120,7 @@ public class serviser {
 		z2.setGarancija(true);
 		z2.setTipUredaja("Sonijevka");
 		z2.setDatumOtvaranja(dat2);
-		z2.setKlijent(_klijent2);
+		//z2.setKlijent(_klijent2);
 		//z2.setZaposlenik(_zaposlenik2);
 		z2.setKomentar("komentar");
 		z2.setStatus("Otvoren");
@@ -147,7 +147,7 @@ public class serviser {
 		z3.setGarancija(false);
 		z3.setTipUredaja("Panasonka");
 		z3.setDatumOtvaranja(dat3);
-		z3.setKlijent(_klijent3);
+		//z3.setKlijent(_klijent3);
 		//z3.setZaposlenik(_zaposlenik3);
 		z3.setKomentar("komentar");
 		z3.setStatus("Otvoren");

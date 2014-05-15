@@ -32,10 +32,10 @@ public class PregledOdabranogZahtjeva {
 	 * Launch the application.
 	 */
 	public static void main(String[] args, Zahtjev z) {
-		   imeiprezime=(z.getKlijent().get_imeIPrezime());
+		   //imeiprezime=(z.getKlijent().get_imeIPrezime());
 		   tipuredaja=(z.getTipUredaja());
 		   komentar=(z.getKomentar());
-           adresa=z.getKlijent().get_adresa();
+           //adresa=z.getKlijent().get_adresa();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

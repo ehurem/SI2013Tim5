@@ -17,7 +17,12 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JTextField;
 
 import Models.*;
+
 import org.eclipse.wb.swing.Operater.MainOperater;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -85,10 +90,23 @@ public class DodajKlijenta {
 			public void actionPerformed(ActionEvent e) {
 				try
 				{
-					get_klijent().set_imeIPrezime(textField.getText());
-					get_klijent().setBrojTelefona(textField_2.getText());
-					get_klijent().setEmail(textField_3.getText());
-					_klijenti.add(get_klijent());
+					_klijent.set_imeIPrezime(textField.getText());
+					_klijent.setBrojTelefona(textField_2.getText());
+					_klijent.setEmail(textField_3.getText());
+					_klijent.set_adresa(textField_1.getText());
+					_klijenti.add(_klijent);
+					
+					Session sesija = HibernateUtil.getSessionFactory().openSession(); 
+					
+					Transaction transakcija = sesija.beginTransaction(); 
+					
+					
+					
+					Long id = (Long)sesija.save(_klijent); 
+					transakcija.commit(); 
+					
+					sesija.close();
+					
 					infoBox("Klijent " + get_klijent().get_imeIPrezime() + " je unesen", "UnesenKLijent");
 					frmUnosNovogKlijenta.dispose();
 				}

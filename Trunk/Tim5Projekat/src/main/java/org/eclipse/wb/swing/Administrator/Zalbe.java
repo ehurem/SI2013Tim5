@@ -42,7 +42,7 @@ public class Zalbe {
 		 Date dat = new Date(System.currentTimeMillis());
 		 _nova_zalba.setDatumPodnosenja(dat);
 		 _nova_zalba.setKomentar("Ovo je komentar �albe!");
-		 _nova_zalba.setZaposlenik(_zap.get(0));
+		// _nova_zalba.setZaposlenik(_zap.get(0));
 		 
 		 _zalbe.add(_nova_zalba);
 		 
@@ -101,12 +101,12 @@ public class Zalbe {
 			public void actionPerformed(ActionEvent arg0) {
 				Zaposlenik z = new Zaposlenik();
 				z = (Zaposlenik) comboBox.getSelectedItem();
-				for (Zalba zalba: _zalbe ){
+				/*for (Zalba zalba: _zalbe ){
 					if(zalba.getZaposlenik() == _zaposlenici.get(0))
 					{
 						t.addRow(new Object[] { zalba.getDatumPodnosenja(), zalba.getKomentar()});
 					}
-				}
+				}*/
 			}
 				
 		});

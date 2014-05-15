@@ -23,6 +23,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.*;
 
 import java.awt.event.ActionListener;
@@ -70,7 +75,7 @@ public class MainOperater {
 		Date dat = new Date(System.currentTimeMillis());
 		_zalba.setDatumPodnosenja(dat);
 		_zalba.setKomentar("Ovo je komentar!");
-		_zalba.setZaposlenik(_zaposlenik);
+		//_zalba.setZaposlenik(_zaposlenik);
 	
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -203,7 +208,7 @@ public class MainOperater {
 					Zahtjev noviZahtjev = new Zahtjev();
 					noviZahtjev.setID(Long.parseLong(textField_1.getText()));
 					
-					noviZahtjev.setKlijent((Klijent)comboBox_1.getSelectedItem());
+					noviZahtjev.setKlijent(((Klijent)comboBox_1.getSelectedItem()).getId());
 					noviZahtjev.setTipUredaja(textField_2.getText());
 
 					Enumeration elementiGrupe = grupaGarancija.getElements();
@@ -228,7 +233,17 @@ public class MainOperater {
 					noviZahtjev.setStatus("otvoren");
 					
 					get_zahtjevi().add(noviZahtjev);
-					infoBox("Zahtjev uspješno unesen!", "Zahtjev unesen");
+					
+					Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
+					
+					Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
+					
+					Long id = (Long)sesija.save(noviZahtjev); //spašava u bazu
+					transakcija.commit(); //završava transakciju
+					
+					sesija.close();
+					
+					infoBox("Zahtjev "+id+ " uspješno unesen!", "Zahtjev unesen");
 					
 				}
 				catch(Exception izuzetak)
@@ -389,33 +404,12 @@ public class MainOperater {
 				Date dat = new Date(System.currentTimeMillis());
 				_zalba.setDatumPodnosenja(dat);
 				_zalba.setKomentar(textArea_1.getText());
-				_zalba.setZaposlenik((Zaposlenik)comboBox.getSelectedItem());
+				//_zalba.setZaposlenik((Zaposlenik)comboBox.getSelectedItem());
 				infoBox("�alba uspje�no dodana!", "�alba dodana");
 			}
 		});
 		
-		/*
-		 * layout.setHorizontalGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                .addComponent(label1)
-                .addComponent(label2)
-                .addComponent(label3))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(field1)
-                .addComponent(field2)
-                .addComponent(field3))
-        );
-        layout.setVerticalGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(label1)
-                .addComponent(field1))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(label2)
-                .addComponent(field2))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(label3)
-                .addComponent(field3))
-        );*/
+		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.TRAILING)

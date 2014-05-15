@@ -84,9 +84,9 @@ public class IzvjestajOPoslovanju {
 				zahtjev3.setDatumZatvaranja(now33);
 		        Zaposlenik z = new Zaposlenik();
 		        z.set_imeIPrezime("Alan Prost");
-		        zahtjev1.setZaposlenik(z);
-		        zahtjev2.setZaposlenik(z);
-		        zahtjev3.setZaposlenik(z);
+		        zahtjev1.setZaposlenik(z.getId());
+		        zahtjev2.setZaposlenik(z.getId());
+		        zahtjev3.setZaposlenik(z.getId());
 		        getZahtjevi().add(zahtjev1);
 		        getZahtjevi().add(zahtjev2);
 		        getZahtjevi().add(zahtjev3);
@@ -207,9 +207,9 @@ public class IzvjestajOPoslovanju {
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 					//izlistavanje liste zahtjeva u tabeli
-				{zahtjevi.get(0).getID(), zahtjevi.get(0).getDatumOtvaranja(), zahtjevi.get(0).getDatumZatvaranja() , zahtjevi.get(0).getZaposlenik().get_imeIPrezime()},
-				{zahtjevi.get(1).getID(), zahtjevi.get(1).getDatumOtvaranja(), zahtjevi.get(1).getDatumZatvaranja() , zahtjevi.get(1).getZaposlenik().get_imeIPrezime()},
-				{zahtjevi.get(2).getID(), zahtjevi.get(2).getDatumOtvaranja(), zahtjevi.get(2).getDatumZatvaranja() , zahtjevi.get(2).getZaposlenik().get_imeIPrezime()},
+				//{zahtjevi.get(0).getID(), zahtjevi.get(0).getDatumOtvaranja(), zahtjevi.get(0).getDatumZatvaranja() , zahtjevi.get(0).getZaposlenik().get_imeIPrezime()},
+				//{zahtjevi.get(1).getID(), zahtjevi.get(1).getDatumOtvaranja(), zahtjevi.get(1).getDatumZatvaranja() , zahtjevi.get(1).getZaposlenik().get_imeIPrezime()},
+				//{zahtjevi.get(2).getID(), zahtjevi.get(2).getDatumOtvaranja(), zahtjevi.get(2).getDatumZatvaranja() , zahtjevi.get(2).getZaposlenik().get_imeIPrezime()},
 				{null, null, null, null},
 				{null, null, null, null},
 				{null, null, null, null},
