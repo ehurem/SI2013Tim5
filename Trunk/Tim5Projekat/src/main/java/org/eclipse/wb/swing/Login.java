@@ -20,21 +20,61 @@ import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Formatter;
 
 import org.eclipse.wb.swing.Administrator.*;
 import org.eclipse.wb.swing.Operater.*;
 import org.eclipse.wb.swing.Serviser.*;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.*;
 
 public class Login {
 
 	private JFrame frmLogin;
 	private JTextField t_korisnickoIme;
-	private JPasswordField t_sifra;
-	private static ArrayList<Zaposlenik> _zaposlenici;
+	private JPasswordField t_sifra; 
 
+	private static String encryptPassword(String password)
+	{
+	    String sha1 = "";
+	    try
+	    {
+	        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+	        crypt.reset();
+	        crypt.update(password.getBytes("UTF-8"));
+	        sha1 = byteToHex(crypt.digest());
+	    }
+	    catch(NoSuchAlgorithmException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    catch(UnsupportedEncodingException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    return sha1;
+	}
+	private static String byteToHex(final byte[] hash)
+	{
+	    Formatter formatter = new Formatter();
+	    for (byte b : hash)
+	    {
+	        formatter.format("%02x", b);
+	    }
+	    String result = formatter.toString();
+	    formatter.close();
+	    return result;
+	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -42,36 +82,6 @@ public class Login {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					set_zaposlenici(new ArrayList<Zaposlenik>());
-					Zaposlenik novi = new Zaposlenik();
-					novi.setAdresa("Sarajevo bb");
-					novi.setBrojTelefona("387 69 999 999");
-					novi.setEmail("mail@com.com");
-					novi.set_imeIPrezime("Mujo Mujica");
-					novi.setKorisnickaSifra("sifra");
-					novi.setKorisnickoIme("admin");
-					novi.setPrivilegija("Administrator");
-					get_zaposlenici().add(novi);
-					
-					Zaposlenik novi2 = new Zaposlenik();
-					novi2.setAdresa("Sarajevo bb");
-					novi2.setBrojTelefona("387 69 999 999");
-					novi2.setEmail("mail@com.com");
-					novi2.set_imeIPrezime("Šefik Šefko");
-					novi2.setKorisnickaSifra("sifra");
-					novi2.setKorisnickoIme("operater");
-					novi2.setPrivilegija("Operater");
-					get_zaposlenici().add(novi2);
-					
-					Zaposlenik novi3 = new Zaposlenik();
-					novi3.setAdresa("Sarajevo bb");
-					novi3.setBrojTelefona("387 69 999 999");
-					novi3.setEmail("mail@com.com");
-					novi3.set_imeIPrezime("Suljo Suljica");
-					novi3.setKorisnickaSifra("sifra");
-					novi3.setKorisnickoIme("serviser");
-					novi3.setPrivilegija("Serviser");
-					get_zaposlenici().add(novi3);
 					Login window = new Login();
 					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
@@ -109,38 +119,26 @@ public class Login {
 		btnPrijava.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String username = t_korisnickoIme.getText();
+				@SuppressWarnings("deprecation")
 				String password = t_sifra.getText();
-				Boolean nadjen = false;
-				int index = 0;
-				//infoBox(password, "SIFRA");
-				for (int i = 0; i<get_zaposlenici().size(); i++) {
-					//infoBox(zaposlenici.get(i).getKorisnickoIme() , zaposlenici.get(i).getKorisnickaSifra());
-					if (get_zaposlenici().get(i).getKorisnickoIme().equals(username) 
-							&& get_zaposlenici().get(i).getKorisnickaSifra().equals(password)) {
-						nadjen = true;
-						index = i;
+				if (username.equals("") || password.equals("")) infoBox("Pogrešni podaci za prijavu", "Greška");
+				else {
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+					Criteria criteria = session.createCriteria(Zaposlenik.class);
+					criteria.add(Restrictions.eq("_korisnickoIme", username));
+					Zaposlenik zaposlenik = (Zaposlenik) criteria.uniqueResult();
+					if (zaposlenik != null && zaposlenik.getKorisnickaSifra().equals(encryptPassword(password)))  {
+						if (zaposlenik.getPrivilegija().equals("Administrator"))						
+							Main.main(null, zaposlenik.getId());
+						else if (zaposlenik.getPrivilegija().equals("Operater"))
+							MainOperater.main(null, zaposlenik.getId());
+						else if (zaposlenik.getPrivilegija().equals("Serviser"))
+							serviser.main(null, zaposlenik.getId());
 					}
+					else infoBox ("Unijeli ste neispravne korisnicke podatke", null);
+					
 				}
-				if (nadjen) {
-					if (get_zaposlenici().get(index).gePrivilegija().equals("Administrator"))
-					{
-						Main forma = new Main();
-						forma.main(null, get_zaposlenici());
-					}
-					else if (get_zaposlenici().get(index).gePrivilegija().equals("Operater"))
-					{
-						MainOperater forma = new MainOperater();
-						forma.main(null);
-						//infoBox("Nije implementiran panel za servisera", "Uzbuna");
-					}
-					else if (get_zaposlenici().get(index).gePrivilegija().equals("Serviser"))
-					{
-						serviser forma = new serviser();
-						forma.main(null);
-						//infoBox("Nije implementiran panel za operatera", "Uzbuna");
-					}
-				}
-				else infoBox("Pogre�ni podaci za prijavu", "Gre�ka");
 			}
 		});
 		
@@ -213,13 +211,5 @@ public class Login {
 		panel.setLayout(gl_panel);
 		frmLogin.getContentPane().setLayout(groupLayout);
 		frmLogin.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmLogin.getContentPane(), panel, lblLozinka, lblKorisnikoIme, t_korisnickoIme}));
-	}
-
-	private static ArrayList<Zaposlenik> get_zaposlenici() {
-		return _zaposlenici;
-	}
-
-	private static void set_zaposlenici(ArrayList<Zaposlenik> _zaposlenici) {
-		Login._zaposlenici = _zaposlenici;
 	}
 }
