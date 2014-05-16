@@ -41,7 +41,7 @@ public class Zaposlenik {
 	public void setKorisnickaSifra(String _korisnickaSifra) {
 		this._korisnickaSifra = _korisnickaSifra;
 	}
-	public String gePrivilegija() {
+	public String getPrivilegija() {
 		return _privilegija;
 	}
 	public void setPrivilegija(String _privilegija) {
