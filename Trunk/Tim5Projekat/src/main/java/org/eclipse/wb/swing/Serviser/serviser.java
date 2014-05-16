@@ -37,11 +37,14 @@ public class serviser {
 
 	private JFrame frmInterfejsZaServisera;
 	private JTable table;
+	
+	private Long _zaposlenik; //ID u bazi logovanog zaposlenika
+	
 	private static ArrayList<Zahtjev> _zahtjevi;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, Long zaposlenik) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -158,7 +161,7 @@ public class serviser {
 		frmInterfejsZaServisera.setResizable(false);
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
 		frmInterfejsZaServisera.setBounds(100, 100, 332, 357);
-		frmInterfejsZaServisera.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmInterfejsZaServisera.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout groupLayout = new GroupLayout(frmInterfejsZaServisera.getContentPane());
@@ -355,5 +358,13 @@ public class serviser {
 
 	public static void set_zahtjevi(ArrayList<Zahtjev> _zahtjevi) {
 		serviser._zahtjevi = _zahtjevi;
+	}
+
+	private Long get_zaposlenik() {
+		return _zaposlenik;
+	}
+
+	private void set_zaposlenik(Long _zaposlenik) {
+		this._zaposlenik = _zaposlenik;
 	}
 }
