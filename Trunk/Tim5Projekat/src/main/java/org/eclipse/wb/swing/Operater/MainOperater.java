@@ -45,6 +45,7 @@ public class MainOperater {
 	private JFrame frmInterfejsZaOperatera;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	
 	private static Zaposlenik _zaposlenik;
 	private static Zaposlenik _zaposlenik2;
 	private static Zalba _zalba;
@@ -54,8 +55,9 @@ public class MainOperater {
 	private static Klijent _noviKlijent;
 	/**
 	 * Launch the application.
+	 *  Long zaposlenik je id u bazi logovanog zaposlenika
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, Long zaposlenik) {
 		
 		_zaposlenik = new Zaposlenik();
 		_zaposlenik.setAdresa("Adresa Stanovanja 5");
