@@ -58,17 +58,17 @@ public class Main {
 	private JTextField t_i_korisnickaSifra;
 	private JComboBox c_privilegije;
 	
-	private static ArrayList<Zaposlenik> _zaposlenici;
+	private static Long _zaposlenik;
 	private static String [] niz = new String[1000];
 	private static ArrayList<Zalba> _listaZalbi;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args, ArrayList<Zaposlenik> zaposlenik) {
+	public static void main(String[] args, Long zaposlenik) {
 		set_zaposlenici(zaposlenik);
 		niz[0] = "";
-		for (int i = 0; i < get_zaposlenici().size(); i++) niz[i+1] = get_zaposlenici().get(i).get_imeIPrezime();
+		//for (int i = 0; i < get_zaposlenici().size(); i++) niz[i+1] = get_zaposlenici().get(i).get_imeIPrezime();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -375,6 +375,7 @@ public class Main {
 			public void popupMenuCanceled(PopupMenuEvent arg0) {
 			}
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
+				/*
 				String selektovan = c_i_ImeIPrezime.getSelectedItem().toString();
 				int index = -1;
 				for (int i = 0; i<get_zaposlenici().size(); i++) 
@@ -389,7 +390,7 @@ public class Main {
 				t_i_korisnickaSifra.setText(get_zaposlenici().get(index).getKorisnickaSifra());
 				t_i_korisnickoIme.setText(get_zaposlenici().get(index).getKorisnickoIme());
 				
-				
+				*/
 			}
 			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
 				//c_i_ImeIPrezime.add(new Compon);
@@ -637,7 +638,7 @@ public class Main {
 		btnZalbe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
-				Zalbe.main(null, get_listaZalbi(), get_zaposlenici());
+				//Zalbe.main(null, get_listaZalbi(), get_zaposlenici());
 			}
 		});
 		GroupLayout gl_panel_7 = new GroupLayout(panel_7);
@@ -666,12 +667,12 @@ public class Main {
 		panel_2.setLayout(gl_panel_2);
 	}
 
-	private static ArrayList<Zaposlenik> get_zaposlenici() {
-		return _zaposlenici;
+	private static Long get_zaposlenici() {
+		return _zaposlenik;
 	}
 
-	private static void set_zaposlenici(ArrayList<Zaposlenik> _zaposlenici) {
-		Main._zaposlenici = _zaposlenici;
+	private static void set_zaposlenici(Long _zaposlenici) {
+		Main._zaposlenik = _zaposlenici;
 	}
 
 	public static ArrayList<Zalba> get_listaZalbi() {
