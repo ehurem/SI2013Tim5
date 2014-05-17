@@ -3,6 +3,7 @@ package org.eclipse.wb.swing.Administrator;
 import java.awt.Component;
 import java.awt.EventQueue;
 
+import javax.crypto.EncryptedPrivateKeyInfo;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
@@ -25,16 +26,21 @@ import javax.swing.border.EtchedBorder;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Formatter;
 
 import Models.*;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
 
+import org.eclipse.wb.swing.Login;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -61,7 +67,37 @@ public class Main {
 	private static Long _zaposlenik;
 	private static String [] niz = new String[1000];
 	private static ArrayList<Zalba> _listaZalbi;
-
+	public static String encryptPassword(String password)
+	{
+	    String sha1 = "";
+	    try
+	    {
+	        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+	        crypt.reset();
+	        crypt.update(password.getBytes("UTF-8"));
+	        sha1 = byteToHex(crypt.digest());
+	    }
+	    catch(NoSuchAlgorithmException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    catch(UnsupportedEncodingException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    return sha1;
+	}
+	public static String byteToHex(final byte[] hash)
+	{
+	    Formatter formatter = new Formatter();
+	    for (byte b : hash)
+	    {
+	        formatter.format("%02x", b);
+	    }
+	    String result = formatter.toString();
+	    formatter.close();
+	    return result;
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -119,40 +155,21 @@ public class Main {
 				
 				try {
 					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
 					
-					
-						Transaction t = session.beginTransaction(); 
-						
-						Zaposlenik novi = new Zaposlenik();
-						novi.set_imeIPrezime("Alen Ismic");
-						novi.setAdresa("Adresa 32");
-						novi.setBrojTelefona("0622145245");
-						novi.setEmail("asdasda@sdaf.com");
-						novi.setKorisnickaSifra("sifra");
-						novi.setKorisnickoIme("Alen");
-						novi.setPrivilegija("Administrator");
-						
-							 
-						Long id = (Long) session.save(novi); 
-						infoBox("Dodan zaposlenik sa IDom "+id , null); 
-						t.commit(); 
-
-						session.close();
-					
-					
-					/*
 					Zaposlenik novi = new Zaposlenik();
+					novi.set_imeIPrezime(t_imeIPrezime.getText());
 					novi.setAdresa(t_mjestoStanovanja.getText());
 					novi.setBrojTelefona(t_brojTelefona.getText());
 					novi.setEmail(t_emailAdresa.getText());
-					novi.set_imeIPrezime(t_imeIPrezime.getText());
-					novi.setKorisnickaSifra(t_korisnickaSifra.getText());
+					novi.setKorisnickaSifra(encryptPassword(t_korisnickaSifra.getText()));
 					novi.setKorisnickoIme(t_korisnickoIme.getText());
 					novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
-					get_zaposlenici().add(novi);
+					novi.setId( (Long ) session.save(novi));
+					infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
+					t.commit();
+					session.close();
 					
-					infoBox("Uspje�no dodan novi zaposlenik", get_zaposlenici().size() + "");
-					*/
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
