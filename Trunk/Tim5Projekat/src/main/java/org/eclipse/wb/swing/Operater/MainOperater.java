@@ -24,16 +24,27 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import com.mysql.jdbc.PreparedStatement;
 
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.*;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -49,7 +60,8 @@ public class MainOperater {
 	private static Zaposlenik _zaposlenik;
 	private static Zaposlenik _zaposlenik2;
 	private static Zalba _zalba;
-		private static ArrayList<Klijent>_klijenti;
+	
+	private static ArrayList<Klijent>_klijenti;
 	private static ArrayList<Zahtjev>_zahtjevi;
 	//the client we make if there is no one in the database already
 	private static Klijent _noviKlijent;
@@ -377,16 +389,44 @@ public class MainOperater {
 		
 		final JComboBox comboBox = new JComboBox();
 		comboBox.setEditable(true);
-		//comboBox.setModel(new DefaultComboBoxModel(new String[] {"Niko Niki\u0107"}));
+		
+		final JComboBox comboBox_2 = new JComboBox();
+		comboBox_2.setEditable(true);
+		
 		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 		        int index = sourceTabbedPane.getSelectedIndex();
-		        //System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
-		        /*for(Zaposlenik z: _zaposlenici){
-		        	comboBox.addItem(z);
-		        }*/
+		        
+		        try {
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+					
+					Query queryZaposlenik = session.createQuery("from Zaposlenik");
+					List listZaposlenik = queryZaposlenik.list();
+					
+					Query queryKlijent = session.createQuery("from Klijent");
+					List listKlijent = queryKlijent.list();
+					
+					for(int i=0;i<listZaposlenik.size();i++){
+					comboBox.addItem(listZaposlenik.get(i));;
+					}
+					
+					for(int i=0;i<listKlijent.size();i++){
+						comboBox_2.addItem(listKlijent.get(i));;
+						}
+					
+					t.commit();
+					
+					session.close();
+					
+				}
+				catch (Exception ex) {
+					infoBox(ex.toString(), "UZBUNA");
+				}
+		        
+		        
 		        comboBox.addItem(_zaposlenik);
 		        comboBox.addItem(_zaposlenik2);
 		        
@@ -402,12 +442,35 @@ public class MainOperater {
 		JButton btnZabiljeialbu = new JButton("Zabilje\u017Ei \u017Ealbu");
 		btnZabiljeialbu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+					
+		            java.util.Date utilDate = new java.util.Date();
+		            
+		            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+					 
+					Zalba nova = new Zalba();
+					
+					nova.setKomentar(textArea_1.getText());
+					nova.setDatumPodnosenja(sqlDate);
+					Zaposlenik z = (Zaposlenik)comboBox.getSelectedItem();
+					Klijent k = (Klijent)comboBox_2.getSelectedItem();
+					nova.set_klijent( (Long)k.getId());
+					nova.setZaposlenik( (Long)z.getId() );
+					
+					nova.setId( (Long ) session.save(nova));
+					infoBox("Uspješno dodana žalba: " + nova.getId() + "", null);
+					t.commit();
+					session.close();
+					
+				}
+				catch (Exception ex) {
+					infoBox(ex.toString(), "UZBUNA");
+				}
 	
-				Date dat = new Date(System.currentTimeMillis());
-				_zalba.setDatumPodnosenja(dat);
-				_zalba.setKomentar(textArea_1.getText());
-				//_zalba.setZaposlenik((Zaposlenik)comboBox.getSelectedItem());
-				infoBox("�alba uspje�no dodana!", "�alba dodana");
+			
 			}
 		});
 		
@@ -442,8 +505,7 @@ public class MainOperater {
 		JLabel lblKomentar = new JLabel("Komentar:");
 		lblKomentar.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.setEditable(true);
+		
 		
 		JLabel lblKlijent = new JLabel("Klijent:");
 		lblKlijent.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -531,4 +593,8 @@ public class MainOperater {
 	public static void set_zalba(Zalba _zalba) {
 		MainOperater._zalba = _zalba;
 	}
+	
+	
+
+
 }
