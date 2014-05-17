@@ -2,7 +2,6 @@ package org.eclipse.wb.swing;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
@@ -23,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Formatter;
 
 import org.eclipse.wb.swing.Administrator.*;
@@ -43,38 +41,6 @@ public class Login {
 	private JTextField t_korisnickoIme;
 	private JPasswordField t_sifra; 
 
-	private static String encryptPassword(String password)
-	{
-	    String sha1 = "";
-	    try
-	    {
-	        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-	        crypt.reset();
-	        crypt.update(password.getBytes("UTF-8"));
-	        sha1 = byteToHex(crypt.digest());
-	    }
-	    catch(NoSuchAlgorithmException e)
-	    {
-	        e.printStackTrace();
-	    }
-	    catch(UnsupportedEncodingException e)
-	    {
-	        e.printStackTrace();
-	    }
-	    return sha1;
-	}
-	private static String byteToHex(final byte[] hash)
-	{
-	    Formatter formatter = new Formatter();
-	    for (byte b : hash)
-	    {
-	        formatter.format("%02x", b);
-	    }
-	    String result = formatter.toString();
-	    formatter.close();
-	    return result;
-	}
-	
 	/**
 	 * Launch the application.
 	 */
@@ -102,6 +68,38 @@ public class Login {
     {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
+	public static String encryptPassword(String password)
+	{
+	    String sha1 = "";
+	    try
+	    {
+	        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+	        crypt.reset();
+	        crypt.update(password.getBytes("UTF-8"));
+	        sha1 = byteToHex(crypt.digest());
+	    }
+	    catch(NoSuchAlgorithmException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    catch(UnsupportedEncodingException e)
+	    {
+	        e.printStackTrace();
+	    }
+	    return sha1;
+	}
+	public static String byteToHex(final byte[] hash)
+	{
+	    Formatter formatter = new Formatter();
+	    for (byte b : hash)
+	    {
+	        formatter.format("%02x", b);
+	    }
+	    String result = formatter.toString();
+	    formatter.close();
+	    return result;
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -135,8 +133,11 @@ public class Login {
 							MainOperater.main(null, zaposlenik.getId());
 						else if (zaposlenik.getPrivilegija().equals("Serviser"))
 							serviser.main(null, zaposlenik.getId());
+						
 					}
 					else infoBox ("Unijeli ste neispravne korisnicke podatke", null);
+					t.commit();
+					session.close();
 					
 				}
 			}
