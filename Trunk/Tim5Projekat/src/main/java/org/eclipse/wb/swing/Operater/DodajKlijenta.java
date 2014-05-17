@@ -34,16 +34,16 @@ public class DodajKlijenta {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	
 	//new client = client passed as an argument from the previous form
 	private static Klijent _klijent;
-	//list of clients in which we add new client = list that was passed from the previous form
-	private static ArrayList<Klijent> _klijenti;
+	
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args, ArrayList<Klijent>klijenti, final Klijent klijent) {
-		set_klijenti(klijenti);
+	public static void main(String[] args, final Klijent klijent) {
+		
 		set_klijent(klijent);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -93,8 +93,7 @@ public class DodajKlijenta {
 					_klijent.set_imeIPrezime(textField.getText());
 					_klijent.setBrojTelefona(textField_2.getText());
 					_klijent.setEmail(textField_3.getText());
-					_klijent.set_adresa(textField_1.getText());
-					_klijenti.add(_klijent);
+					_klijent.set_adresa(textField_1.getText());					
 					
 					Session sesija = HibernateUtil.getSessionFactory().openSession(); 
 					
@@ -216,13 +215,7 @@ public class DodajKlijenta {
 		DodajKlijenta._klijent = _klijent;
 	}
 
-	private static ArrayList<Klijent> get_klijenti() {
-		return _klijenti;
-	}
 
-	private static void set_klijenti(ArrayList<Klijent> _klijenti) {
-		DodajKlijenta._klijenti = _klijenti;
-	}
 
 	
 
