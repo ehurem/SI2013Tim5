@@ -1,8 +1,11 @@
 package org.eclipse.wb.swing.Operater;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.TextField;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -35,7 +38,6 @@ public class DodajKlijenta {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	
-	//new client = client passed as an argument from the previous form
 	private static Klijent _klijent;
 	
 
@@ -74,6 +76,94 @@ public class DodajKlijenta {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
 	
+	private static Boolean validirajPrazno(JTextField t1, JTextField t2, JTextField t3, JTextField t4) {
+		
+		if(t1.getText().equals("") || t2.getText().equals("") || t3.getText().equals("") || t4.getText().equals(""))
+		{
+			if(t1.getText().equals(""))
+			{
+				t1.setBackground(new Color(216,210,139));
+			}
+			else
+			{
+				t1.setBackground(new Color(255,255,255));
+			}
+			
+			if (t2.getText().equals(""))
+			{
+				t2.setBackground(new Color(216,210,139));
+			}
+			else
+			{
+				t2.setBackground(new Color(255,255,255));
+			}
+			
+			if (t3.getText().equals(""))
+			{
+				t3.setBackground(new Color(216,210,139));
+			}
+			else
+			{
+				t3.setBackground(new Color(255,255,255));
+			}
+			
+			if(t4.getText().equals(""))
+			{
+				t4.setBackground(new Color(216,210,139));
+			}
+			else
+			{
+				t4.setBackground(new Color(255,255,255));
+			}
+			
+			
+			infoBox("Svi unosi moraju biti prisutni !", "Prazno polje");
+			return false;
+		}
+		
+		return true;
+		
+		
+	}
+	
+	private Boolean validirajTelefon(JTextField t)
+	{
+		
+	      Pattern pattern = Pattern.compile("\\d{3}/\\d{3}-\\d{3}");
+	      Matcher matcher = pattern.matcher(t.getText());
+	 
+	      if (matcher.matches()) {
+	    	  
+	    	  t.setBackground(new Color(255,255,255));
+	    	  return true;
+	      }
+	      else
+	      {
+	    	  infoBox("Pogrešan format broja telefona. Prihvaćeni format je xxx/xxx-xxx", "Nevalidan broj telefona");
+	    	  t.setBackground(new Color(216,210,139));
+	    	  return false;
+	      }
+	}
+	
+	private Boolean validirajMail(JTextField t)
+	{
+		
+		 Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+	      Matcher matcher = pattern.matcher(t.getText());
+	 
+	      if (matcher.matches()) {
+	    	  
+	    	  t.setBackground(new Color(255,255,255));
+	    	  return true;
+	      }
+	      else
+	      {
+	    	  infoBox("Pogrešan format e-maila. Prihvaćeni format je abc1@abc2.ab", "Nevalidan e-mail");
+	    	  t.setBackground(new Color(216,210,139));
+	    	  return false;
+	      }
+	}
 	private void initialize() {
 		frmUnosNovogKlijenta = new JFrame();
 		frmUnosNovogKlijenta.setResizable(false);
@@ -93,19 +183,24 @@ public class DodajKlijenta {
 					_klijent.set_imeIPrezime(textField.getText());
 					_klijent.setBrojTelefona(textField_2.getText());
 					_klijent.setEmail(textField_3.getText());
-					_klijent.set_adresa(textField_1.getText());					
+					_klijent.set_adresa(textField_1.getText());		
 					
-					Session sesija = HibernateUtil.getSessionFactory().openSession(); 
+					if(validirajPrazno(textField, textField_1, textField_2, textField_3) && validirajTelefon(textField_2)
+							&& validirajMail(textField_3))
+					{
+						Session sesija = HibernateUtil.getSessionFactory().openSession(); 
 					
-					Transaction transakcija = sesija.beginTransaction(); 
+						Transaction transakcija = sesija.beginTransaction(); 
 										
-					Long id = (Long)sesija.save(_klijent); 
-					transakcija.commit(); 
+						Long id = (Long)sesija.save(_klijent); 
+						transakcija.commit(); 
 					
-					sesija.close();
+						sesija.close();
 					
-					infoBox("Klijent " + get_klijent().get_imeIPrezime() + " je unesen", "UnesenKLijent");
-					frmUnosNovogKlijenta.dispose();
+						infoBox("Klijent " + get_klijent().get_imeIPrezime() + " je unesen", "UnesenKLijent");
+						frmUnosNovogKlijenta.dispose();
+					}
+					
 				}
 				catch(Exception e1)
 				{

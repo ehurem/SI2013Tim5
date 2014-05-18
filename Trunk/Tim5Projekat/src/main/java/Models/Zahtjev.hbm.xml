@@ -5,7 +5,7 @@
 <hibernate-mapping>
     <class name="Models.Zahtjev" table="tblZahtjevi">
         <id name="_id" type="long" access="field">
-            <column name="_ID" />
+            <column name="id" />
             <generator class="native" />
         </id>
         <property name="_klijentId" type="long" access="field">
