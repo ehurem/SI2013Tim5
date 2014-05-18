@@ -50,6 +50,10 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainOperater {
 
@@ -57,21 +61,24 @@ public class MainOperater {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	
-	private static Zaposlenik _zaposlenik;
-	private static Zaposlenik _zaposlenik2;
-	private static Zalba _zalba;
+	private static Long _zaposlenik;
+	//private static Zaposlenik _zaposlenik2;
+	//private static Zalba _zalba;
 	
-	private static ArrayList<Klijent>_klijenti;
-	private static ArrayList<Zahtjev>_zahtjevi;
+	//private static ArrayList<Klijent>_klijenti;
+	//private static ArrayList<Zahtjev>_zahtjevi;
 	//the client we make if there is no one in the database already
 	private static Klijent _noviKlijent;
+	
+	
 	/**
 	 * Launch the application.
 	 *  Long zaposlenik je id u bazi logovanog zaposlenika
 	 */
 	public static void main(String[] args, Long zaposlenik) {
 		
-		_zaposlenik = new Zaposlenik();
+		_zaposlenik = zaposlenik;
+		/*_zaposlenik = new Zaposlenik();
 		_zaposlenik.setAdresa("Adresa Stanovanja 5");
 		_zaposlenik.setBrojTelefona("061 321-654");
 		_zaposlenik.setEmail("zaposlenik@test.ba");
@@ -90,21 +97,21 @@ public class MainOperater {
 		_zalba.setDatumPodnosenja(dat);
 		_zalba.setKomentar("Ovo je komentar!");
 		//_zalba.setZaposlenik(_zaposlenik);
-	
+	*/
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					set_klijenti(new ArrayList<Klijent>());
-					set_zahtjevi(new ArrayList<Zahtjev>());
+					//set_klijenti(new ArrayList<Klijent>());
+					//set_zahtjevi(new ArrayList<Zahtjev>());
 
 					//an example of a client that we input into list
-					Klijent primjer = new Klijent();
+					/*Klijent primjer = new Klijent();
 					primjer.set_imeIPrezime("Mujo Mujic");
 					primjer.set_adresa("Skenderija");
 					primjer.setBrojTelefona("012345678");
 					primjer.setEmail("mujom@gmail.com");
 					
-					get_klijenti().add(primjer);
+					get_klijenti().add(primjer);*/
 					
 					MainOperater window = new MainOperater();
 					window.frmInterfejsZaOperatera.setVisible(true);
@@ -136,6 +143,27 @@ public class MainOperater {
 	private void initialize() {
 		
 		frmInterfejsZaOperatera = new JFrame();
+		
+		final JComboBox comboBox_1 = new JComboBox();
+		
+		frmInterfejsZaOperatera.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				Transaction t = session.beginTransaction();
+				
+				Query queryKlijent = session.createQuery("from Klijent");
+				List listKlijent = queryKlijent.list();
+				
+				for(int i=0;i<listKlijent.size();i++){
+				comboBox_1.addItem(listKlijent.get(i));;
+				}
+				
+				t.commit();
+				
+				session.close();
+			}
+		});
 		frmInterfejsZaOperatera.setResizable(false);
 		frmInterfejsZaOperatera.setTitle("Interfejs za operatera");
 		frmInterfejsZaOperatera.setBounds(100, 100, 364, 475);
@@ -155,16 +183,22 @@ public class MainOperater {
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Unos zahtjeva", null, panel, null);
 		
-		final JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				comboBox_1.removeAllItems();
-				for (Klijent k : _klijenti) {
-					comboBox_1.addItem(k);
-				}
+		
+		comboBox_1.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuCanceled(PopupMenuEvent e) {
 			}
-		});
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+			}
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				
+				if(_noviKlijent != null){
+					comboBox_1.addItem(_noviKlijent);
+					comboBox_1.setSelectedItem(_noviKlijent);
+					_noviKlijent = null;
+				}
+				
+			}
+		});		
 		
 		
 		JPanel panel_2 = new JPanel();
@@ -219,8 +253,14 @@ public class MainOperater {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
+					
+					Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
+					
+					Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
+					
 					Zahtjev noviZahtjev = new Zahtjev();
-					noviZahtjev.setID(Long.parseLong(textField_1.getText()));
+					
+					
 					
 					noviZahtjev.setKlijent(((Klijent)comboBox_1.getSelectedItem()).getId());
 					noviZahtjev.setTipUredaja(textField_2.getText());
@@ -246,13 +286,11 @@ public class MainOperater {
 					noviZahtjev.setPrioritet(1);
 					noviZahtjev.setStatus("otvoren");
 					
-					get_zahtjevi().add(noviZahtjev);
-					
-					Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
-					
-					Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
+					noviZahtjev.setZaposlenik(_zaposlenik);
+					//get_zahtjevi().add(noviZahtjev);
 					
 					Long id = (Long)sesija.save(noviZahtjev); //spašava u bazu
+					
 					transakcija.commit(); //završava transakciju
 					
 					sesija.close();
@@ -427,8 +465,8 @@ public class MainOperater {
 				}
 		        
 		        
-		        comboBox.addItem(_zaposlenik);
-		        comboBox.addItem(_zaposlenik2);
+		       // comboBox.addItem(_zaposlenik);
+		       // comboBox.addItem(_zaposlenik2);
 		        
 		      }
 		    };
@@ -553,7 +591,7 @@ public class MainOperater {
 		frmInterfejsZaOperatera.getContentPane().setLayout(groupLayout);
 	}
 
-	private static ArrayList<Klijent> get_klijenti() {
+	/*private static ArrayList<Klijent> get_klijenti() {
 		return _klijenti;
 	}
 
@@ -567,7 +605,7 @@ public class MainOperater {
 
 	private static void set_zahtjevi(ArrayList<Zahtjev> _zahtjevi) {
 		MainOperater._zahtjevi = _zahtjevi;
-	}
+	}*/
 
 
 	public static Klijent get_noviKlijent() {
@@ -578,7 +616,7 @@ public class MainOperater {
 		MainOperater._noviKlijent = _noviKlijent;
 	}
 	
-	public static Zaposlenik get_zaposlenik() {
+	/*public static Zaposlenik get_zaposlenik() {
 		return _zaposlenik;
 	}
 
@@ -593,7 +631,7 @@ public class MainOperater {
 	public static void set_zalba(Zalba _zalba) {
 		MainOperater._zalba = _zalba;
 	}
-	
+	*/
 	
 
 
