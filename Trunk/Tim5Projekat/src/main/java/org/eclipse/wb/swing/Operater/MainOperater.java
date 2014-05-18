@@ -176,7 +176,7 @@ public class MainOperater {
 			public void actionPerformed(ActionEvent e) {
 				set_noviKlijent(new Klijent());
 				DodajKlijenta zaDodavanje = new DodajKlijenta();
-				zaDodavanje.main(null, get_klijenti(), get_noviKlijent());
+				zaDodavanje.main(null, get_noviKlijent());
 			}
 		});
 		

@@ -24,18 +24,12 @@ public class PregledOdabranogZahtjeva {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	public static String imeiprezime;
-	public static String adresa;
-	public static String tipuredaja;
-	public static String komentar;
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args, Zahtjev z) {
-		   //imeiprezime=(z.getKlijent().get_imeIPrezime());
-		   tipuredaja=(z.getTipUredaja());
-		   komentar=(z.getKomentar());
-           //adresa=z.getKlijent().get_adresa();
+		  
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -68,13 +62,9 @@ public class PregledOdabranogZahtjeva {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		//event za zatvaranje forme klikom na dugme zatvori
+	
 		JButton btnOk = new JButton("Zatvori");
-		btnOk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				frmPregledZahtjeva.dispose();
-			}
-		});
+	
 		GroupLayout groupLayout = new GroupLayout(frmPregledZahtjeva.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -106,20 +96,20 @@ public class PregledOdabranogZahtjeva {
 		
 		JLabel lblDodatniKomentar = new JLabel("Dodatni komentar:");
 		lblDodatniKomentar.setHorizontalAlignment(SwingConstants.RIGHT);
-		//dodavanje na formu detalja o zahtjevu
-		textField = new JTextField(imeiprezime);
+
+		textField = new JTextField();
 		textField.setEditable(false);
 		textField.setColumns(10);
 		
-		textField_1 = new JTextField(adresa);
+		textField_1 = new JTextField();
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
 		
-		textField_2 = new JTextField(tipuredaja);
+		textField_2 = new JTextField();
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		
-		JTextArea textArea = new JTextArea(komentar);
+		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

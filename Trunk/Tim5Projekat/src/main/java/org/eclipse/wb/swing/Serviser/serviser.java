@@ -40,7 +40,7 @@ public class serviser {
 	
 	private Long _zaposlenik; //ID u bazi logovanog zaposlenika
 	
-	private static ArrayList<Zahtjev> _zahtjevi;
+
 	/**
 	 * Launch the application.
 	 */
@@ -73,90 +73,8 @@ public class serviser {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// Hard coded list of Zahtjev for prototype functionality purpose 
-		ArrayList<Zahtjev> lz = new ArrayList<Zahtjev>();
 		
-		Zahtjev z1 = new Zahtjev();
-		
-		Date dat = new Date(System.currentTimeMillis());
-		
-		Klijent _klijent = new Klijent();
-		_klijent.set_imeIPrezime("Imenko");
-		_klijent.setEmail("imenko@test.ba");
-		_klijent.setBrojTelefona("061 123-456");
-		_klijent.set_adresa("Ulica klijenta prvog");
-		Zaposlenik _zaposlenik = new Zaposlenik();
-		_zaposlenik.setAdresa("Adresa Stanovanja 5");
-		_zaposlenik.setBrojTelefona("061 321-654");
-		_zaposlenik.setEmail("zaposlenik@test.ba");
-		_zaposlenik.set_imeIPrezime("Nadimko Nadimkovic");
-		
-		z1.setID(1);
-		z1.setGarancija(true);
-		z1.setTipUredaja("Samsunka");
-		z1.setDatumOtvaranja(dat);
-		//z1.setKlijent(_klijent);
-		//z1.setZaposlenik(_zaposlenik);
-		z1.setKomentar("komentar");
-		z1.setStatus("Otvoren");
-		z1.setPrioritet(1);
-		lz.add(z1);
-		
-		Zahtjev z2 = new Zahtjev();
-		
-		Date dat2 = new Date(System.currentTimeMillis());
-		
-		Klijent _klijent2 = new Klijent();
-		_klijent2.set_imeIPrezime("Imenkovev");
-		_klijent2.set_adresa("Ulica klijenta drugog");
-		_klijent2.setEmail("imenkovev@test.ba");
-		_klijent2.setBrojTelefona("061 098-345");
-		
-		Zaposlenik _zaposlenik2 = new Zaposlenik();
-		_zaposlenik2.setAdresa("Bulevar Nestanovanja 5");
-		_zaposlenik2.setBrojTelefona("065 987-679");
-		_zaposlenik2.setEmail("zaposlenik2@test.ba");
-		_zaposlenik2.set_imeIPrezime("Nadimkovec Nadimkovicevic");
-		
-		
-		z2.setID(2);
-		z2.setGarancija(true);
-		z2.setTipUredaja("Sonijevka");
-		z2.setDatumOtvaranja(dat2);
-		//z2.setKlijent(_klijent2);
-		//z2.setZaposlenik(_zaposlenik2);
-		z2.setKomentar("komentar");
-		z2.setStatus("Otvoren");
-		z2.setPrioritet(0);
-		lz.add(z2);
-		
-		Zahtjev z3 = new Zahtjev();
-		
-		Date dat3 = new Date(System.currentTimeMillis());
-		
-		Klijent _klijent3 = new Klijent();
-		_klijent3.set_imeIPrezime("Nemenko");
-		_klijent3.set_adresa("Ulica klijenta treceg");
-		_klijent3.setEmail("neimenko@test.ba");
-		_klijent3.setBrojTelefona("062 112-223");
-		
-		Zaposlenik _zaposlenik3 = new Zaposlenik();
-		_zaposlenik3.setAdresa("Trg Stanovanja 25");
-		_zaposlenik3.setBrojTelefona("063 322-090");
-		_zaposlenik3.setEmail("nezaposlenik@test.ba");
-		_zaposlenik3.set_imeIPrezime("Nenadimko Nenadimkovic");
-		
-		z3.setID(3);
-		z3.setGarancija(false);
-		z3.setTipUredaja("Panasonka");
-		z3.setDatumOtvaranja(dat3);
-		//z3.setKlijent(_klijent3);
-		//z3.setZaposlenik(_zaposlenik3);
-		z3.setKomentar("komentar");
-		z3.setStatus("Otvoren");
-		z3.setPrioritet(1);
-		lz.add(z3);
-		set_zahtjevi(lz);
+	
 		frmInterfejsZaServisera = new JFrame();
 		frmInterfejsZaServisera.setResizable(false);
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
@@ -178,24 +96,7 @@ public class serviser {
 		tabbedPane.addTab("Pregled otvorenih zahtjeva", null, panel, null);
 		// dugme za odabir otvorenih zahtjeva i stavljanje u status izvrsavanja
 		JButton btnOdaberi = new JButton("Odaberi");
-		btnOdaberi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int i=-1;
-			 i=table.getSelectedRow();  
-			 if(i>=0) {
-			//JOptionPane.showMessageDialog(table, "odabran je red "+(i+1));
-				 String s = table.getValueAt(i, 0).toString();
-		        for (int j=0; j<get_zahtjevi().size(); j++) {
-		        	 if (get_zahtjevi().get(j).getID()==Integer.parseInt(s)) {
-		        		get_zahtjevi().get(j).setStatus("U Izvrsavanju");
-		        		((DefaultTableModel)table.getModel()).removeRow(i);
-		        		 break;
-		        	 } 
-		         }
-			 }
-			 else JOptionPane.showMessageDialog(table, "niste odabrali nijedan red");
-			}
-		});
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -218,66 +119,21 @@ public class serviser {
 					.addContainerGap(42, Short.MAX_VALUE))
 		);
 	    DefaultTableModel t = new DefaultTableModel() {
-	   	    // zabranjeno editovanje celije u tabeli kad se dva puta klikne na celiju
-	    	public boolean isCellEditable(int row, int column){return false;}
+	   	   
 	   	    
 	    };
 		table = new JTable();
 		table.setModel(t);
 		t.addColumn("ID Zahtjeva");
 		t.addColumn("Prioritet");
-		for (int i=0; i<get_zahtjevi().size(); i++) {
-			if(get_zahtjevi().get(i).getStatus()=="Otvoren")
-		t.addRow(new Object[] {get_zahtjevi().get(i).getID(), get_zahtjevi().get(i).getPrioritet()});
-		}
-	    // dozvoliti selekciju samo jednog reda u tabeli
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+	
 		table.getColumnModel().getColumn(0).setPreferredWidth(101);
 		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		scrollPane.setViewportView(table);
-		// klasa za event za klik na zaglavlje tabele
-		class TableHeaderMouseListener extends MouseAdapter {
-		     
-		    private JTable table;
-		     
-		    public TableHeaderMouseListener(JTable table) {
-		        this.table = table;
-		    }
-		     
-		    public void mouseClicked(MouseEvent event) {
-		        Point point = event.getPoint();
-		        int column = table.columnAtPoint(point);
-		        if (column==0) 
-		        JOptionPane.showMessageDialog(table, "Sortira po IDu zahtjeva (nije implementirano)");
-		        else 
-		        	JOptionPane.showMessageDialog(table, "Sortira po prioritetu zahtjeva (nije implementirano)");
-		    }
-		}
+	
+	
 		JTableHeader header = table.getTableHeader();
-		header.addMouseListener(new TableHeaderMouseListener(table));
-		// event za dvostruki klik na red tabele
-		 table.addMouseListener(new MouseAdapter() {
-			   public void mouseClicked(MouseEvent e) {
-				   JTable target = (JTable)e.getSource();
-			      if (e.getClickCount() == 2) {
-			         int row = target.getSelectedRow();
-			         int column = target.getSelectedColumn();
-			         String s = target.getValueAt(row, 0).toString();
-			         int index = 0;
-			        for (int i=0; i<get_zahtjevi().size(); i++) {
-			        	 if (get_zahtjevi().get(i).getID()==Integer.parseInt(s)) {
-			        		 index=i;
-			        		 break;
-			        	 } 
-			         }
-			         PregledOdabranogZahtjeva forma = new PregledOdabranogZahtjeva();
-			         forma.main(null, get_zahtjevi().get(index));
-			         
-			         }
-			      
-			   }
-			});
+		
 		panel.setLayout(gl_panel);
 		
 		JPanel panel_1 = new JPanel();
@@ -352,13 +208,6 @@ public class serviser {
 		frmInterfejsZaServisera.getContentPane().setLayout(groupLayout);
 	}
 
-	public static ArrayList<Zahtjev> get_zahtjevi() {
-		return _zahtjevi;
-	}
-
-	public static void set_zahtjevi(ArrayList<Zahtjev> _zahtjevi) {
-		serviser._zahtjevi = _zahtjevi;
-	}
 
 	private Long get_zaposlenik() {
 		return _zaposlenik;
