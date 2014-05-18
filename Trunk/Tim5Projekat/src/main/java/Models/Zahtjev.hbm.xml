@@ -3,11 +3,13 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 15, 2014 2:34:38 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
+
     <class name="Models.Zahtjev" table="tblZahtjevi">
-        <id name="_id" type="long" access="field">
+        <id name="id" type="long" access="field">
             <column name="id" />
             <generator class="native" />
         </id>
+
         <property name="_klijentId" type="long" access="field">
             <column name="klijent_id" />
         </property>

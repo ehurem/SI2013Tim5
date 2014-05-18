@@ -22,6 +22,11 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
 import Models.Zahtjev;
 import Models.Zaposlenik;
@@ -32,19 +37,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class serviser {
 
 	private JFrame frmInterfejsZaServisera;
 	private JTable table;
 	
-	private Long _zaposlenik; //ID u bazi logovanog zaposlenika
+	private static Long _zaposlenik; //ID u bazi logovanog zaposlenika
 	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args, Long zaposlenik) {
+		set_zaposlenik(zaposlenik);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -119,14 +126,32 @@ public class serviser {
 					.addContainerGap(42, Short.MAX_VALUE))
 		);
 	    DefaultTableModel t = new DefaultTableModel() {
-	   	   
+	    	public boolean isCellEditable(int row, int column){return false;}
 	   	    
 	    };
 		table = new JTable();
 		table.setModel(t);
 		t.addColumn("ID Zahtjeva");
 		t.addColumn("Prioritet");
-	
+		   try {
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				Transaction tr = session.beginTransaction();
+				
+				Query queryZahtjev = session.createQuery("from Zahtjev");
+				List<Zahtjev> listZahtjev = queryZahtjev.list();
+				for(int i=0;i<listZahtjev.size();i++){
+					if((listZahtjev.get(i)).getStatus().equals("Otvoren"))
+						t.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
+				}
+				
+				tr.commit();
+				
+				session.close();
+				
+			}
+			catch (Exception ex) {
+				JOptionPane.showMessageDialog(table, ex.toString());
+			}
 		table.getColumnModel().getColumn(0).setPreferredWidth(101);
 		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		scrollPane.setViewportView(table);
@@ -209,11 +234,11 @@ public class serviser {
 	}
 
 
-	private Long get_zaposlenik() {
+	private static Long get_zaposlenik() {
 		return _zaposlenik;
 	}
 
-	private void set_zaposlenik(Long _zaposlenik) {
-		this._zaposlenik = _zaposlenik;
+	private static  void set_zaposlenik(Long _zaposlenik) {
+		serviser._zaposlenik = _zaposlenik;
 	}
 }

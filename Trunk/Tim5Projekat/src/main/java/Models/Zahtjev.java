@@ -5,7 +5,7 @@ import java.sql.Date;
 
 
 public class Zahtjev {
-	private long _id;
+	private long id;
 	private long _klijentId;
 	private String _tipUredaja;
 	private boolean _garancija;
@@ -20,11 +20,11 @@ public class Zahtjev {
 	public Zahtjev(){}
     
 	public long getID() {
-		return _id;
+		return id;
 	}
 
 	public void setID(long _id) {
-		this._id = _id;
+		this.id = _id;
 	}
 
 	public long getKlijent() {
