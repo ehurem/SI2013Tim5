@@ -29,6 +29,8 @@ import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class DodajKlijenta {
 
@@ -76,51 +78,18 @@ public class DodajKlijenta {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
 	
-	private static Boolean validirajPrazno(JTextField t1, JTextField t2, JTextField t3, JTextField t4) {
+	private static Boolean validirajPrazno(JTextField t1) {
 		
-		if(t1.getText().equals("") || t2.getText().equals("") || t3.getText().equals("") || t4.getText().equals(""))
-		{
 			if(t1.getText().equals(""))
 			{
 				t1.setBackground(new Color(216,210,139));
+				return false;
 			}
 			else
 			{
 				t1.setBackground(new Color(255,255,255));
 			}
 			
-			if (t2.getText().equals(""))
-			{
-				t2.setBackground(new Color(216,210,139));
-			}
-			else
-			{
-				t2.setBackground(new Color(255,255,255));
-			}
-			
-			if (t3.getText().equals(""))
-			{
-				t3.setBackground(new Color(216,210,139));
-			}
-			else
-			{
-				t3.setBackground(new Color(255,255,255));
-			}
-			
-			if(t4.getText().equals(""))
-			{
-				t4.setBackground(new Color(216,210,139));
-			}
-			else
-			{
-				t4.setBackground(new Color(255,255,255));
-			}
-			
-			
-			infoBox("Svi unosi moraju biti prisutni !", "Prazno polje");
-			return false;
-		}
-		
 		return true;
 		
 		
@@ -159,8 +128,8 @@ public class DodajKlijenta {
 	      }
 	      else
 	      {
-	    	  infoBox("Pogrešan format e-maila. Prihvaćeni format je abc1@abc2.ab", "Nevalidan e-mail");
 	    	  t.setBackground(new Color(216,210,139));
+	    	  infoBox("Pogrešan format e-maila. Prihvaćeni format je abc1@abc2.ab", "Nevalidan e-mail");
 	    	  return false;
 	      }
 	}
@@ -185,8 +154,8 @@ public class DodajKlijenta {
 					_klijent.setEmail(textField_3.getText());
 					_klijent.set_adresa(textField_1.getText());		
 					
-					if(validirajPrazno(textField, textField_1, textField_2, textField_3) && validirajTelefon(textField_2)
-							&& validirajMail(textField_3))
+					if(validirajPrazno(textField) && validirajPrazno(textField_1) && validirajPrazno(textField_2) && validirajPrazno(textField_3) 
+							&& validirajTelefon(textField_2) && validirajMail(textField_3))
 					{
 						Session sesija = HibernateUtil.getSessionFactory().openSession(); 
 					
@@ -199,6 +168,10 @@ public class DodajKlijenta {
 					
 						infoBox("Klijent " + get_klijent().get_imeIPrezime() + " je unesen", "UnesenKLijent");
 						frmUnosNovogKlijenta.dispose();
+					}
+					else if (!validirajPrazno(textField) || !validirajPrazno(textField_1) || !validirajPrazno(textField_2) || !validirajPrazno(textField_3))
+					{
+						infoBox("Svi unosi moraju biti prisutni !", "Prazno polje");
 					}
 					
 				}
@@ -243,15 +216,42 @@ public class DodajKlijenta {
 		lblEmailAdresa.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		textField = new JTextField();
+		textField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				validirajPrazno(textField);
+			}
+		});
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
+		textField_1.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				validirajPrazno(textField_1);
+			}
+		});
+		
+		
 		textField_1.setColumns(10);
 		
+		
 		textField_2 = new JTextField();
+		textField_2.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				validirajPrazno(textField_2);
+			}
+		});
 		textField_2.setColumns(10);
 		
 		textField_3 = new JTextField();
+		textField_3.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				validirajPrazno(textField_3);
+			}
+		});
 		textField_3.setColumns(10);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

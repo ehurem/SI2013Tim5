@@ -1,5 +1,6 @@
 package org.eclipse.wb.swing.Operater;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -50,15 +51,16 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MainOperater {
 
 	private JFrame frmInterfejsZaOperatera;
-	private JTextField textField_1;
 	private JTextField textField_2;
 	
 	private static Long _zaposlenik;
@@ -137,6 +139,41 @@ public class MainOperater {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
 	
+	
+	private static Boolean validirajPrazno(JTextField t1) {
+		
+		if(t1.getText().equals(""))
+		{
+			t1.setBackground(new Color(216,210,139));
+			return false;
+		}
+		else
+		{
+			t1.setBackground(new Color(255,255,255));
+		}
+		
+	return true;
+	
+	
+	}
+	
+	private static Boolean validirajPrazno(JTextArea t1) {
+		
+		if(t1.getText().equals(""))
+		{
+			t1.setBackground(new Color(216,210,139));
+			return false;
+		}
+		else
+		{
+			t1.setBackground(new Color(255,255,255));
+		}
+		
+	return true;
+	
+	
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -214,14 +251,8 @@ public class MainOperater {
 			}
 		});
 		
-		JLabel label = new JLabel("ID zahtjeva:");
-		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		
 		JLabel label_1 = new JLabel("Ime i prezime klijenta:");
 		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
 		
 		JLabel label_2 = new JLabel("Komentar:");
 		label_2.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -233,14 +264,27 @@ public class MainOperater {
 		label_4.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		final JTextArea textArea = new JTextArea();
+		textArea.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				validirajPrazno(textArea);
+			}
+		});
 		
 		textField_2 = new JTextField();
+		textField_2.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				validirajPrazno(textField_2);
+			}
+		});
 		textField_2.setColumns(10);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
 		final JRadioButton radioButton = new JRadioButton("Da");
+		radioButton.setSelected(true);
 		
 		JRadioButton radioButton_1 = new JRadioButton("Ne");
 		
@@ -254,14 +298,8 @@ public class MainOperater {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					
-					Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
-					
-					Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
-					
 					Zahtjev noviZahtjev = new Zahtjev();
-					
-					
-					
+										
 					noviZahtjev.setKlijent(((Klijent)comboBox_1.getSelectedItem()).getId());
 					noviZahtjev.setTipUredaja(textField_2.getText());
 
@@ -289,13 +327,27 @@ public class MainOperater {
 					noviZahtjev.setZaposlenik(_zaposlenik);
 					//get_zahtjevi().add(noviZahtjev);
 					
-					Long id = (Long)sesija.save(noviZahtjev); //spašava u bazu
+					if(validirajPrazno(textField_2) && validirajPrazno(textArea))
+					{
+						Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
+						
+						Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
+						
+						Long id = (Long)sesija.save(noviZahtjev); //spašava u bazu
+						
+						transakcija.commit(); //završava transakciju
+						
+						sesija.close();
+						
+						infoBox("Zahtjev "+id+ " uspješno unesen!", "Zahtjev unesen");
+					}
 					
-					transakcija.commit(); //završava transakciju
+					else
+					{
+						infoBox("Svi unosi moraju biti prisutni !", "Prazno polje");
+					}
 					
-					sesija.close();
 					
-					infoBox("Zahtjev "+id+ " uspješno unesen!", "Zahtjev unesen");
 					
 				}
 				catch(Exception izuzetak)
@@ -337,38 +389,32 @@ public class MainOperater {
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
-						.addComponent(label, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
 						.addComponent(label_1)
-						.addComponent(lblPrioritet, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(label_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(label_4, GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-						.addComponent(label_2, GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
+						.addComponent(lblPrioritet, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+						.addComponent(label_3, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+						.addComponent(label_4, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+						.addComponent(label_2, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
 					.addGap(18)
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(textField_1, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-							.addComponent(comboBox_1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnNoviKlijent, Alignment.TRAILING)
-							.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
+						.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
+							.addComponent(btnNoviKlijent)
+							.addGroup(gl_panel_2.createSequentialGroup()
 								.addPreferredGap(ComponentPlacement.RELATED)
 								.addComponent(comboBox_3, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
+							.addGroup(gl_panel_2.createSequentialGroup()
 								.addPreferredGap(ComponentPlacement.RELATED)
 								.addComponent(textField_2))
-							.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
+							.addGroup(gl_panel_2.createSequentialGroup()
 								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(panel_3, 0, 0, Short.MAX_VALUE)))
-						.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
+								.addComponent(panel_3, 0, 0, Short.MAX_VALUE))
+							.addComponent(comboBox_1, Alignment.LEADING, 0, 160, Short.MAX_VALUE))
+						.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel_2.setVerticalGroup(
 			gl_panel_2.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGap(12)
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(label))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(32)
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
 						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(label_1))
