@@ -1,8 +1,6 @@
 package org.eclipse.wb.swing.Serviser;
-
 import java.awt.EventQueue;
 import java.awt.Point;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -21,16 +19,13 @@ import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
 import Models.Zahtjev;
 import Models.Zaposlenik;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -43,10 +38,8 @@ public class serviser {
 
 	private JFrame frmInterfejsZaServisera;
 	private JTable table;
-	
 	private static Long _zaposlenik; //ID u bazi logovanog zaposlenika
-	
-
+	List<Zahtjev> listZahtjev;
 	/**
 	 * Launch the application.
 	 */
@@ -63,7 +56,6 @@ public class serviser {
 			}
 		});
 	}
-
 	public void Show()
 	{
 		frmInterfejsZaServisera.setVisible(true);
@@ -101,9 +93,60 @@ public class serviser {
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Pregled otvorenih zahtjeva", null, panel, null);
-		// dugme za odabir otvorenih zahtjeva i stavljanje u status izvrsavanja
-		JButton btnOdaberi = new JButton("Odaberi");
-		
+	    DefaultTableModel tmodel = new DefaultTableModel() {
+	    	public boolean isCellEditable(int row, int column){return false;}
+	   	    
+	    };
+		table = new JTable();
+		table.setModel(tmodel);
+		tmodel.addColumn("ID Zahtjeva");
+		tmodel.addColumn("Prioritet");
+		   try {
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				Transaction tr = session.beginTransaction();
+				Query queryZahtjev = session.createQuery("from Zahtjev");
+				listZahtjev = queryZahtjev.list();
+				for(int i=0;i<listZahtjev.size();i++){
+					if((listZahtjev.get(i)).getStatus().equals("Otvoren"))
+						tmodel.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
+				}
+				tr.commit();
+				session.close();
+				
+			}
+			catch (Exception ex) {
+				JOptionPane.showMessageDialog(table, ex.toString());
+			}
+        // Button za promjenu statusa zahtjeva iz "Otvoren" u "U izvrsavanju" 
+		JButton btnStatus = new JButton("Odaberi");
+		btnStatus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int i=-1;
+			 i=table.getSelectedRow();  
+			 if(i>=0) {
+				 String s = table.getValueAt(i, 0).toString();
+				 int k=-1;
+				 Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction tr = session.beginTransaction();
+					Query queryZahtjev = session.createQuery("from Zahtjev");
+					listZahtjev = queryZahtjev.list();
+		        for (int j=0; j<listZahtjev.size(); j++) {
+		        	 if (listZahtjev.get(j).getID()==Integer.parseInt(s)) {
+		        		listZahtjev.get(j).setStatus("U izvrsavanju");
+		        		listZahtjev.get(j).setZaposlenik(get_zaposlenik());
+		        		((DefaultTableModel)table.getModel()).removeRow(i);
+		        		JOptionPane.showMessageDialog(table, "Uspješno ste uzeli zahtjev na izvršavanje!");
+		        		 k=j;
+		        		 break;
+		        	 } 
+		         }
+				session.save(listZahtjev.get(k));
+				tr.commit();
+				session.close();
+			 }
+			 else JOptionPane.showMessageDialog(table, "niste odabrali nijedan red");
+			}
+		});
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -112,7 +155,7 @@ public class serviser {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(37)
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnOdaberi)
+						.addComponent(btnStatus)
 						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(43, Short.MAX_VALUE))
 		);
@@ -122,41 +165,14 @@ public class serviser {
 					.addContainerGap()
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnOdaberi)
+					.addComponent(btnStatus)
 					.addContainerGap(42, Short.MAX_VALUE))
 		);
-	    DefaultTableModel t = new DefaultTableModel() {
-	    	public boolean isCellEditable(int row, int column){return false;}
-	   	    
-	    };
-		table = new JTable();
-		table.setModel(t);
-		t.addColumn("ID Zahtjeva");
-		t.addColumn("Prioritet");
-		   try {
-				Session session = HibernateUtil.getSessionFactory().openSession();
-				Transaction tr = session.beginTransaction();
-				
-				Query queryZahtjev = session.createQuery("from Zahtjev");
-				List<Zahtjev> listZahtjev = queryZahtjev.list();
-				for(int i=0;i<listZahtjev.size();i++){
-					if((listZahtjev.get(i)).getStatus().equals("Otvoren"))
-						t.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
-				}
-				
-				tr.commit();
-				
-				session.close();
-				
-			}
-			catch (Exception ex) {
-				JOptionPane.showMessageDialog(table, ex.toString());
-			}
+	
 		table.getColumnModel().getColumn(0).setPreferredWidth(101);
 		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		scrollPane.setViewportView(table);
-	
-	
+		
 		JTableHeader header = table.getTableHeader();
 		
 		panel.setLayout(gl_panel);
@@ -232,7 +248,6 @@ public class serviser {
 		panel_1.setLayout(gl_panel_1);
 		frmInterfejsZaServisera.getContentPane().setLayout(groupLayout);
 	}
-
 
 	private static Long get_zaposlenik() {
 		return _zaposlenik;
