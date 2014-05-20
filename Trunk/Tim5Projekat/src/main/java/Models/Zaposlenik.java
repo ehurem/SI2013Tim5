@@ -9,6 +9,7 @@ public class Zaposlenik {
 	private String _korisnickoIme;
 	private String _korisnickaSifra;
 	private String _privilegija;	
+	private java.sql.Timestamp _datumRodjenja;
 
 	
 	public String getBrojTelefona() {
@@ -63,5 +64,11 @@ public class Zaposlenik {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public java.sql.Timestamp get_datumRodjenja() {
+		return _datumRodjenja;
+	}
+	public void set_datumRodjenja(java.sql.Timestamp _datumRodjenja) {
+		this._datumRodjenja = _datumRodjenja;
 	}
 }
