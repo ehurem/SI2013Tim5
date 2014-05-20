@@ -1,9 +1,7 @@
 package org.eclipse.wb.swing.Administrator;
 
-import java.awt.Component;
 import java.awt.EventQueue;
 
-import javax.crypto.EncryptedPrivateKeyInfo;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
@@ -28,19 +26,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.Formatter;
 
 import Models.*;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.io.UnsupportedEncodingException;
 
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
 
-import org.eclipse.wb.swing.Login;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -62,11 +57,11 @@ public class Main {
 	private JTextField t_i_email;
 	private JTextField t_i_korisnickoIme;
 	private JTextField t_i_korisnickaSifra;
+	@SuppressWarnings("rawtypes")
 	private JComboBox c_privilegije;
 	
 	private static Long _zaposlenik;
 	private static String [] niz = new String[1000];
-	private static ArrayList<Zalba> _listaZalbi;
 	public static String encryptPassword(String password)
 	{
 	    String sha1 = "";
@@ -102,7 +97,7 @@ public class Main {
 	 * Launch the application.
 	 */
 	public static void main(String[] args, Long zaposlenik) {
-		set_zaposlenici(zaposlenik);
+		set_zaposlenik(zaposlenik); 
 		niz[0] = "";
 		//for (int i = 0; i < get_zaposlenici().size(); i++) niz[i+1] = get_zaposlenici().get(i).get_imeIPrezime();
 		EventQueue.invokeLater(new Runnable() {
@@ -133,6 +128,7 @@ public class Main {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 	private void initialize() {
 		frmDodavanjeZaposlenika = new JFrame();
 		frmDodavanjeZaposlenika.setResizable(false);
@@ -154,6 +150,7 @@ public class Main {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				try {
+					
 					Session session = HibernateUtil.getSessionFactory().openSession();
 					Transaction t = session.beginTransaction();
 					
@@ -165,10 +162,21 @@ public class Main {
 					novi.setKorisnickaSifra(encryptPassword(t_korisnickaSifra.getText()));
 					novi.setKorisnickoIme(t_korisnickoIme.getText());
 					novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
+					
+					java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+					java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
+					@SuppressWarnings("deprecation")
+					Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
+					//infoBox(datum.toString(), null);
+					
 					novi.setId( (Long ) session.save(novi));
+					
+					novi.set_datumRodjenja(datum);
+					
 					infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
 					t.commit();
 					session.close();
+					
 					
 				}
 				catch (Exception ex) {
@@ -683,20 +691,11 @@ public class Main {
 		panel_7.setLayout(gl_panel_7);
 		panel_2.setLayout(gl_panel_2);
 	}
-
-	private static Long get_zaposlenici() {
+	public static Long get_zaposlenik() {
 		return _zaposlenik;
 	}
-
-	private static void set_zaposlenici(Long _zaposlenici) {
-		Main._zaposlenik = _zaposlenici;
+	public static void set_zaposlenik(Long _zaposlenik) {
+		Main._zaposlenik = _zaposlenik;
 	}
 
-	public static ArrayList<Zalba> get_listaZalbi() {
-		return _listaZalbi;
-	}
-
-	public static void set_listaZalbi(ArrayList<Zalba> _listaZalbi) {
-		Main._listaZalbi = _listaZalbi;
-	}
 }
