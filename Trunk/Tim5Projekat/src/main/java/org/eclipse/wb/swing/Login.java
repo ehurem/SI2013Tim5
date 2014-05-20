@@ -136,6 +136,7 @@ public class Login {
 						
 					}
 					else infoBox ("Unijeli ste neispravne korisnicke podatke", null);
+					//infoBox (encryptPassword(t_sifra.getText()), t_korisnickoIme.getText());
 					t.commit();
 					session.close();
 					
