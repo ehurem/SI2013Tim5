@@ -28,18 +28,28 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Formatter;
+import java.util.List;
 
 import Models.*;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Main {
 
@@ -146,44 +156,6 @@ public class Main {
 		
 		
 		JButton btnUnesi = new JButton("Unesi");
-		btnUnesi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					
-					Session session = HibernateUtil.getSessionFactory().openSession();
-					Transaction t = session.beginTransaction();
-					
-					Zaposlenik novi = new Zaposlenik();
-					novi.set_imeIPrezime(t_imeIPrezime.getText());
-					novi.setAdresa(t_mjestoStanovanja.getText());
-					novi.setBrojTelefona(t_brojTelefona.getText());
-					novi.setEmail(t_emailAdresa.getText());
-					novi.setKorisnickaSifra(encryptPassword(t_korisnickaSifra.getText()));
-					novi.setKorisnickoIme(t_korisnickoIme.getText());
-					novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
-					
-					java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-					java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
-					@SuppressWarnings("deprecation")
-					Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
-					//infoBox(datum.toString(), null);
-					
-					novi.setId( (Long ) session.save(novi));
-					
-					novi.set_datumRodjenja(datum);
-					
-					infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
-					t.commit();
-					session.close();
-					
-					
-				}
-				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
-				}
-			}
-		});
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -346,7 +318,9 @@ public class Main {
 		
 		JButton btnIzmjeni = new JButton("Sa\u010Duvaj promjene");
 		
+		
 		JPanel panel_5 = new JPanel();
+		
 		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
 		JLabel label_12 = new JLabel("Broj telefona:");
@@ -392,36 +366,86 @@ public class Main {
 		t_i_korisnickaSifra = new JTextField();
 		t_i_korisnickaSifra.setColumns(10);
 		
-		JComboBox c_i_Privilegije = new JComboBox();
-		c_i_Privilegije.setModel(new DefaultComboBoxModel(new String[] {"Administrator", "org.eclipse.wb.swing.Serviser", "org.eclipse.wb.swing.Operater"}));
+		final JComboBox c_i_Privilegije = new JComboBox();
+		c_i_Privilegije.setModel(new DefaultComboBoxModel(new String[] {"Administrator", "Serviser", "Operater"}));
 		
 		final JComboBox c_i_ImeIPrezime = new JComboBox(niz);
+
+		
+		
+
+		
+		
+
+		
 		c_i_ImeIPrezime.addPopupMenuListener(new PopupMenuListener() {
 			public void popupMenuCanceled(PopupMenuEvent arg0) {
 			}
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
-				/*
+				
+			
 				String selektovan = c_i_ImeIPrezime.getSelectedItem().toString();
 				int index = -1;
-				for (int i = 0; i<get_zaposlenici().size(); i++) 
-					if (selektovan.equals(get_zaposlenici().get(i).get_imeIPrezime())) {
-						index = i;
+				try {
+					
+		        	int itemCount = c_i_ImeIPrezime.getItemCount();
+
+		            for(int i=0;i<itemCount;i++){
+		            	c_i_ImeIPrezime.removeItemAt(0);
+		             }
+		            
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+					
+					Query queryZaposlenik = session.createQuery("from Zaposlenik");
+					List<Zaposlenik> listZaposlenik =(List<Zaposlenik>) queryZaposlenik.list();
+					for(int i=0;i < listZaposlenik.size();i++){
+					if(listZaposlenik.get(i).toString().equals(selektovan)){
+						
+						index = i;break;
+					}	
+						
 					}
-				if (index == -1) return;
-				//infoBox(index+ "", null);
-				t_i_brojTelefona.setText(get_zaposlenici().get(index).getBrojTelefona());
-				t_i_adresaStanovanja.setText(get_zaposlenici().get(index).getAdresa());
-				t_i_email.setText(get_zaposlenici().get(index).getEmail());
-				t_i_korisnickaSifra.setText(get_zaposlenici().get(index).getKorisnickaSifra());
-				t_i_korisnickoIme.setText(get_zaposlenici().get(index).getKorisnickoIme());
+					
+					if(index != -1)
+					{
 				
-				*/
+
+					t_i_brojTelefona.setText(listZaposlenik.get(index).getBrojTelefona());
+					t_i_adresaStanovanja.setText(listZaposlenik.get(index).getAdresa());
+					t_i_email.setText(listZaposlenik.get(index).getEmail());
+					t_i_korisnickaSifra.setText(encryptPassword(listZaposlenik.get(index).getKorisnickaSifra()));
+					t_i_korisnickoIme.setText(listZaposlenik.get(index).getKorisnickoIme());
+					}
+					
+					int ddd = c_i_ImeIPrezime.getItemCount();
+
+		            for(int i=0;i<ddd;i++){
+		            	c_i_ImeIPrezime.removeItemAt(0);
+		             }
+							
+			
+					
+					for(int i=0;i<listZaposlenik.size();i++){
+						c_i_ImeIPrezime.addItem(listZaposlenik.get(i));;
+					}
+					
+					t.commit();
+					session.close();
+					
+				}
+				catch (Exception ex) {
+					infoBox(ex.toString(), "UZBUNA");
+				}
+		        
+				
+				
+				
 			}
 			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
 				//c_i_ImeIPrezime.add(new Compon);
 			}
 		});
-
 		GroupLayout gl_panel_5 = new GroupLayout(panel_5);
 		gl_panel_5.setHorizontalGroup(
 			gl_panel_5.createParallelGroup(Alignment.LEADING)
@@ -560,6 +584,50 @@ public class Main {
 		
 		JLabel lblIzaberiZaposlenike = new JLabel("Izaberi zaposlenike:");
 		
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+		        int index = sourceTabbedPane.getSelectedIndex();
+		        
+		        try {
+		        	int itemCount = c_i_ImeIPrezime.getItemCount();
+
+		            for(int i=0;i<itemCount;i++){
+		            	c_i_ImeIPrezime.removeItemAt(0);
+		             }
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+					
+					Query queryZaposlenik = session.createQuery("from Zaposlenik");
+					List listZaposlenik = queryZaposlenik.list();
+					
+			
+					
+					for(int i=0;i<listZaposlenik.size();i++){
+						c_i_ImeIPrezime.addItem(listZaposlenik.get(i));;
+					}
+					
+				
+					
+					t.commit();
+					
+					session.close();
+					
+				}
+				catch (Exception ex) {
+					infoBox(ex.toString(), "UZBUNA");
+				}
+		        
+		        
+		       // comboBox.addItem(_zaposlenik);
+		       // comboBox.addItem(_zaposlenik2);
+		        
+		      }
+		    };
+		tabbedPane.addChangeListener(changeListener);
+		
+
+		
 		
 		JList list_zaposlenici = new JList(niz);
 		list_zaposlenici.setModel(new AbstractListModel() {
@@ -666,6 +734,46 @@ public class Main {
 				//Zalbe.main(null, get_listaZalbi(), get_zaposlenici());
 			}
 		});
+		btnUnesi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+					
+					Zaposlenik novi = new Zaposlenik();
+					novi.set_imeIPrezime(c_i_ImeIPrezime.getSelectedItem().toString());
+					novi.setAdresa(t_i_adresaStanovanja.getText());
+					novi.setBrojTelefona(t_i_brojTelefona.getText());
+					novi.setEmail(t_i_email.getText());
+					novi.setKorisnickaSifra(encryptPassword(t_i_korisnickaSifra.getText()));
+					novi.setKorisnickoIme(t_i_korisnickoIme.getText());
+					novi.setPrivilegija(c_i_Privilegije.getSelectedItem().toString());
+					
+					java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+					java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
+					@SuppressWarnings("deprecation")
+					Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
+					//infoBox(datum.toString(), null);
+					
+					novi.setId( (Long ) session.save(novi));
+					
+					novi.set_datumRodjenja(datum);
+					
+					infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
+					t.commit();
+					session.close();
+					
+					
+				}
+				catch (Exception ex) {
+					infoBox(ex.toString(), "UZBUNA");
+				}
+			}
+		});
+		
+		
 		GroupLayout gl_panel_7 = new GroupLayout(panel_7);
 		gl_panel_7.setHorizontalGroup(
 			gl_panel_7.createParallelGroup(Alignment.LEADING)
@@ -687,9 +795,66 @@ public class Main {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnZalbe)
 					.addContainerGap(20, Short.MAX_VALUE))
-		);
+		);btnIzmjeni.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String selektovan = c_i_ImeIPrezime.getSelectedItem().toString();
+				int index = -1;
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				try {
+					
+					
+					Transaction t = session.beginTransaction();
+					
+					Query queryZaposlenik = session.createQuery("from Zaposlenik");
+					List<Zaposlenik> listZaposlenik =(List<Zaposlenik>) queryZaposlenik.list();
+					
+					for(int i=0;i < listZaposlenik.size();i++){
+					if(listZaposlenik.get(i).toString().equals(selektovan)){
+						
+						index = i;break;
+					}}
+					
+					
+					Zaposlenik novi = listZaposlenik.get(index);
+					
+					
+					//novi.set_imeIPrezime(t_imeIPrezime.getText());
+					novi.setAdresa(t_mjestoStanovanja.getText());
+					novi.setBrojTelefona(t_brojTelefona.getText());
+					novi.setEmail(t_emailAdresa.getText());
+					novi.setKorisnickaSifra(encryptPassword(t_korisnickaSifra.getText()));
+					novi.setKorisnickoIme(t_korisnickoIme.getText());
+					novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
+					
+					//java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+					//java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
+					//@SuppressWarnings("deprecation")
+					//Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
+					//infoBox(datum.toString(), null);
+					
+					session.update(novi);
+					
+					//novi.set_datumRodjenja();
+					
+					infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
+					t.commit();
+					session.close();
+					
+					
+				}
+				catch (Exception ex) {
+					infoBox(ex.toString(), "UZBUNA");
+				}
+				finally {
+			         session.close(); 
+			      }
+			}
+		});
 		panel_7.setLayout(gl_panel_7);
 		panel_2.setLayout(gl_panel_2);
+		
+		
 	}
 	public static Long get_zaposlenik() {
 		return _zaposlenik;
