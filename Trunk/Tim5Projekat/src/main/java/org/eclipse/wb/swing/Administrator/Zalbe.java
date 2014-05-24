@@ -39,7 +39,7 @@ import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 public class Zalbe {
 
 	private JFrame frmzalbe;
-	private List<Zalba> listZalbe;
+	//private List<Zalba> listZalbe;
 	private Long id;
 	
 	
@@ -111,7 +111,7 @@ public class Zalbe {
 			
 			
 			for(int i=0;i<listZaposlenik.size();i++){
-				comboBox.addItem(listZaposlenik.get(i).get_imeIPrezime());
+				comboBox.addItem(listZaposlenik.get(i));
 			}
 			tr.commit();
 			session.close();
@@ -132,7 +132,7 @@ public class Zalbe {
 						Zaposlenik z = (Zaposlenik) comboBox.getSelectedItem();
 						setId(z.getId());
 						Query queryZalbe = session.createQuery("from Zalba z, Klijent k where z.id = "+id+" and k.id = z._klijentId");
-						listZalbe = queryZalbe.list();
+						List<Zalba> listZalbe = queryZalbe.list();
 						
 						Query queryImeKlijenta = session.createQuery("from Klijent k, Zalba za where za._klijentId = k.id");
 						List<Klijent> klijenti = queryImeKlijenta.list();
