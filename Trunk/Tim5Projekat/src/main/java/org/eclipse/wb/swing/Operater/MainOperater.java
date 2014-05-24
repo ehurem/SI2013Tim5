@@ -186,19 +186,27 @@ public class MainOperater {
 		frmInterfejsZaOperatera.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				Session session = HibernateUtil.getSessionFactory().openSession();
-				Transaction t = session.beginTransaction();
+				Session sesija = HibernateUtil.getSessionFactory().openSession();
+				Transaction t = sesija.beginTransaction();
 				
-				Query queryKlijent = session.createQuery("from Klijent");
-				List listKlijent = queryKlijent.list();
+				try
+				{
+					Query queryKlijent = sesija.createQuery("from Klijent");
+					List listKlijent = queryKlijent.list();
 				
-				for(int i=0;i<listKlijent.size();i++){
-				comboBox_1.addItem(listKlijent.get(i));;
+					for(int i=0;i<listKlijent.size();i++){
+						comboBox_1.addItem(listKlijent.get(i));
+					}
+					t.commit();
 				}
-				
-				t.commit();
-				
-				session.close();
+				catch(Exception izuzetak)
+				{
+					infoBox(izuzetak.getMessage(), "Greska u čitanju iz baze !");
+				}
+				finally
+				{
+					sesija.close();
+				}			
 			}
 		});
 		frmInterfejsZaOperatera.setResizable(false);
