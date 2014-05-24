@@ -98,15 +98,15 @@ public class Zalbe {
 		tmodel.addColumn("Datum podnošenja");
 		
 		final JComboBox comboBox = new JComboBox();
-		
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
-			Session session = HibernateUtil.getSessionFactory().openSession();
+			
 			Transaction tr = session.beginTransaction();
 			
 			
 			
 			Query queryZaposlenik = session.createQuery("from Zaposlenik");
-			List<Zaposlenik> listZaposlenik = queryZaposlenik.list();
+			List<Zaposlenik> listZaposlenik = (List<Zaposlenik>)queryZaposlenik.list();
 			
 			
 			
@@ -114,45 +114,57 @@ public class Zalbe {
 				comboBox.addItem(listZaposlenik.get(i));
 			}
 			tr.commit();
-			session.close();
+			
 			
 		}
 		catch (Exception ex) {
 			JOptionPane.showMessageDialog(table, ex.toString());
+		}
+		finally{
+			session.close();
 		}
 		
 		
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				for(int i=0;i<tmodel.getRowCount();i++)
+					tmodel.removeRow(i);
+				
+				Session session = HibernateUtil.getSessionFactory().openSession();
 				   try {
-						Session session = HibernateUtil.getSessionFactory().openSession();
+						
 						Transaction tr = session.beginTransaction();
 						
+						
 						Zaposlenik z = (Zaposlenik) comboBox.getSelectedItem();
-						setId(z.getId());
-						Query queryZalbe = session.createQuery("from Zalba z, Klijent k where z.id = "+id+" and k.id = z._klijentId");
-						List<Zalba> listZalbe = queryZalbe.list();
+						setId(z.getId());											
+						Query queryZalbe = session.createQuery("from Zalba where _zaposlenikId = "+id);
+						List<Zalba> listZalbe = (List<Zalba>) queryZalbe.list();
 						
-						Query queryImeKlijenta = session.createQuery("from Klijent k, Zalba za where za._klijentId = k.id");
+						
+						Query queryImeKlijenta = session.createQuery("from Klijent");
 						List<Klijent> klijenti = queryImeKlijenta.list();
-						
-						
 						for(int i=0;i<listZalbe.size();i++){
-							if((listZalbe.get(i)).get_klijent() == (klijenti.get(i)).getId()){
+							if(listZalbe.get(i).get_klijent() == klijenti.get(i).getId()){
+								
 								String imeKlijenta = (klijenti.get(i)).get_imeIPrezime();
 								String komentar = listZalbe.get(i).getKomentar();
 								Date datum = listZalbe.get(i).getDatumPodnosenja();
 								tmodel.addRow(new Object[] { imeKlijenta, komentar, datum});
 							}
 						}
+						
 						tr.commit();
-						session.close();
+						
 						
 					}
 					catch (Exception ex) {
 						JOptionPane.showMessageDialog(table, ex.toString());
 					}
+				   finally{
+					   session.close();				  
+				   }
 				
 				
 				
@@ -217,4 +229,10 @@ public class Zalbe {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	public static void infoBox(String infoMessage, String naslov)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
+    }
+	
 }

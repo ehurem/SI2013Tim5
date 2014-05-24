@@ -488,10 +488,12 @@ public class MainOperater {
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-		        int index = sourceTabbedPane.getSelectedIndex();
 		        
+		        comboBox.removeAllItems();
+		        comboBox_2.removeAllItems();
+		        Session session = HibernateUtil.getSessionFactory().openSession();
 		        try {
-					Session session = HibernateUtil.getSessionFactory().openSession();
+					
 					Transaction t = session.beginTransaction();
 					
 					Query queryZaposlenik = session.createQuery("from Zaposlenik");
@@ -510,12 +512,15 @@ public class MainOperater {
 					
 					t.commit();
 					
-					session.close();
+					
 					
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
 				}
+		        finally{
+		        	session.close();
+		        }
 		     
 		        
 		      }
@@ -530,9 +535,9 @@ public class MainOperater {
 		JButton btnZabiljeialbu = new JButton("Zabilje\u017Ei \u017Ealbu");
 		btnZabiljeialbu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				Session session = HibernateUtil.getSessionFactory().openSession();
 				try {
-					Session session = HibernateUtil.getSessionFactory().openSession();
+					
 					Transaction t = session.beginTransaction();
 					
 		            java.util.Date utilDate = new java.util.Date();
@@ -551,11 +556,14 @@ public class MainOperater {
 					nova.setId( (Long ) session.save(nova));
 					infoBox("Uspješno dodana žalba: " + nova.getId() + "", null);
 					t.commit();
-					session.close();
+					
 					
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
+				}
+				finally{
+					session.close();
 				}
 	
 			
