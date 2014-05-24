@@ -7,6 +7,7 @@ import javax.swing.JTabbedPane;
 
 import java.awt.BorderLayout;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,11 +40,13 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.PopupMenuEvent;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
@@ -74,7 +77,7 @@ public class Main {
 	private static String [] niz = new String[1000];
 	public static String encryptPassword(String password)
 	{
-	    String sha1 = "";
+		String sha1 = "";
 	    try
 	    {
 	        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
@@ -336,7 +339,7 @@ public class Main {
 		label_15.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		t_i_DatumRodjenja = new JTextField();
-		t_i_DatumRodjenja.setText("nije implementirano");
+		t_i_DatumRodjenja.setText("YYYY-MM-DD");
 		t_i_DatumRodjenja.setColumns(10);
 		
 		t_i_adresaStanovanja = new JTextField();
@@ -370,7 +373,7 @@ public class Main {
 		c_i_Privilegije.setModel(new DefaultComboBoxModel(new String[] {"Administrator", "Serviser", "Operater"}));
 		
 		final JComboBox c_i_ImeIPrezime = new JComboBox(niz);
-
+		
 		
 		
 
@@ -383,67 +386,51 @@ public class Main {
 			}
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
 				
-			
-				String selektovan = c_i_ImeIPrezime.getSelectedItem().toString();
-				int index = -1;
+				
+				
+				Zaposlenik s = (Zaposlenik) c_i_ImeIPrezime.getSelectedItem();
+				//System.out.println("Tab changed to: " + s.getId());
+				
 				try {
 					
-		        	int itemCount = c_i_ImeIPrezime.getItemCount();
-
-		            for(int i=0;i<itemCount;i++){
-		            	c_i_ImeIPrezime.removeItemAt(0);
-		             }
-		            
-					Session session = HibernateUtil.getSessionFactory().openSession();
-					Transaction t = session.beginTransaction();
-					
-					Query queryZaposlenik = session.createQuery("from Zaposlenik");
-					List<Zaposlenik> listZaposlenik =(List<Zaposlenik>) queryZaposlenik.list();
-					for(int i=0;i < listZaposlenik.size();i++){
-					if(listZaposlenik.get(i).toString().equals(selektovan)){
-						
-						index = i;break;
-					}	
-						
-					}
-					
-					if(index != -1)
+		        	if(s != null)
 					{
+						t_i_brojTelefona.setText(s.getBrojTelefona());
+						t_i_adresaStanovanja.setText(s.getAdresa());
+						t_i_email.setText(s.getEmail());
+						if(s.get_datumRodjenja() == null){
+							t_i_DatumRodjenja.setText("YYYY-MM-DD");
+						}
+						else{
+							t_i_DatumRodjenja.setText(s.get_datumRodjenja().toString());
+						}
+						t_i_korisnickoIme.setText(s.getKorisnickoIme());
+						if(s.getPrivilegija().equals("Administrator")){
+							c_i_Privilegije.setSelectedIndex(0);
+						}
+						else if(s.getPrivilegija().equals("Serviser")){
+							c_i_Privilegije.setSelectedIndex(1);
+						}
+						else{
+							c_i_Privilegije.setSelectedIndex(2);
+						}
+					}
+					
+					
 				
-
-					t_i_brojTelefona.setText(listZaposlenik.get(index).getBrojTelefona());
-					t_i_adresaStanovanja.setText(listZaposlenik.get(index).getAdresa());
-					t_i_email.setText(listZaposlenik.get(index).getEmail());
-					t_i_korisnickaSifra.setText(encryptPassword(listZaposlenik.get(index).getKorisnickaSifra()));
-					t_i_korisnickoIme.setText(listZaposlenik.get(index).getKorisnickoIme());
-					}
-					
-					int ddd = c_i_ImeIPrezime.getItemCount();
-
-		            for(int i=0;i<ddd;i++){
-		            	c_i_ImeIPrezime.removeItemAt(0);
-		             }
-							
-			
-					
-					for(int i=0;i<listZaposlenik.size();i++){
-						c_i_ImeIPrezime.addItem(listZaposlenik.get(i));;
-					}
-					
-					t.commit();
-					session.close();
 					
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
 				}
+			
 		        
 				
 				
 				
 			}
 			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
-				//c_i_ImeIPrezime.add(new Compon);
+				
 			}
 		});
 		GroupLayout gl_panel_5 = new GroupLayout(panel_5);
@@ -554,12 +541,14 @@ public class Main {
 		tabbedPane.addTab("Deaktivacija ra\u010Duna", null, panel_3, null);
 		
 		JButton btnDeaktivirajRaun = new JButton("Deaktiviraj ra\u010Dun");
+	
+		/*
 		btnDeaktivirajRaun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				infoBox("Nije implementirano", null);
 			}
 		});
-		
+		*/
 		JPanel panel_6 = new JPanel();
 		panel_6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
@@ -584,61 +573,20 @@ public class Main {
 		
 		JLabel lblIzaberiZaposlenike = new JLabel("Izaberi zaposlenike:");
 		
-		ChangeListener changeListener = new ChangeListener() {
-		      public void stateChanged(ChangeEvent changeEvent) {
-		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-		        int index = sourceTabbedPane.getSelectedIndex();
-		        
-		        try {
-		        	int itemCount = c_i_ImeIPrezime.getItemCount();
-
-		            for(int i=0;i<itemCount;i++){
-		            	c_i_ImeIPrezime.removeItemAt(0);
-		             }
-					Session session = HibernateUtil.getSessionFactory().openSession();
-					Transaction t = session.beginTransaction();
-					
-					Query queryZaposlenik = session.createQuery("from Zaposlenik");
-					List listZaposlenik = queryZaposlenik.list();
-					
-			
-					
-					for(int i=0;i<listZaposlenik.size();i++){
-						c_i_ImeIPrezime.addItem(listZaposlenik.get(i));;
-					}
-					
-				
-					
-					t.commit();
-					
-					session.close();
-					
-				}
-				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
-				}
-		        
-		        
-		       // comboBox.addItem(_zaposlenik);
-		       // comboBox.addItem(_zaposlenik2);
-		        
-		      }
-		    };
-		tabbedPane.addChangeListener(changeListener);
+		
 		
 
 		
-		
-		JList list_zaposlenici = new JList(niz);
-		list_zaposlenici.setModel(new AbstractListModel() {
+		final DefaultListModel model = new DefaultListModel() {
 			String[] values = niz;
 			public int getSize() {
 				return values.length;
 			}
 			public Object getElementAt(int index) {
 				return values[index];
-			}
-		});
+			}};
+		final JList list_zaposlenici = new JList(model);
+
 		GroupLayout gl_panel_6 = new GroupLayout(panel_6);
 		gl_panel_6.setHorizontalGroup(
 			gl_panel_6.createParallelGroup(Alignment.LEADING)
@@ -795,65 +743,257 @@ public class Main {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnZalbe)
 					.addContainerGap(20, Short.MAX_VALUE))
-		);btnIzmjeni.addMouseListener(new MouseAdapter() {
+		);
+
+		btnIzmjeni.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String selektovan = c_i_ImeIPrezime.getSelectedItem().toString();
-				int index = -1;
+				
 				Session session = HibernateUtil.getSessionFactory().openSession();
+				boolean provjera=true;
+				if(t_i_adresaStanovanja.getText().equals("")){
+					provjera = false;
+					infoBox("Niste unijeli Adresu stanovanja", "UZBUNA");
+				}
+				
+				else if(t_i_brojTelefona.getText().equals("")){
+					provjera = false;
+					infoBox("Niste unijeli broj telefona", "UZBUNA");
+				}
+				
+				else if(t_i_email.getText().equals("")){
+					provjera = false;
+					infoBox("Niste unijeli email", "UZBUNA");
+				}
+				
+				else if(t_i_korisnickoIme.getText().equals("")){
+					provjera = false;
+					infoBox("Niste unijeli Korisnicko ime", "UZBUNA");
+				}
+				else if(!t_i_brojTelefona.getText().matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{3}")){
+					
+					provjera = false;
+					infoBox("Niste unijeli pravilno telefonski broj.", "UZBUNA");
+				}
+				
+				//System.out.println("Tab changed to: " + t_i_brojTelefona.getText().matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"));
+				
+				
+				
+				if(provjera){
 				try {
 					
 					
 					Transaction t = session.beginTransaction();
-					
-					Query queryZaposlenik = session.createQuery("from Zaposlenik");
-					List<Zaposlenik> listZaposlenik =(List<Zaposlenik>) queryZaposlenik.list();
-					
-					for(int i=0;i < listZaposlenik.size();i++){
-					if(listZaposlenik.get(i).toString().equals(selektovan)){
+					long EmployeeID = ((Zaposlenik) c_i_ImeIPrezime.getSelectedItem()).getId();
+					Zaposlenik novi = (Zaposlenik)session.get(Zaposlenik.class, EmployeeID); 
+					/*Provjera da li postoji zaposlenik sa tim korisnickim imenom.*/
+					Query query = session.createQuery("from Zaposlenik where korisnickoIme = :ime ");
+			        query.setParameter("ime", t_i_korisnickoIme.getText());
+			        List<Zaposlenik> list = (List<Zaposlenik>) query.list();
+			        
+			        
+			        if(list.size() == 0){
+			        	novi.setAdresa(t_i_adresaStanovanja.getText());
+						novi.setBrojTelefona(t_i_brojTelefona.getText());
+						novi.setEmail(t_i_email.getText());
+							
+						if(!t_i_korisnickaSifra.getText().equals("")){
+							novi.setKorisnickaSifra(encryptPassword(t_i_korisnickaSifra.getText()));
+						}
+							
+						novi.setKorisnickoIme(t_i_korisnickoIme.getText());
+						novi.setPrivilegija(c_i_Privilegije.getSelectedItem().toString());
 						
-						index = i;break;
-					}}
+						java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+						java.util.Date trenutno = sdf.parse(t_i_DatumRodjenja.getText());
+						@SuppressWarnings("deprecation")
+						Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
+						novi.set_datumRodjenja(datum);
+						
+						session.update(novi);
+						infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", null);
+						
+						t.commit();
+			        }
+			        else{
+			        if((list.get(0).getId() == novi.getId())  || ((list.get(0).getKorisnickoIme() == t_i_korisnickoIme.getText()) && (list.get(0).getId() == novi.getId()))){
+			        
+			        novi.setAdresa(t_i_adresaStanovanja.getText());
+					novi.setBrojTelefona(t_i_brojTelefona.getText());
+					novi.setEmail(t_i_email.getText());
+						
+					if(!t_i_korisnickaSifra.getText().equals("")){
+						novi.setKorisnickaSifra(encryptPassword(t_i_korisnickaSifra.getText()));
+					}
+						
+					novi.setKorisnickoIme(t_i_korisnickoIme.getText());
+					novi.setPrivilegija(c_i_Privilegije.getSelectedItem().toString());
 					
-					
-					Zaposlenik novi = listZaposlenik.get(index);
-					
-					
-					//novi.set_imeIPrezime(t_imeIPrezime.getText());
-					novi.setAdresa(t_mjestoStanovanja.getText());
-					novi.setBrojTelefona(t_brojTelefona.getText());
-					novi.setEmail(t_emailAdresa.getText());
-					novi.setKorisnickaSifra(encryptPassword(t_korisnickaSifra.getText()));
-					novi.setKorisnickoIme(t_korisnickoIme.getText());
-					novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
-					
-					//java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-					//java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
-					//@SuppressWarnings("deprecation")
-					//Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
-					//infoBox(datum.toString(), null);
+					java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+					java.util.Date trenutno = sdf.parse(t_i_DatumRodjenja.getText());
+					@SuppressWarnings("deprecation")
+					Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
+					novi.set_datumRodjenja(datum);
 					
 					session.update(novi);
+					infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", null);
 					
-					//novi.set_datumRodjenja();
-					
-					infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
 					t.commit();
-					session.close();
+			        }
+			        else{
+			        	
+			        	infoBox("Korisnicko ime je zauzeto!", "UZBUNA");
+			        }
+			        }
+				}
+				catch (Exception ex) {
 					
+					if(ex.toString().equals("java.text.ParseException: Unparseable date: \"YYYY-MM-DD\"")){
+						infoBox("Nepravilno ste unijeli datum. \nUnesite datum u formatu yyyy-mm-dd.", "UZBUNA");
+					}
+					else{
+					infoBox(ex.toString(), "UZBUNA");
+				}}
+				finally {
+			         session.close(); 
+			      }
+			}}
+		});
+		panel_7.setLayout(gl_panel_7);
+		panel_2.setLayout(gl_panel_2);
+		c_i_ImeIPrezime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		    	JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+		        int index = sourceTabbedPane.getSelectedIndex();
+		       
+		          
+		        if(sourceTabbedPane.getTitleAt(index).equals("Izmjena zaposlenika")){
+		    	c_i_ImeIPrezime.removeAllItems();
+		    	
+		    	try {
+		        	int itemCount = c_i_ImeIPrezime.getItemCount();
+
+		            for(int i=0;i<itemCount;i++){
+		            	c_i_ImeIPrezime.removeItemAt(0);
+		             }
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+					
+					Query queryZaposlenik = session.createQuery("from Zaposlenik");
+					List listZaposlenik = queryZaposlenik.list();
+					
+			
+					
+					for(int i=0;i<listZaposlenik.size();i++){
+						c_i_ImeIPrezime.addItem(listZaposlenik.get(i));;
+					}
+					
+				
+					
+					t.commit();
+					
+					session.close();
 					
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
 				}
-				finally {
+		        
+		        
+		     
+		        
+		      }
+		      else if(sourceTabbedPane.getTitleAt(index).equals("Deaktivacija računa")){
+		    	  try {
+			        	
+
+			          
+						Session session = HibernateUtil.getSessionFactory().openSession();
+						Transaction t = session.beginTransaction();
+						
+						Query queryZaposlenik = session.createQuery("from Zaposlenik");
+						List<Zaposlenik> listZaposlenik =(List<Zaposlenik>) queryZaposlenik.list();
+						
+						
+						String[] elements = new String[listZaposlenik.size()];
+						
+						
+						for(int i=0;i<listZaposlenik.size();i++){
+							model.addElement(listZaposlenik.get(i));
+							elements[i] = listZaposlenik.get(i).toString();
+							
+						}
+						
+						
+						list_zaposlenici.setListData(elements);
+					
+						t.commit();
+						session.close();
+						
+					}
+					catch (Exception ex) {
+						infoBox(ex.toString(), "UZBUNA");
+					}
+			        
+			        
+			     
+		    	  
+		      }
+		        
+		      
+		      }
+		 
+		    };
+		tabbedPane.addChangeListener(changeListener);
+		btnDeaktivirajRaun.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				  Session session = HibernateUtil.getSessionFactory().openSession();
+			      Transaction tx = null;
+			      /*Dobavljanje id-a zaposlenika koji se treba brisati*/
+			      long EmployeeID = ((Zaposlenik)model.get(list_zaposlenici.getSelectedIndex())).getId();
+			      
+			      try{
+			    	/*Brisanje zaposlenika iz baze*/
+			        tx = session.beginTransaction();
+			        Zaposlenik employee = (Zaposlenik) session.get(Zaposlenik.class, EmployeeID); 
+			        session.delete(employee); 
+			         
+			        /*Obnavljanje liste zaposlenika*/
+			     	Query queryZaposlenik = session.createQuery("from Zaposlenik");
+					List<Zaposlenik> listZaposlenik =(List<Zaposlenik>) queryZaposlenik.list();
+					
+					String[] elements = new String[listZaposlenik.size()];
+					
+					for(int i=0;i<listZaposlenik.size();i++){
+						model.addElement(listZaposlenik.get(i));
+						elements[i] = listZaposlenik.get(i).toString();
+						
+					}
+					
+					list_zaposlenici.setListData(elements);
+					
+					/*Komitanje u bazu izmjena nad zaposlenicima*/
+			        tx.commit();
+			         
+			        infoBox("Uspjesno ste deaktivirali racun: " + employee.get_imeIPrezime() , null);
+			      }
+			      catch (Exception ex) {
+						infoBox(ex.toString(), "UZBUNA");
+			      }
+			      finally {
 			         session.close(); 
 			      }
+				
+				
 			}
 		});
-		panel_7.setLayout(gl_panel_7);
-		panel_2.setLayout(gl_panel_2);
-		
 		
 	}
 	public static Long get_zaposlenik() {
