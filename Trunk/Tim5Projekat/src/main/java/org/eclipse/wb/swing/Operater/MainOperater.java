@@ -296,8 +296,12 @@ public class MainOperater {
 		JButton button = new JButton("Unesi");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try{
-					
+				
+				Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
+				Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
+				
+				try
+				{				
 					Zahtjev noviZahtjev = new Zahtjev();
 										
 					noviZahtjev.setKlijent(((Klijent)comboBox_1.getSelectedItem()).getId());
@@ -329,15 +333,9 @@ public class MainOperater {
 					
 					if(validirajPrazno(textField_2) && validirajPrazno(textArea))
 					{
-						Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
-						
-						Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
-						
 						Long id = (Long)sesija.save(noviZahtjev); //spašava u bazu
 						
 						transakcija.commit(); //završava transakciju
-						
-						sesija.close();
 						
 						infoBox("Zahtjev "+id+ " uspješno unesen!", "Zahtjev unesen");
 					}
@@ -345,14 +343,15 @@ public class MainOperater {
 					else
 					{
 						infoBox("Svi unosi moraju biti prisutni !", "Prazno polje");
-					}
-					
-					
-					
+					}					
 				}
 				catch(Exception izuzetak)
 				{
 					infoBox(izuzetak.getMessage(), "Greska u unosu !");
+				}
+				finally
+				{
+					sesija.close();
 				}
 			}
 		});
