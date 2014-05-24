@@ -509,10 +509,7 @@ public class MainOperater {
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
 				}
-		        
-		        
-		       // comboBox.addItem(_zaposlenik);
-		       // comboBox.addItem(_zaposlenik2);
+		     
 		        
 		      }
 		    };
