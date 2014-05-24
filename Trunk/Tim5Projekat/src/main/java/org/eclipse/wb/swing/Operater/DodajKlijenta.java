@@ -147,6 +147,11 @@ public class DodajKlijenta {
 		JButton btnUnesi = new JButton("Unesi");
 		btnUnesi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				Session sesija = HibernateUtil.getSessionFactory().openSession(); 
+				
+				Transaction transakcija = sesija.beginTransaction(); 
+				
 				try
 				{
 					_klijent.set_imeIPrezime(textField.getText());
@@ -157,14 +162,8 @@ public class DodajKlijenta {
 					if(validirajPrazno(textField) && validirajPrazno(textField_1) && validirajPrazno(textField_2) && validirajPrazno(textField_3) 
 							&& validirajTelefon(textField_2) && validirajMail(textField_3))
 					{
-						Session sesija = HibernateUtil.getSessionFactory().openSession(); 
-					
-						Transaction transakcija = sesija.beginTransaction(); 
-										
 						Long id = (Long)sesija.save(_klijent); 
 						transakcija.commit(); 
-					
-						sesija.close();
 					
 						infoBox("Klijent " + get_klijent().get_imeIPrezime() + " je unesen", "UnesenKLijent");
 						frmUnosNovogKlijenta.dispose();
@@ -178,6 +177,10 @@ public class DodajKlijenta {
 				catch(Exception e1)
 				{
 					infoBox(e1.getMessage(), "Greska !");
+				}
+				finally
+				{
+					sesija.close();
 				}
 			}
 		});

@@ -186,19 +186,27 @@ public class MainOperater {
 		frmInterfejsZaOperatera.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				Session session = HibernateUtil.getSessionFactory().openSession();
-				Transaction t = session.beginTransaction();
+				Session sesija = HibernateUtil.getSessionFactory().openSession();
+				Transaction t = sesija.beginTransaction();
 				
-				Query queryKlijent = session.createQuery("from Klijent");
-				List listKlijent = queryKlijent.list();
+				try
+				{
+					Query queryKlijent = sesija.createQuery("from Klijent");
+					List listKlijent = queryKlijent.list();
 				
-				for(int i=0;i<listKlijent.size();i++){
-				comboBox_1.addItem(listKlijent.get(i));;
+					for(int i=0;i<listKlijent.size();i++){
+						comboBox_1.addItem(listKlijent.get(i));
+					}
+					t.commit();
 				}
-				
-				t.commit();
-				
-				session.close();
+				catch(Exception izuzetak)
+				{
+					infoBox(izuzetak.getMessage(), "Greska u čitanju iz baze !");
+				}
+				finally
+				{
+					sesija.close();
+				}			
 			}
 		});
 		frmInterfejsZaOperatera.setResizable(false);
@@ -296,8 +304,12 @@ public class MainOperater {
 		JButton button = new JButton("Unesi");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try{
-					
+				
+				Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
+				Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
+				
+				try
+				{				
 					Zahtjev noviZahtjev = new Zahtjev();
 										
 					noviZahtjev.setKlijent(((Klijent)comboBox_1.getSelectedItem()).getId());
@@ -329,15 +341,9 @@ public class MainOperater {
 					
 					if(validirajPrazno(textField_2) && validirajPrazno(textArea))
 					{
-						Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
-						
-						Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
-						
 						Long id = (Long)sesija.save(noviZahtjev); //spašava u bazu
 						
 						transakcija.commit(); //završava transakciju
-						
-						sesija.close();
 						
 						infoBox("Zahtjev "+id+ " uspješno unesen!", "Zahtjev unesen");
 					}
@@ -345,14 +351,15 @@ public class MainOperater {
 					else
 					{
 						infoBox("Svi unosi moraju biti prisutni !", "Prazno polje");
-					}
-					
-					
-					
+					}					
 				}
 				catch(Exception izuzetak)
 				{
 					infoBox(izuzetak.getMessage(), "Greska u unosu !");
+				}
+				finally
+				{
+					sesija.close();
 				}
 			}
 		});
@@ -509,10 +516,7 @@ public class MainOperater {
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
 				}
-		        
-		        
-		       // comboBox.addItem(_zaposlenik);
-		       // comboBox.addItem(_zaposlenik2);
+		     
 		        
 		      }
 		    };

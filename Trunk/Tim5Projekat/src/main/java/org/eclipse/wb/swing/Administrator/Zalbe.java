@@ -3,12 +3,14 @@ package org.eclipse.wb.swing.Administrator;
 import java.awt.EventQueue;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -17,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
+import Models.Klijent;
 import Models.Zalba;
 import Models.Zaposlenik;
 
@@ -24,30 +27,30 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JTextField;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 public class Zalbe {
 
 	private JFrame frmzalbe;
-	static ArrayList<Zalba> _zalbe;
-	static ArrayList<Zaposlenik> _zaposlenici;
+	//private List<Zalba> listZalbe;
+	private Long id;
+	
+	
+
 	private JTable table;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args, ArrayList<Zalba> _zal, ArrayList<Zaposlenik> _zap) {
-		_zalbe = new ArrayList<Zalba>();
-		 Zalba _nova_zalba = new Zalba();
-		 Date dat = new Date(System.currentTimeMillis());
-		 _nova_zalba.setDatumPodnosenja(dat);
-		 _nova_zalba.setKomentar("Ovo je komentar �albe!");
-		// _nova_zalba.setZaposlenik(_zap.get(0));
-		 
-		 _zalbe.add(_nova_zalba);
-		 
+	public static void main(String[] args) {
 		
-		 _zaposlenici=_zap;
 		 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -58,6 +61,7 @@ public class Zalbe {
 					e.printStackTrace();
 				}
 			}
+			
 		});
 	}
 
@@ -80,33 +84,78 @@ public class Zalbe {
 		
 		JLabel lblZaposlenik = new JLabel("Zaposlenik:");
 		lblZaposlenik.setHorizontalAlignment(SwingConstants.RIGHT);
-		final DefaultTableModel t = new DefaultTableModel() {
-	   	    // zabranjeno editovanje celije u tabeli kad se dva puta klikne na celiju
-	    	public boolean isCellEditable(int row, int column){
-	    		return false;
-	    		}
+		
+		table = new JTable();
+		final DefaultTableModel tmodel = new DefaultTableModel() {
+	    	public boolean isCellEditable(int row, int column){return false;}
 	   	    
 	    };
-		t.addColumn("Datum podno�enja");
-		t.addColumn("Komentar");
-		
+	    
+		table.setModel(tmodel);
+	    
+	    tmodel.addColumn("Klijent");
+		tmodel.addColumn("Komentar");
+		tmodel.addColumn("Datum podnošenja");
 		
 		final JComboBox comboBox = new JComboBox();
 		
-		for(Zaposlenik z: _zaposlenici){
-			comboBox.addItem(z);
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			Transaction tr = session.beginTransaction();
+			
+			
+			
+			Query queryZaposlenik = session.createQuery("from Zaposlenik");
+			List<Zaposlenik> listZaposlenik = queryZaposlenik.list();
+			
+			
+			
+			for(int i=0;i<listZaposlenik.size();i++){
+				comboBox.addItem(listZaposlenik.get(i));
+			}
+			tr.commit();
+			session.close();
+			
 		}
+		catch (Exception ex) {
+			JOptionPane.showMessageDialog(table, ex.toString());
+		}
+		
 		
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Zaposlenik z = new Zaposlenik();
-				z = (Zaposlenik) comboBox.getSelectedItem();
-				/*for (Zalba zalba: _zalbe ){
-					if(zalba.getZaposlenik() == _zaposlenici.get(0))
-					{
-						t.addRow(new Object[] { zalba.getDatumPodnosenja(), zalba.getKomentar()});
+				
+				   try {
+						Session session = HibernateUtil.getSessionFactory().openSession();
+						Transaction tr = session.beginTransaction();
+						
+						Zaposlenik z = (Zaposlenik) comboBox.getSelectedItem();
+						setId(z.getId());
+						Query queryZalbe = session.createQuery("from Zalba z, Klijent k where z.id = "+id+" and k.id = z._klijentId");
+						List<Zalba> listZalbe = queryZalbe.list();
+						
+						Query queryImeKlijenta = session.createQuery("from Klijent k, Zalba za where za._klijentId = k.id");
+						List<Klijent> klijenti = queryImeKlijenta.list();
+						
+						
+						for(int i=0;i<listZalbe.size();i++){
+							if((listZalbe.get(i)).get_klijent() == (klijenti.get(i)).getId()){
+								String imeKlijenta = (klijenti.get(i)).get_imeIPrezime();
+								String komentar = listZalbe.get(i).getKomentar();
+								Date datum = listZalbe.get(i).getDatumPodnosenja();
+								tmodel.addRow(new Object[] { imeKlijenta, komentar, datum});
+							}
+						}
+						tr.commit();
+						session.close();
+						
 					}
-				}*/
+					catch (Exception ex) {
+						JOptionPane.showMessageDialog(table, ex.toString());
+					}
+				
+				
+				
 			}
 				
 		});
@@ -157,23 +206,15 @@ public class Zalbe {
 					.addGap(18))
 		);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-			},
-			new String[] {
-				"Klijent", "Komentar", "Datum podno\u0161enja"
-			}
-		));
+		
 		scrollPane.setViewportView(table);
 		frmzalbe.getContentPane().setLayout(groupLayout);
+	}
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
