@@ -16,12 +16,18 @@ import javax.swing.JTable;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Zahtjev;
 import Models.Zaposlenik;
 public class IzvjestajOPoslovanju {
@@ -32,7 +38,7 @@ public class IzvjestajOPoslovanju {
 	private JTextField textField_2;
 	private JTable table;
 	//kreiranje liste zahtjeva
-	private  ArrayList<Zahtjev> zahtjevi;
+	private  java.util.List zahtjevi;
 	private static int broj;
 
 
@@ -64,34 +70,23 @@ public class IzvjestajOPoslovanju {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		//dodavanje zahtjeva u listu
-				setZahtjevi(new ArrayList<Zahtjev>());
-			    Zahtjev zahtjev1 = new Zahtjev();
-			    Zahtjev zahtjev2 = new Zahtjev();
-			    Zahtjev zahtjev3 = new Zahtjev();
-			    zahtjev1.setID(1);
-			    zahtjev2.setID(2);
-			    zahtjev3.setID(3);
-			    Date now1 = new Date(2013,3,18);
-			    Date now2 = new Date(2013,3,21);
-			    Date now3 = new Date(2013,4,18);
-				zahtjev1.setDatumOtvaranja(now1);
-				zahtjev2.setDatumOtvaranja(now2);
-				zahtjev3.setDatumOtvaranja(now3);
-			    Date now11 = new Date(2014,3,18);
-			    Date now22 = new Date(2014,3,21);
-				Date now33 = new Date(2014,4,18);
-				zahtjev1.setDatumZatvaranja(now11);
-				zahtjev2.setDatumZatvaranja(now22);
-				zahtjev3.setDatumZatvaranja(now33);
-		        Zaposlenik z = new Zaposlenik();
-		        z.set_imeIPrezime("Alan Prost");
-		        zahtjev1.setZaposlenik(z.getId());
-		        zahtjev2.setZaposlenik(z.getId());
-		        zahtjev3.setZaposlenik(z.getId());
-		        getZahtjevi().add(zahtjev1);
-		        getZahtjevi().add(zahtjev2);
-		        getZahtjevi().add(zahtjev3);
+		//dodavanje zahtjeva u listu iz baze
+		Session sesija = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = sesija.beginTransaction();
+		try
+		{
+			Query queryZahtjev = sesija.createQuery("from Zahtjev");
+			zahtjevi = queryZahtjev.list();
+			t.commit();
+		}
+		catch(Exception ex)
+		{
+			JOptionPane.showMessageDialog(table, ex.toString());
+		}
+		finally
+		{
+			sesija.close();
+		}			
 		        
 		frmIzvjestajOPoslovanju = new JFrame();
 		frmIzvjestajOPoslovanju.setResizable(false);
@@ -209,7 +204,7 @@ public class IzvjestajOPoslovanju {
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 					//izlistavanje liste zahtjeva u tabeli
-				{broj, null, null, null},
+				{null, null, null, null},
 				{null, null, null, null},
 				{null, null, null, null},
 				{null, null, null, null},
@@ -242,9 +237,10 @@ public class IzvjestajOPoslovanju {
 				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
 		);
 		frmIzvjestajOPoslovanju.getContentPane().setLayout(groupLayout);
+		
 	}
 
-	private ArrayList<Zahtjev> getZahtjevi() {
+	private java.util.List getZahtjevi() {
 		return zahtjevi;
 	}
 

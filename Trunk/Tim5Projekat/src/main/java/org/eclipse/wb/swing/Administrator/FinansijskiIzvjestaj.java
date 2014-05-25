@@ -3,6 +3,8 @@ package org.eclipse.wb.swing.Administrator;
 import java.awt.EventQueue;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -55,28 +57,14 @@ public class FinansijskiIzvjestaj {
 	 * Initialize the contents of the frame.
 	 */
 	
+	public static Calendar dateToCalendar(Date date){ 
+		  Calendar cal = Calendar.getInstance();
+		  cal.setTime(date);
+		  return cal;
+		};
+	
 	private void initialize() {
 		//dodavanje zahtjeva u listu
-		setZahtjevi(new ArrayList<Zahtjev>());
-	    Zahtjev zahtjev1 = new Zahtjev();
-	    Zahtjev zahtjev2 = new Zahtjev();
-	    Zahtjev zahtjev3 = new Zahtjev();
-	    zahtjev1.setID(1);
-	    zahtjev2.setID(2);
-	    zahtjev3.setID(3);
-	    Date now1 = new Date(2013,3,18);
-	    Date now2 = new Date(2013,3,21);
-	    Date now3 = new Date(2013,4,18);
-		zahtjev1.setDatumZatvaranja(now1);
-		zahtjev2.setDatumZatvaranja(now2);
-		zahtjev3.setDatumZatvaranja(now3);
-		zahtjev1.set_cijena(100);
-		zahtjev2.set_cijena(200);
-		zahtjev3.set_cijena(50000);
-        zahtjevi.add(zahtjev1);
-        zahtjevi.add(zahtjev2);
-        zahtjevi.add(zahtjev3);
-
 
 		frmFinansijskiIzvjestaj = new JFrame();
 		frmFinansijskiIzvjestaj.setResizable(false);
@@ -117,37 +105,29 @@ public class FinansijskiIzvjestaj {
 					.addContainerGap(37, Short.MAX_VALUE))
 		);
 		
+		 final DefaultTableModel tmodel = new DefaultTableModel() {
+	    	 // zabranjeno editovanje celije u tabeli kad se dva puta klikne na celiju
+	    	public boolean isCellEditable(int row, int column){
+	    		return false;
+	    		}
+	   	    
+	    };
 		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{zahtjevi.get(0).getID(), zahtjevi.get(0).getDatumZatvaranja(), zahtjevi.get(0).get_cijena()},
-				{zahtjevi.get(1).getID(), zahtjevi.get(1).getDatumZatvaranja(), zahtjevi.get(1).get_cijena()},
-				{zahtjevi.get(2).getID(), zahtjevi.get(2).getDatumZatvaranja(), zahtjevi.get(2).get_cijena()},
-				{broj, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-			},
-			new String[] {
-				"ID zahtjeva", "Datum zatvaranja zahtjeva", "Iznos naplate"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
+		table.setModel(tmodel);
+		tmodel.addColumn("ID Zahtjeva");
+		tmodel.addColumn("Datum zatvaranja zahtjeva");
+		tmodel.addColumn("Iznos naplate");
 		table.getColumnModel().getColumn(1).setPreferredWidth(151);
 		scrollPane.setViewportView(table);
 		frmFinansijskiIzvjestaj.getContentPane().setLayout(groupLayout);
+		
+		//ispis u tabelu
+		for (int i=0;i<zahtjevi.size();i++){
+			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+			if (c.getWeekYear()==broj) {
+				tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).get_cijena())} );
+			}
+		}
 	}
 
 	private ArrayList<Zahtjev> getZahtjevi() {
