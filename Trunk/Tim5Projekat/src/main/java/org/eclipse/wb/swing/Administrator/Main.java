@@ -1,5 +1,6 @@
 package org.eclipse.wb.swing.Administrator;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -20,6 +22,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
@@ -75,6 +78,7 @@ public class Main {
 	
 	private static Long _zaposlenik;
 	private static String [] niz = new String[1000];
+	private static int [] brojevi = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52};
 	public static String encryptPassword(String password)
 	{
 		String sha1 = "";
@@ -155,8 +159,6 @@ public class Main {
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Dodavanje zaposlenika", null, panel, null);
-		
-		
 		
 		JButton btnUnesi = new JButton("Unesi");
 		
@@ -638,8 +640,22 @@ public class Main {
 		);
 		
 		JLabel lblIzaberiSedmicu = new JLabel("Izaberi sedmicu:");
+		final DefaultListModel model2 = new DefaultListModel() {
+			int[] values = brojevi;
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}};
 		
-		JList list_1 = new JList();
+		final JList sedmice = new JList(model2);
+		//promjene na listi sedmica
+		sedmice.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		sedmice.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		sedmice.setVisibleRowCount(-1);
+		JScrollPane listScroller = new JScrollPane(sedmice);
+		listScroller.setPreferredSize(new Dimension(129, 100));
 		GroupLayout gl_panel_8 = new GroupLayout(panel_8);
 		gl_panel_8.setHorizontalGroup(
 			gl_panel_8.createParallelGroup(Alignment.LEADING)
@@ -647,7 +663,7 @@ public class Main {
 					.addContainerGap()
 					.addComponent(lblIzaberiSedmicu)
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(list_1, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+					.addComponent(sedmice, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		gl_panel_8.setVerticalGroup(
@@ -656,7 +672,7 @@ public class Main {
 					.addContainerGap()
 					.addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblIzaberiSedmicu)
-						.addComponent(list_1, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+						.addComponent(sedmice, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(95, Short.MAX_VALUE))
 		);
 		panel_8.setLayout(gl_panel_8);
@@ -664,14 +680,14 @@ public class Main {
 		JButton btnNewButton = new JButton("Izvje\u0161taj o nalozima");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				IzvjestajOPoslovanju.main(null);
+				IzvjestajOPoslovanju.main(sedmice.getSelectedIndex());
 			}
 		});
 		
 		JButton btnFinansijskiIzvjetaj = new JButton("Finansijski izvje\u0161taj");
 		btnFinansijskiIzvjetaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FinansijskiIzvjestaj.main(null);
+				FinansijskiIzvjestaj.main(sedmice.getSelectedIndex());
 			}
 		});
 		

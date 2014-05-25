@@ -23,15 +23,18 @@ public class FinansijskiIzvjestaj {
 	private JTextField textField;
 	//kreiranje liste zahtjeva
 	private  ArrayList<Zahtjev> zahtjevi;
+	private static int broj;
+
 
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(final int broj_sedmice) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					broj=broj_sedmice+1;
 					FinansijskiIzvjestaj window = new FinansijskiIzvjestaj();
 					window.frmFinansijskiIzvjestaj.setVisible(true);
 				} catch (Exception e) {
@@ -120,7 +123,7 @@ public class FinansijskiIzvjestaj {
 				{zahtjevi.get(0).getID(), zahtjevi.get(0).getDatumZatvaranja(), zahtjevi.get(0).get_cijena()},
 				{zahtjevi.get(1).getID(), zahtjevi.get(1).getDatumZatvaranja(), zahtjevi.get(1).get_cijena()},
 				{zahtjevi.get(2).getID(), zahtjevi.get(2).getDatumZatvaranja(), zahtjevi.get(2).get_cijena()},
-				{null, null, null},
+				{broj, null, null},
 				{null, null, null},
 				{null, null, null},
 				{null, null, null},
