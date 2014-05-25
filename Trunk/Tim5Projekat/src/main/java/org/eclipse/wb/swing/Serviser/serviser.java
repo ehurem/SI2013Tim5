@@ -40,6 +40,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class serviser {
@@ -106,9 +107,11 @@ public class serviser {
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Pregled otvorenih zahtjeva", null, panel, null);
-	    DefaultTableModel tmodel = new DefaultTableModel() {
+	    final DefaultTableModel tmodel = new DefaultTableModel() {
 	    	 // zabranjeno editovanje celije u tabeli kad se dva puta klikne na celiju
-	    	public boolean isCellEditable(int row, int column){return false;}
+	    	public boolean isCellEditable(int row, int column){
+	    		return false;
+	    		}
 	   	    
 	    };
 		table = new JTable();
@@ -135,6 +138,41 @@ public class serviser {
 		
 		   // dozvoliti selekciju samo jednog reda u tabeli
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			// klasa za event za klik na zaglavlje tabele
+			class TableHeaderMouseListener extends MouseAdapter {
+			     
+			    private JTable table;
+			     
+			    public TableHeaderMouseListener(JTable table) {
+			        this.table = table;
+			    }
+			     
+			    public void mouseClicked(MouseEvent event) {
+			        Point point = event.getPoint();
+			        int column = table.columnAtPoint(point);
+			      
+			        if (column==0) {   
+			        	tmodel.setRowCount(0);
+			            Collections.sort(listZahtjev);
+			        	for(int i=0; i<listZahtjev.size(); i++) {
+			        		 tmodel.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
+					        }
+			        }
+			    
+			        else {
+			        	Collections.sort(listZahtjev, new Zahtjev.PoPrioritetu());
+			        	tmodel.setRowCount(0);
+			        	for(int i=0; i<listZahtjev.size(); i++) {
+			        		 tmodel.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
+					        }
+			        }
+			        	
+			    }
+			}
+			JTableHeader header = table.getTableHeader();
+			header.addMouseListener(new TableHeaderMouseListener(table));
+			
         // Button za promjenu statusa zahtjeva iz "Otvoren" u "U izvrsavanju" 
 		JButton btnStatus = new JButton("Odaberi");
 		btnStatus.addActionListener(new ActionListener() {
@@ -169,19 +207,20 @@ public class serviser {
 				  }
 				
 			 }
-			 else JOptionPane.showMessageDialog(table, "niste odabrali nijedan red");
+			 else JOptionPane.showMessageDialog(table, "Niste odabrali nijedan red!");
 			}
 		});
+		
 		// event za dvostruki klik na red tabele
 				 table.addMouseListener(new MouseAdapter() {
 					   public void mouseClicked(MouseEvent e) {
 						   JTable target = (JTable)e.getSource();
-					      if (e.getClickCount() == 2) {
+						   if (e.getClickCount() == 2) {
 					         int row = target.getSelectedRow();
 					         int column = target.getSelectedColumn();
 					         String s = target.getValueAt(row, 0).toString();
 					         int index = 0;
-					        for (int i=0; i<listZahtjev.size(); i++) {
+					         for (int i=0; i<listZahtjev.size(); i++) {
 					        	 if (listZahtjev.get(i).getID()==Integer.parseInt(s)) {
 					        		 index=i;
 					        		 break;
@@ -218,8 +257,7 @@ public class serviser {
 		table.getColumnModel().getColumn(0).setPreferredWidth(101);
 		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		scrollPane.setViewportView(table);
-		
-		JTableHeader header = table.getTableHeader();
+
 		
 		panel.setLayout(gl_panel);
 		

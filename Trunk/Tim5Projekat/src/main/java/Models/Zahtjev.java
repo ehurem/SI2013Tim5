@@ -1,10 +1,11 @@
 package Models;
 
 import java.sql.Date;
+import java.util.Comparator;
 
 
 
-public class Zahtjev {
+public class Zahtjev implements Comparable<Zahtjev> {
 	private long id;
 	private long _klijentId;
 	private String _tipUredaja;
@@ -17,6 +18,19 @@ public class Zahtjev {
 	private int _prioritet;
 	private double _cijena;
 	
+	/* Komparator implementacija za sortiranje po prioritetu */
+	
+	public static class PoPrioritetu implements Comparator<Zahtjev> {
+
+	    public int compare(Zahtjev z1, Zahtjev z2) {
+            return z1.getPrioritet() > z2.getPrioritet() ? -1 : (z1.getPrioritet() < z2.getPrioritet() ? 1 : 0);
+        }
+    }
+	/*Sortiranje po idu zahtjeva kao prirodno sortiranje za Zahtjev*/
+	
+    public int compareTo(Zahtjev z) {
+	        return this.id > z.getID() ? 1 : (this.id < z.getID() ? -1 : 0);
+	    }
 	public Zahtjev(){}
     
 	public long getID() {
