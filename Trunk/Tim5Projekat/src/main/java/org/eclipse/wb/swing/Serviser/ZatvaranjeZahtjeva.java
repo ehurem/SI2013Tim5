@@ -7,6 +7,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -34,6 +35,11 @@ public class ZatvaranjeZahtjeva {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	
+	private JRadioButton rdbtnDa;
+	private JRadioButton rdbtnNe;
+	
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -74,6 +80,8 @@ public class ZatvaranjeZahtjeva {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
 	
+	boolean garancija;
+	
 	public void PopuniPodatke()
 	{
 		try {
@@ -84,10 +92,29 @@ public class ZatvaranjeZahtjeva {
 			List<Zahtjev> listZahtjev = (List<Zahtjev>)queryZahtjev.list();
 			
 			String s = String.valueOf(listZahtjev.get(0).getID());
+			String s1 = String.valueOf(listZahtjev.get(0).getKlijent());
+			String s2 = String.valueOf(listZahtjev.get(0).getTipUredaja());
+			String s3 = String.valueOf(listZahtjev.get(0).get_cijena());
+			String s4 = String.valueOf(listZahtjev.get(0).getKomentar());
+			
+			garancija = listZahtjev.get(0).getGarancija();
+
+			rdbtnDa = new JRadioButton("Da");
+			rdbtnNe = new JRadioButton("Ne");
+			
+			rdbtnDa.setEnabled(false);
+			rdbtnNe.setEnabled(false);
+			
+			//rdbtnDa.setFocusable(false);
+			
+			rdbtnDa.setSelected(garancija);
+			rdbtnNe.setSelected(!garancija);
 			
 			textField.setText(s);
-			
-			
+			textField_1.setText(s1);
+			textField_2.setText(s2);
+			textField_3.setText(s3);
+			textArea.setText(s4);
 			
 			
 			
@@ -173,7 +200,7 @@ public class ZatvaranjeZahtjeva {
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		
 		JLabel lblGarancija = new JLabel("Garancija:");
 		lblGarancija.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -242,9 +269,14 @@ public class ZatvaranjeZahtjeva {
 					.addContainerGap())
 		);
 		
-		JRadioButton rdbtnDa = new JRadioButton("Da");
+		rdbtnDa = new JRadioButton("Da");
+		rdbtnDa.setSelected(true);
+		rdbtnNe = new JRadioButton("Ne");
 		
-		JRadioButton rdbtnNe = new JRadioButton("Ne");
+		final ButtonGroup grupaGarancija = new ButtonGroup();
+		grupaGarancija.add(rdbtnDa);
+		grupaGarancija.add(rdbtnNe);
+		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
