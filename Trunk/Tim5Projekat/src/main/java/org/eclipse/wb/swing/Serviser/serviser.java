@@ -118,24 +118,26 @@ public class serviser {
 		table.setModel(tmodel);
 		tmodel.addColumn("ID Zahtjeva");
 		tmodel.addColumn("Prioritet");
-		
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		   try {
-				Session session = HibernateUtil.getSessionFactory().openSession();
+				
 				Transaction tr = session.beginTransaction();
-				Query queryZahtjev = session.createQuery("from Zahtjev");
+				Query queryZahtjev = session.createQuery("from Zahtjev where _status='Otvoren'");
 				listZahtjev = queryZahtjev.list();
 				for(int i=0;i<listZahtjev.size();i++){
 					if((listZahtjev.get(i)).getStatus().equals("Otvoren"))
 						tmodel.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
 				}
 				tr.commit();
-				session.close();
+				//session.close();
 				
 			}
 			catch (Exception ex) {
 				JOptionPane.showMessageDialog(table, ex.toString());
 			}
-		
+		finally { 
+			session.close();
+		}
 		   // dozvoliti selekciju samo jednog reda u tabeli
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
@@ -182,11 +184,11 @@ public class serviser {
 			 if(i>=0) {
 				 String s = table.getValueAt(i, 0).toString();
 				 int k=-1;
-				  
+				  Session session = HibernateUtil.getSessionFactory().openSession();
 				  try {
-					Session session = HibernateUtil.getSessionFactory().openSession();
+					
 					Transaction tr = session.beginTransaction();
-					Query queryZahtjev = session.createQuery("from Zahtjev");
+					Query queryZahtjev = session.createQuery("from Zahtjev where _status='Otvoren'");
 					listZahtjev = queryZahtjev.list();
 					for (int j=0; j<listZahtjev.size(); j++) {
 						if (listZahtjev.get(j).getID()==Integer.parseInt(s)) {
@@ -200,12 +202,14 @@ public class serviser {
 		         }
 				session.save(listZahtjev.get(k));
 				tr.commit();
-				session.close();
+				//session.close();
 				 }
 				  catch (Exception ex) {
 					  JOptionPane.showMessageDialog(table, ex.toString());
 				  }
-				
+				finally { 
+					session.close(); 
+					}
 			 }
 			 else JOptionPane.showMessageDialog(table, "Niste odabrali nijedan red!");
 			}
@@ -228,7 +232,6 @@ public class serviser {
 					         }
 					         PregledOdabranogZahtjeva forma = new PregledOdabranogZahtjeva();
 					         forma.main(null, listZahtjev.get(index));
-				
 					         }
 					      
 					   }
