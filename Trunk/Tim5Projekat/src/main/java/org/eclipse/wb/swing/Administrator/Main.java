@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Formatter;
 import java.util.List;
 
@@ -78,7 +79,8 @@ public class Main {
 	
 	private static Long _zaposlenik;
 	private static String [] niz = new String[1000];
-	private static int [] brojevi = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52};
+	private static int [] brojevi = new int [Calendar.getInstance().get(Calendar.WEEK_OF_YEAR)];
+	private static Calendar sada;
 	public static String encryptPassword(String password)
 	{
 		String sha1 = "";
@@ -116,6 +118,19 @@ public class Main {
 	public static void main(String[] args, Long zaposlenik) {
 		set_zaposlenik(zaposlenik); 
 		niz[0] = "";
+		//dodavanje sedmica u jlist
+	    sada=Calendar.getInstance();
+		for (int i=0;i<sada.get(Calendar.WEEK_OF_YEAR);i++){
+			brojevi[i]=i+1;
+		}
+		for(int i = 0; i <brojevi.length/2; i++)
+		{
+		    int temp = brojevi[i];
+		    brojevi[i] = brojevi[brojevi.length - i - 1];
+		    brojevi[brojevi.length - i - 1] = temp;
+		}
+	
+
 		//for (int i = 0; i < get_zaposlenici().size(); i++) niz[i+1] = get_zaposlenici().get(i).get_imeIPrezime();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
