@@ -2,6 +2,8 @@
 package org.eclipse.wb.swing.Serviser;
 import java.awt.EventQueue;
 import java.awt.Point;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -9,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
@@ -20,13 +24,16 @@ import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
 import Models.Zahtjev;
 import Models.Zaposlenik;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -61,6 +68,11 @@ public class serviser {
 	{
 		frmInterfejsZaServisera.setVisible(true);
 	}
+	
+	public static void infoBox(String infoMessage, String naslov)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
+    }
 	
 	/**
 	 * Create the application.
@@ -211,6 +223,52 @@ public class serviser {
 		
 		panel.setLayout(gl_panel);
 		
+
+		final JList list = new JList();
+		final DefaultListModel listModel = new DefaultListModel();
+		
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+		        int index = sourceTabbedPane.getSelectedIndex();
+		        listModel.clear();
+		        
+		        try {
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+					
+					Query queryZahtjev = session.createQuery("from Zahtjev where _status='U izvrsavanju'");
+					List listZahtjev = queryZahtjev.list();
+					
+					
+					for(int i=0;i<listZahtjev.size();i++){
+					listModel.addElement(((Zahtjev) listZahtjev.get(i)).getID());
+					}
+					
+					list.setModel(listModel);
+					
+					//Zahtjev z = (Zahtjev) list.getSelectedValue();
+					//z.getID();
+					t.commit();
+					
+					session.close();
+					
+				}
+				catch (Exception ex) {
+					infoBox(ex.toString(), "UZBUNA");
+				}
+		        
+		        
+		       // comboBox.addItem(_zaposlenik);
+		       // comboBox.addItem(_zaposlenik2);
+		        
+		      }
+		    };
+		tabbedPane.addChangeListener(changeListener);
+		
+
+		
+		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Zatvaranje zahtjeva", null, panel_1, null);
 		
@@ -249,16 +307,16 @@ public class serviser {
 		
 		JLabel lblZahtjeviUIzvavanju = new JLabel("Zahtjevi u izvr\u0161avanju");
 		
-		JList list = new JList();
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Zahtjev 1", "Zahtjev 2", "Zahtjev 3"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+//		JList list = new JList();
+//		list.setModel(new AbstractListModel() {
+//			String[] values = new String[] {"Zahtjev 1", "Zahtjev 2", "Zahtjev 3"};
+//			public int getSize() {
+//				return values.length;
+//			}
+//			public Object getElementAt(int index) {
+//				return values[index];
+//			}
+//		});
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
 		gl_panel_3.setHorizontalGroup(
 			gl_panel_3.createParallelGroup(Alignment.LEADING)

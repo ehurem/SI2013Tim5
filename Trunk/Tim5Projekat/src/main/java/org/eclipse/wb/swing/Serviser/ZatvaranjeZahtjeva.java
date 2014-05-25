@@ -8,14 +8,24 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import Models.Zahtjev;
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class ZatvaranjeZahtjeva {
 
@@ -54,7 +64,46 @@ public class ZatvaranjeZahtjeva {
 	 * Create the application.
 	 */
 	public ZatvaranjeZahtjeva() {
+		
 		initialize();
+		PopuniPodatke();
+	}
+	
+	public static void infoBox(String infoMessage, String naslov)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
+    }
+	
+	public void PopuniPodatke()
+	{
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			Transaction t = session.beginTransaction();
+			
+			Query queryZahtjev = session.createQuery("from Zahtjev where _status='U izvrsavanju'");
+			List<Zahtjev> listZahtjev = (List<Zahtjev>)queryZahtjev.list();
+			
+			String s = String.valueOf(listZahtjev.get(0).getID());
+			
+			textField.setText(s);
+			
+			
+			
+			
+			
+			
+			
+			
+			t.commit();
+			
+			session.close();
+			
+		}
+		catch (Exception ex) {
+			infoBox(ex.toString(), "UZBUNA");
+		}
+        
+        
 	}
 
 	/**
