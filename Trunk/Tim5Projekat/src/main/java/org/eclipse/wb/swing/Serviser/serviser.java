@@ -1,3 +1,4 @@
+
 package org.eclipse.wb.swing.Serviser;
 import java.awt.EventQueue;
 import java.awt.Point;
@@ -94,6 +95,7 @@ public class serviser {
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Pregled otvorenih zahtjeva", null, panel, null);
 	    DefaultTableModel tmodel = new DefaultTableModel() {
+	    	 // zabranjeno editovanje celije u tabeli kad se dva puta klikne na celiju
 	    	public boolean isCellEditable(int row, int column){return false;}
 	   	    
 	    };
@@ -101,6 +103,7 @@ public class serviser {
 		table.setModel(tmodel);
 		tmodel.addColumn("ID Zahtjeva");
 		tmodel.addColumn("Prioritet");
+		
 		   try {
 				Session session = HibernateUtil.getSessionFactory().openSession();
 				Transaction tr = session.beginTransaction();
@@ -117,6 +120,9 @@ public class serviser {
 			catch (Exception ex) {
 				JOptionPane.showMessageDialog(table, ex.toString());
 			}
+		
+		   // dozvoliti selekciju samo jednog reda u tabeli
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // Button za promjenu statusa zahtjeva iz "Otvoren" u "U izvrsavanju" 
 		JButton btnStatus = new JButton("Odaberi");
 		btnStatus.addActionListener(new ActionListener() {
@@ -126,28 +132,56 @@ public class serviser {
 			 if(i>=0) {
 				 String s = table.getValueAt(i, 0).toString();
 				 int k=-1;
-				 Session session = HibernateUtil.getSessionFactory().openSession();
+				  
+				  try {
+					Session session = HibernateUtil.getSessionFactory().openSession();
 					Transaction tr = session.beginTransaction();
 					Query queryZahtjev = session.createQuery("from Zahtjev");
 					listZahtjev = queryZahtjev.list();
-		        for (int j=0; j<listZahtjev.size(); j++) {
-		        	 if (listZahtjev.get(j).getID()==Integer.parseInt(s)) {
-		        		listZahtjev.get(j).setStatus("U izvrsavanju");
-		        		listZahtjev.get(j).setZaposlenik(get_zaposlenik());
-		        		((DefaultTableModel)table.getModel()).removeRow(i);
-		        		JOptionPane.showMessageDialog(table, "Uspješno ste uzeli zahtjev na izvršavanje!");
-		        		 k=j;
-		        		 break;
+					for (int j=0; j<listZahtjev.size(); j++) {
+						if (listZahtjev.get(j).getID()==Integer.parseInt(s)) {
+							listZahtjev.get(j).setStatus("U izvrsavanju");
+							listZahtjev.get(j).setZaposlenik(get_zaposlenik());
+							((DefaultTableModel)table.getModel()).removeRow(i);
+							JOptionPane.showMessageDialog(table, "Uspješno ste uzeli zahtjev na izvršavanje!");
+							k=j;
+							break;
 		        	 } 
 		         }
 				session.save(listZahtjev.get(k));
 				tr.commit();
 				session.close();
+				 }
+				  catch (Exception ex) {
+					  JOptionPane.showMessageDialog(table, ex.toString());
+				  }
+				
 			 }
 			 else JOptionPane.showMessageDialog(table, "niste odabrali nijedan red");
 			}
 		});
-		
+		// event za dvostruki klik na red tabele
+				 table.addMouseListener(new MouseAdapter() {
+					   public void mouseClicked(MouseEvent e) {
+						   JTable target = (JTable)e.getSource();
+					      if (e.getClickCount() == 2) {
+					         int row = target.getSelectedRow();
+					         int column = target.getSelectedColumn();
+					         String s = target.getValueAt(row, 0).toString();
+					         int index = 0;
+					        for (int i=0; i<listZahtjev.size(); i++) {
+					        	 if (listZahtjev.get(i).getID()==Integer.parseInt(s)) {
+					        		 index=i;
+					        		 break;
+					        	 } 
+					         }
+					         PregledOdabranogZahtjeva forma = new PregledOdabranogZahtjeva();
+					         forma.main(null, listZahtjev.get(index));
+				
+					         }
+					      
+					   }
+					});
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

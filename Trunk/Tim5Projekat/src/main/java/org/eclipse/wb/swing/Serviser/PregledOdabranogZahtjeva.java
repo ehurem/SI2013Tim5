@@ -1,3 +1,4 @@
+
 package org.eclipse.wb.swing.Serviser;
 
 import java.awt.EventQueue;
@@ -8,15 +9,24 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+import Models.Klijent;
 import Models.Zahtjev;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class PregledOdabranogZahtjeva {
 
@@ -24,13 +34,40 @@ public class PregledOdabranogZahtjeva {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-
+	private static String imeiprezime;
+	private static String adresa;
+	private static String tipuredaja;
+	private static String komentar;
+	static List<Klijent> listKlijent;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args, Zahtjev z) {
+		 
+		   try {
+			   	Session session = HibernateUtil.getSessionFactory().openSession();
+				Transaction tr = session.beginTransaction();
+				Query queryKlijent= session.createQuery("from Klijent");
+				listKlijent = queryKlijent.list();
+				for(int i=0;i<listKlijent.size();i++){
+					if(listKlijent.get(i).getId()==z.getKlijent())
+					{
+						imeiprezime=listKlijent.get(i).get_imeIPrezime();
+						adresa=listKlijent.get(i).get_adresa();
+					}
+				}
+				tr.commit();
+				session.close();
+				
+			}
+			catch (Exception ex) {
+				JOptionPane.showMessageDialog(null, ex.toString());
+			}
+	
 		  
-		
+		   tipuredaja=(z.getTipUredaja());
+		   komentar=(z.getKomentar());
+		   
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -39,8 +76,10 @@ public class PregledOdabranogZahtjeva {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
 			}
 		});
+		  
 	}
 
 	/**
@@ -63,15 +102,19 @@ public class PregledOdabranogZahtjeva {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 	
-		JButton btnOk = new JButton("Zatvori");
-	
+		JButton btnZatvori = new JButton("Zatvori");
+		btnZatvori.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmPregledZahtjeva.dispose();
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmPregledZahtjeva.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnZatvori, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
 						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE))
 					.addContainerGap())
 		);
@@ -81,7 +124,7 @@ public class PregledOdabranogZahtjeva {
 					.addContainerGap()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnOk)
+					.addComponent(btnZatvori)
 					.addContainerGap(12, Short.MAX_VALUE))
 		);
 		
@@ -97,19 +140,19 @@ public class PregledOdabranogZahtjeva {
 		JLabel lblDodatniKomentar = new JLabel("Dodatni komentar:");
 		lblDodatniKomentar.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		textField = new JTextField();
+		textField = new JTextField(imeiprezime);
 		textField.setEditable(false);
 		textField.setColumns(10);
 		
-		textField_1 = new JTextField();
+		textField_1 = new JTextField(adresa);
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
 		
-		textField_2 = new JTextField();
+		textField_2 = new JTextField(tipuredaja);
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		
-		JTextArea textArea = new JTextArea();
+		JTextArea textArea = new JTextArea(komentar);
 		textArea.setEditable(false);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -154,4 +197,7 @@ public class PregledOdabranogZahtjeva {
 		panel.setLayout(gl_panel);
 		frmPregledZahtjeva.getContentPane().setLayout(groupLayout);
 	}
+
+
+
 }
