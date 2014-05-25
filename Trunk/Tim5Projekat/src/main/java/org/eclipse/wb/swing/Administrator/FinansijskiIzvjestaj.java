@@ -7,6 +7,7 @@ import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
+import javax.swing.JOptionPane;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,6 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Zahtjev;
 import Models.Zaposlenik;
 
@@ -26,6 +32,7 @@ public class FinansijskiIzvjestaj {
 	//kreiranje liste zahtjeva
 	private  ArrayList<Zahtjev> zahtjevi;
 	private static int broj;
+	private static double zarada;
 
 
 
@@ -37,6 +44,7 @@ public class FinansijskiIzvjestaj {
 			public void run() {
 				try {
 					broj=broj_sedmice+1;
+					zarada=0;
 					FinansijskiIzvjestaj window = new FinansijskiIzvjestaj();
 					window.frmFinansijskiIzvjestaj.setVisible(true);
 				} catch (Exception e) {
@@ -64,7 +72,23 @@ public class FinansijskiIzvjestaj {
 		};
 	
 	private void initialize() {
-		//dodavanje zahtjeva u listu
+		//dodavanje zahtjeva u listu iz baze
+				Session sesija = HibernateUtil.getSessionFactory().openSession();
+				Transaction t = sesija.beginTransaction();
+				try
+				{
+					Query queryZahtjev = sesija.createQuery("from Zahtjev");
+					zahtjevi = (ArrayList<Zahtjev>) queryZahtjev.list();
+					t.commit();
+				}
+				catch(Exception ex)
+				{
+					JOptionPane.showMessageDialog(table, ex.toString());
+				}
+				finally
+				{
+					sesija.close();
+				}		
 
 		frmFinansijskiIzvjestaj = new JFrame();
 		frmFinansijskiIzvjestaj.setResizable(false);
@@ -76,8 +100,14 @@ public class FinansijskiIzvjestaj {
 		
 		JLabel lblUkupnaZaradaOdabrane = new JLabel("Ukupna zarada odabrane sedmice:");
 		
-		//za potrebe prototipa uneseno, ina�e se ra�una
-		textField = new JTextField("5300");
+		for (int i=0;i<zahtjevi.size();i++){
+			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
+			zarada += zahtjevi.get(i).get_cijena();
+			}
+		}
+		
+		textField = new JTextField(Double.toString(zarada));
 		textField.setEditable(false);
 		textField.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(frmFinansijskiIzvjestaj.getContentPane());
@@ -120,14 +150,13 @@ public class FinansijskiIzvjestaj {
 		table.getColumnModel().getColumn(1).setPreferredWidth(151);
 		scrollPane.setViewportView(table);
 		frmFinansijskiIzvjestaj.getContentPane().setLayout(groupLayout);
-		
 		//ispis u tabelu
 		for (int i=0;i<zahtjevi.size();i++){
 			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
-				tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).get_cijena())} );
-			}
-		}
+				tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).get_cijena())} );		}
+		}	
+	
 	}
 
 	private ArrayList<Zahtjev> getZahtjevi() {
