@@ -122,23 +122,35 @@ public class Login {
 				if (username.equals("") || password.equals("")) infoBox("Pogrešni podaci za prijavu", "Greška");
 				else {
 					Session session = HibernateUtil.getSessionFactory().openSession();
-					Transaction t = session.beginTransaction();
-					Criteria criteria = session.createCriteria(Zaposlenik.class);
-					criteria.add(Restrictions.eq("_korisnickoIme", username));
-					Zaposlenik zaposlenik = (Zaposlenik) criteria.uniqueResult();
-					if (zaposlenik != null && zaposlenik.getKorisnickaSifra().equals(encryptPassword(password)))  {
-						if (zaposlenik.getPrivilegija().equals("Administrator"))						
-							Main.main(null, zaposlenik.getId());
-						else if (zaposlenik.getPrivilegija().equals("Operater"))
-							MainOperater.main(null, zaposlenik.getId());
-						else if (zaposlenik.getPrivilegija().equals("Serviser"))
-							serviser.main(null, zaposlenik.getId());
-						
+					try {
+						Transaction t = session.beginTransaction();
+						Criteria criteria = session.createCriteria(Zaposlenik.class);
+						criteria.add(Restrictions.eq("_korisnickoIme", username));
+						Zaposlenik zaposlenik = (Zaposlenik) criteria.uniqueResult();
+						if (zaposlenik != null && zaposlenik.getKorisnickaSifra().equals(encryptPassword(password)))  {
+							if (zaposlenik.getPrivilegija().equals("Administrator"))						
+								Main.main(null, zaposlenik.getId());
+							else if (zaposlenik.getPrivilegija().equals("Operater"))
+								MainOperater.main(null, zaposlenik.getId());
+							else if (zaposlenik.getPrivilegija().equals("Serviser"))
+								serviser.main(null, zaposlenik.getId());
+						}
+						else infoBox ("Unijeli ste neispravne korisnicke podatke", null);
+						//infoBox (encryptPassword(t_sifra.getText()), t_korisnickoIme.getText());
+						t.commit();
 					}
-					else infoBox ("Unijeli ste neispravne korisnicke podatke", null);
-					//infoBox (encryptPassword(t_sifra.getText()), t_korisnickoIme.getText());
-					t.commit();
-					session.close();
+					catch (Exception ex) {
+						infoBox(ex.toString(), "Greška");
+					}
+					finally {
+						if (session != null) 
+							try {
+								session.close();
+							}
+							catch (Exception e2) {
+								infoBox(e2.toString(), "Greška");
+							}
+					}
 					
 				}
 			}
