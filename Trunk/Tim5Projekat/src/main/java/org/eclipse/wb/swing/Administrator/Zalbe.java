@@ -41,7 +41,7 @@ public class Zalbe {
 	private JFrame frmzalbe;
 	//private List<Zalba> listZalbe;
 	private Long id;
-	
+	String komentar;
 	
 
 	private JTable table;
@@ -49,7 +49,7 @@ public class Zalbe {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void main(String[] args) {
 		
 		 
 		EventQueue.invokeLater(new Runnable() {
@@ -80,7 +80,7 @@ public class Zalbe {
 		frmzalbe.setResizable(false);
 		frmzalbe.setTitle("Pregled \u017Ealbi");
 		frmzalbe.setBounds(100, 100, 405, 350);
-		frmzalbe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmzalbe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JLabel lblZaposlenik = new JLabel("Zaposlenik:");
 		lblZaposlenik.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -149,9 +149,10 @@ public class Zalbe {
 							if(listZalbe.get(i).get_klijent() == klijenti.get(i).getId()){
 								
 								String imeKlijenta = (klijenti.get(i)).get_imeIPrezime();
-								String komentar = listZalbe.get(i).getKomentar();
+								String komentar1 = listZalbe.get(i).getKomentar();
+								komentar = komentar1;
 								Date datum = listZalbe.get(i).getDatumPodnosenja();
-								tmodel.addRow(new Object[] { imeKlijenta, komentar, datum});
+								tmodel.addRow(new Object[] { imeKlijenta, komentar1, datum});
 							}
 						}
 						
@@ -186,6 +187,13 @@ public class Zalbe {
 		});
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				Komentar forma = new Komentar(komentar);
+				forma.main(null, komentar);
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmzalbe.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

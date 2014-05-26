@@ -7,6 +7,7 @@ import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -38,8 +39,10 @@ public class IzvjestajOPoslovanju {
 	private JTextField textField_2;
 	private JTable table;
 	//kreiranje liste zahtjeva
-	private  java.util.List zahtjevi;
+	private  ArrayList<Zahtjev> zahtjevi;
+	private ArrayList<Zaposlenik> zaposlenici;
 	private static int broj;
+    private Zaposlenik z;
 
 
 	/**
@@ -66,6 +69,11 @@ public class IzvjestajOPoslovanju {
 		initialize();
 	}
 
+	public static Calendar dateToCalendar(Date date){ 
+		  Calendar cal = Calendar.getInstance();
+		  cal.setTime(date);
+		  return cal;
+		};
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -76,7 +84,9 @@ public class IzvjestajOPoslovanju {
 		try
 		{
 			Query queryZahtjev = sesija.createQuery("from Zahtjev");
-			zahtjevi = queryZahtjev.list();
+			Query queryZaposlenik = sesija.createQuery("from Zaposlenik");
+            zaposlenici =(ArrayList<Zaposlenik>) queryZaposlenik.list();
+			zahtjevi = (ArrayList<Zahtjev>) queryZahtjev.list();
 			t.commit();
 		}
 		catch(Exception ex)
@@ -86,7 +96,8 @@ public class IzvjestajOPoslovanju {
 		finally
 		{
 			sesija.close();
-		}			
+		}		
+		
 		        
 		frmIzvjestajOPoslovanju = new JFrame();
 		frmIzvjestajOPoslovanju.setResizable(false);
@@ -200,26 +211,21 @@ public class IzvjestajOPoslovanju {
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
+		final DefaultTableModel tmodel = new DefaultTableModel() {
+	    	 // zabranjeno editovanje celije u tabeli kad se dva puta klikne na celiju
+	    	public boolean isCellEditable(int row, int column){
+	    		return false;
+	    		}
+	   	    
+	    };
 		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-					//izlistavanje liste zahtjeva u tabeli
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"ID zahtjeva", "Datum otvaranja", "Datum zatvaranja", "Serviser"
-			}
-		));
+		table.setModel(tmodel);
+		tmodel.addColumn("ID Zahtjeva");
+		tmodel.addColumn("Datum otvaranja zahtjeva");
+		tmodel.addColumn("Iznos zatvaranja zahtjeva");
+		tmodel.addColumn("Serviser");
+
+
 		table.getColumnModel().getColumn(1).setPreferredWidth(103);
 		table.getColumnModel().getColumn(2).setPreferredWidth(109);
 		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -237,6 +243,18 @@ public class IzvjestajOPoslovanju {
 				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
 		);
 		frmIzvjestajOPoslovanju.getContentPane().setLayout(groupLayout);
+		//ispis zahtjeva u tabelu
+				for (int i=0;i<zahtjevi.size();i++){
+					Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+					if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
+						for (int j=0;j<zaposlenici.size();j++){
+							//pretraga zaposlenika po ID radi ispisa u tabelu
+							if (zahtjevi.get(i).getZaposlenik()==zaposlenici.get(j).getId()) {
+							z= zaposlenici.get(j);
+							}
+						}
+						tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		}
+				}	
 		
 	}
 

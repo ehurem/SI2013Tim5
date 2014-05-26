@@ -10,16 +10,18 @@ import javax.swing.JTextArea;
 public class Komentar {
 
 	private JFrame frmKomentar;
+	String komentar;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, final String komentar) {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Komentar window = new Komentar();
+					
+					Komentar window = new Komentar(komentar);
 					window.frmKomentar.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -31,8 +33,10 @@ public class Komentar {
 	/**
 	 * Create the application.
 	 */
-	public Komentar() {
+	public Komentar(String kom){
+		komentar = kom;
 		initialize();
+		
 	}
 
 	/**
@@ -46,7 +50,7 @@ public class Komentar {
 		frmKomentar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setText("Ovo će biti implementirano");
+		textArea.setText(komentar);
 		textArea.setEditable(false);
 		GroupLayout groupLayout = new GroupLayout(frmKomentar.getContentPane());
 		groupLayout.setHorizontalGroup(

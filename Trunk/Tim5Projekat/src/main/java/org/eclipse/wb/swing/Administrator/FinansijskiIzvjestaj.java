@@ -100,6 +100,7 @@ public class FinansijskiIzvjestaj {
 		
 		JLabel lblUkupnaZaradaOdabrane = new JLabel("Ukupna zarada odabrane sedmice:");
 		
+		//izracunavanje ukupne zarade za prikazane zahtjeve
 		for (int i=0;i<zahtjevi.size();i++){
 			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
@@ -150,7 +151,7 @@ public class FinansijskiIzvjestaj {
 		table.getColumnModel().getColumn(1).setPreferredWidth(151);
 		scrollPane.setViewportView(table);
 		frmFinansijskiIzvjestaj.getContentPane().setLayout(groupLayout);
-		//ispis u tabelu
+		//ispis zahtjeva u tabelu
 		for (int i=0;i<zahtjevi.size();i++){
 			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {

@@ -97,7 +97,7 @@ public class PregledOdabranogZahtjeva {
 		frmPregledZahtjeva.setResizable(false);
 		frmPregledZahtjeva.setTitle("Pregled zahtjeva");
 		frmPregledZahtjeva.setBounds(100, 100, 329, 311);
-		frmPregledZahtjeva.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmPregledZahtjeva.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
