@@ -40,7 +40,9 @@ public class IzvjestajOPoslovanju {
 	private JTable table;
 	//kreiranje liste zahtjeva
 	private  ArrayList<Zahtjev> zahtjevi;
+	private ArrayList<Zaposlenik> zaposlenici;
 	private static int broj;
+    private Zaposlenik z;
 
 
 	/**
@@ -82,6 +84,8 @@ public class IzvjestajOPoslovanju {
 		try
 		{
 			Query queryZahtjev = sesija.createQuery("from Zahtjev");
+			Query queryZaposlenik = sesija.createQuery("from Zaposlenik");
+            zaposlenici =(ArrayList<Zaposlenik>) queryZaposlenik.list();
 			zahtjevi = (ArrayList<Zahtjev>) queryZahtjev.list();
 			t.commit();
 		}
@@ -243,8 +247,13 @@ public class IzvjestajOPoslovanju {
 				for (int i=0;i<zahtjevi.size();i++){
 					Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 					if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
-						
-						tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).getZaposlenik())} );		}
+						for (int j=0;j<zaposlenici.size();j++){
+							//pretraga zaposlenika po ID radi ispisa u tabelu
+							if (zahtjevi.get(i).getZaposlenik()==zaposlenici.get(j).getId()) {
+							z= zaposlenici.get(j);
+							}
+						}
+						tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		}
 				}	
 		
 	}
