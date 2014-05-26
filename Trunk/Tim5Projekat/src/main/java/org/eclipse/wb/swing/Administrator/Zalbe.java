@@ -41,7 +41,7 @@ public class Zalbe {
 	private JFrame frmzalbe;
 	//private List<Zalba> listZalbe;
 	private Long id;
-	
+	String komentar;
 	
 
 	private JTable table;
@@ -149,9 +149,10 @@ public class Zalbe {
 							if(listZalbe.get(i).get_klijent() == klijenti.get(i).getId()){
 								
 								String imeKlijenta = (klijenti.get(i)).get_imeIPrezime();
-								String komentar = listZalbe.get(i).getKomentar();
+								String komentar1 = listZalbe.get(i).getKomentar();
+								komentar = komentar1;
 								Date datum = listZalbe.get(i).getDatumPodnosenja();
-								tmodel.addRow(new Object[] { imeKlijenta, komentar, datum});
+								tmodel.addRow(new Object[] { imeKlijenta, komentar1, datum});
 							}
 						}
 						
@@ -189,7 +190,8 @@ public class Zalbe {
 		scrollPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				
+				Komentar forma = new Komentar(komentar);
+				forma.main(null, komentar);
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(frmzalbe.getContentPane());
