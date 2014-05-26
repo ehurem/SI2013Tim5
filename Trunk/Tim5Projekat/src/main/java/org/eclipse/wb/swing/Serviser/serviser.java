@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.JLabel;
@@ -174,7 +175,15 @@ public class serviser {
 			}
 			JTableHeader header = table.getTableHeader();
 			header.addMouseListener(new TableHeaderMouseListener(table));
-			
+			// centriran tekst u tabeli
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+			table.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+			table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+			// zabranjeno mijenjanje redoslijeda kolona
+			table.getTableHeader().setReorderingAllowed(false);
+			// zabranjeno mijenjanje veličine kolona u tabeli
+			table.getTableHeader().setResizingAllowed(false);
         // Button za promjenu statusa zahtjeva iz "Otvoren" u "U izvrsavanju" 
 		JButton btnStatus = new JButton("Odaberi");
 		btnStatus.addActionListener(new ActionListener() {
@@ -200,8 +209,10 @@ public class serviser {
 							break;
 		        	 } 
 		         }
+				
 				session.save(listZahtjev.get(k));
 				tr.commit();
+				listZahtjev.remove(k);
 				//session.close();
 				 }
 				  catch (Exception ex) {
