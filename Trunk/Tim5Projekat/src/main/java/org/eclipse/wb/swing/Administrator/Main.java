@@ -34,6 +34,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Models.*;
 
@@ -719,30 +721,77 @@ public class Main {
 				try {
 					
 					Session session = HibernateUtil.getSessionFactory().openSession();
-					Transaction t = session.beginTransaction();
 					
-					Zaposlenik novi = new Zaposlenik();
-					novi.set_imeIPrezime(c_i_ImeIPrezime.getSelectedItem().toString());
-					novi.setAdresa(t_i_adresaStanovanja.getText());
-					novi.setBrojTelefona(t_i_brojTelefona.getText());
-					novi.setEmail(t_i_email.getText());
-					novi.setKorisnickaSifra(encryptPassword(t_i_korisnickaSifra.getText()));
-					novi.setKorisnickoIme(t_i_korisnickoIme.getText());
-					novi.setPrivilegija(c_i_Privilegije.getSelectedItem().toString());
-					
-					java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-					java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
-					@SuppressWarnings("deprecation")
-					Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
-					//infoBox(datum.toString(), null);
-					
-					novi.setId( (Long ) session.save(novi));
-					
-					novi.set_datumRodjenja(datum);
-					
-					infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
-					t.commit();
-					session.close();
+					try {
+						Transaction t = session.beginTransaction();
+						Zaposlenik novi = new Zaposlenik();
+						novi.set_imeIPrezime(t_imeIPrezime.getText());
+						novi.setAdresa(t_mjestoStanovanja.getText());
+						novi.setBrojTelefona(t_brojTelefona.getText());
+						novi.setEmail(t_emailAdresa.getText());
+						novi.setKorisnickaSifra(encryptPassword(t_korisnickaSifra.getText()));
+						novi.setKorisnickoIme(t_korisnickoIme.getText());
+						novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
+						
+						Pattern pattern = Pattern.compile("^[A-Z]{1}[a-z]{2,}\\s[A-Z][a-z]{2,}$");
+						Matcher matcher = pattern.matcher(novi.get_imeIPrezime());
+						boolean dobro = matcher.matches();
+						if (!dobro) {
+							infoBox("Ime i prezime nisu u dobrom formatu" , "Uzbuna");
+							return;
+						}
+						if (novi.getEmail().equals("")) {
+							infoBox("Email nije u dobrom formatu" , "Uzbuna");
+							return;
+						}
+						if (novi.getAdresa().equals("")) {
+							infoBox("Adresa nije u dobrom formatu" , "Uzbuna");
+							return;
+						}
+						
+						if (novi.getBrojTelefona().equals("")) {
+							infoBox("Broj telefona nije u dobrom formatu" , "Uzbuna");
+							return;
+						}
+						
+						if (t_korisnickaSifra.equals("")) {
+							infoBox("Korisnicka sifra nije u dobrom formatu" , "Uzbuna");
+							return;
+						}
+						if (novi.getKorisnickoIme().equals("")) {
+							infoBox("Korisnicko ime nije u dobrom formatu" , "Uzbuna");
+							return;
+						}
+						if (t_datumRodjenja.getText().equals("")) {
+							infoBox("Datum rodjenja nije u dobrom formatu" , "Uzbuna");
+							return;
+						}
+						
+						java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+						java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
+						@SuppressWarnings("deprecation")
+						Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
+						//infoBox(datum.toString(), null);
+						
+						novi.setId( (Long ) session.save(novi));
+						
+						novi.set_datumRodjenja(datum);
+						
+						infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
+						t.commit();
+					}
+					catch (Exception e2) {
+						infoBox(e2.toString(), "Greška");
+					}
+					finally {
+						if (session != null) 
+							try {
+								session.close();
+							}
+							catch (Exception e3) {
+								infoBox(e3.toString(), "Greška");
+							}
+					}
 					
 					
 				}
