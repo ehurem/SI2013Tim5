@@ -330,7 +330,7 @@ public class serviser {
 				//info[1] = "1";
 				ZatvaranjeZahtjeva jf = new ZatvaranjeZahtjeva();
 				frmInterfejsZaServisera.dispose();
-				jf.main(null, id_zahtjeva);
+				jf.main(null, id_zahtjeva, get_zaposlenik());
 				//jf.Show();
 			}
 		});

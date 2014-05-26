@@ -21,11 +21,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import Models.Klijent;
 import Models.Zahtjev;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import java.util.List;
 
 public class ZatvaranjeZahtjeva {
@@ -42,13 +44,14 @@ public class ZatvaranjeZahtjeva {
 	private JTextArea textArea;
 	
 	public static String zahtjev_id;
+	public static Long zaposlenik_id;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args, String idzahtjeva) {
+	public static void main(String[] args, String idzahtjeva, Long zaposlenik) {
 		zahtjev_id = idzahtjeva;
-		
+		zaposlenik_id = zaposlenik;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -110,14 +113,17 @@ public class ZatvaranjeZahtjeva {
 	
 	public void PopuniPodatke()
 	{
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
 		try {
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			Transaction t = session.beginTransaction();
+			//Session session = HibernateUtil.getSessionFactory().openSession();
+			//Transaction t = session.beginTransaction();
 			
 			String idZahtjeva = zahtjev_id;
 			
 			Query queryZahtjev;
 			Query queryZahtjevid;
+			Query queryZahtjevklijent;
 			List<Zahtjev> listZahtjev;
 			
 			if(idZahtjeva!=null)
@@ -131,13 +137,20 @@ public class ZatvaranjeZahtjeva {
 				listZahtjev = (List<Zahtjev>)queryZahtjev.list();
 			}
 			
+			String s1 = String.valueOf(listZahtjev.get(0).getKlijent());
+			
+			queryZahtjevklijent = session.createQuery("from Klijent where id='" + s1  + "'");
+			List <Klijent> k = queryZahtjevklijent.list();
+			
+			String s5 = k.get(0).get_imeIPrezime();
+			
 			//
 			
 			
 			//List<Zahtjev> listZahtjev = (List<Zahtjev>)queryZahtjevid.list();
 			
 			String s = String.valueOf(listZahtjev.get(0).getID());
-			String s1 = String.valueOf(listZahtjev.get(0).getKlijent());
+			//String s1 = String.valueOf(listZahtjev.get(0).getKlijent());
 			String s2 = String.valueOf(listZahtjev.get(0).getTipUredaja());
 			String s3 = String.valueOf(listZahtjev.get(0).get_cijena());
 			String s4 = String.valueOf(listZahtjev.get(0).getKomentar());
@@ -156,7 +169,7 @@ public class ZatvaranjeZahtjeva {
 			rdbtnNe.setSelected(!garancija);
 			
 			textField.setText(s);
-			textField_1.setText(s1);
+			textField_1.setText(s5);
 			textField_2.setText(s2);
 			textField_3.setText(s3);
 			textArea.setText(s4);
@@ -168,11 +181,15 @@ public class ZatvaranjeZahtjeva {
 			
 			t.commit();
 			
-			session.close();
+			//session.close();
 			
 		}
 		catch (Exception ex) {
 			infoBox(ex.toString(), "UZBUNA");
+		}
+		finally
+		{
+			session.close();
 		}
         
         
@@ -198,12 +215,46 @@ public class ZatvaranjeZahtjeva {
 		JButton btnZatvoriZahtjev = new JButton("Zatvori zahtjev");
 		btnZatvoriZahtjev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				Transaction t = session.beginTransaction();
 				try {
-					Session session = HibernateUtil.getSessionFactory().openSession();
-					Transaction t = session.beginTransaction();
+					
+					String idZahtjeva = zahtjev_id;
+					
+					Query queryZahtjevid;
+					List<Zahtjev> listZahtjev;
+					
+					queryZahtjevid = session.createQuery("from Zahtjev where id='"+idZahtjeva+"'");
+					listZahtjev = (List<Zahtjev>)queryZahtjevid.list();
+					Zahtjev z = listZahtjev.get(0);
+					z.setStatus("Zatvoren");
+					
+					Double cij = Double.parseDouble(textField_3.getText());
+					z.set_cijena(cij);
+					
+					String kom = textArea.getText();
+					z.setKomentar(kom);
+					
+					z.setZaposlenik(zaposlenik_id);
+					//z.setZaposlenik((long) 1);
+					
+					Date d = new Date();
+					java.sql.Date dat = new java.sql.Date(d.getTime()); 
+					z.setDatumZatvaranja(dat);
+				
+				
+					t.commit();
+					
+					//session.close();
+
+					
 				}
 				catch (Exception ex) {
 					infoBox(ex.toString(), "UZBUNA");
+				}
+				finally
+				{
+					session.close();
 				}
 				
 				serviser s = new serviser();
