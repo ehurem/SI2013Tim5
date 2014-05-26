@@ -49,7 +49,7 @@ public class Zalbe {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void main(String[] args) {
 		
 		 
 		EventQueue.invokeLater(new Runnable() {
@@ -80,7 +80,7 @@ public class Zalbe {
 		frmzalbe.setResizable(false);
 		frmzalbe.setTitle("Pregled \u017Ealbi");
 		frmzalbe.setBounds(100, 100, 405, 350);
-		frmzalbe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmzalbe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JLabel lblZaposlenik = new JLabel("Zaposlenik:");
 		lblZaposlenik.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -186,6 +186,12 @@ public class Zalbe {
 		});
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmzalbe.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
