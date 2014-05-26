@@ -111,3 +111,16 @@ DEFAULT CHARACTER SET = utf8;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+-- -----------------------------------------------------
+-- Data for table `HaJskontacemo`.`tblZaposlenici`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `HaJskontacemo`;
+INSERT INTO `HaJskontacemo`.`tblZaposlenici` (`id`, `imeIPrezime`, `telefon`, `email`, `adresa`, `korisnickoIme`, `sifra`, `privilegija`) VALUES (1, 'Administrator', '/', 'admin@HaJskontacemo.com', 'HaJskontacemo', 'admin', '4259031dc85f451a2b7731e8f5ea93193dad63ad', 'Administrator');
+INSERT INTO `HaJskontacemo`.`tblZaposlenici` (`id`, `imeIPrezime`, `telefon`, `email`, `adresa`, `korisnickoIme`, `sifra`, `privilegija`) VALUES (2, 'Operater', '/', 'operater@HaJskontacemo.com', 'HaJskontacemo', 'operater', '4259031dc85f451a2b7731e8f5ea93193dad63ad', 'Operater');
+INSERT INTO `HaJskontacemo`.`tblZaposlenici` (`id`, `imeIPrezime`, `telefon`, `email`, `adresa`, `korisnickoIme`, `sifra`, `privilegija`) VALUES (3, 'Servviser', '/', 'serviser@HaJskontacemo.com', 'HaJskontacemo', 'serviser', '4259031dc85f451a2b7731e8f5ea93193dad63ad', 'Serviser');
+
+COMMIT;
+
