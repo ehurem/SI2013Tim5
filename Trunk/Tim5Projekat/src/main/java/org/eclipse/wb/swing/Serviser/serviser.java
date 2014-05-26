@@ -321,9 +321,17 @@ public class serviser {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Code is here
+				//list.getSelectedValue()
+				String id_zahtjeva = String.valueOf(list.getSelectedValue());
+	//			Zahtjev z = (Zahtjev) list.getSelectedValue();
+				//String info[] = new String[2];
+				//info[0] = String.valueOf(z.getID());
+				//info[0] = "2";
+				//info[1] = "1";
 				ZatvaranjeZahtjeva jf = new ZatvaranjeZahtjeva();
 				frmInterfejsZaServisera.dispose();
-				jf.Show();
+				jf.main(null, id_zahtjeva);
+				//jf.Show();
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);

@@ -40,11 +40,15 @@ public class ZatvaranjeZahtjeva {
 	private JRadioButton rdbtnNe;
 	
 	private JTextArea textArea;
+	
+	public static String zahtjev_id;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, String idzahtjeva) {
+		zahtjev_id = idzahtjeva;
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -56,6 +60,22 @@ public class ZatvaranjeZahtjeva {
 			}
 		});
 	}
+	
+	/*public static void main(long id) {
+		//zahtjev_id = args.length
+		long a = id;
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ZatvaranjeZahtjeva window = new ZatvaranjeZahtjeva();
+					window.frmZatvaranjeZahtjeva.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	*/
 	public void Show()
 	{
 		frmZatvaranjeZahtjeva.setVisible(true);
@@ -75,6 +95,12 @@ public class ZatvaranjeZahtjeva {
 		PopuniPodatke();
 	}
 	
+	/*public ZatvaranjeZahtjeva() {
+		
+		initialize();
+		//PopuniPodatke(id);
+	}*/
+	
 	public static void infoBox(String infoMessage, String naslov)
     {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
@@ -88,8 +114,27 @@ public class ZatvaranjeZahtjeva {
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			Transaction t = session.beginTransaction();
 			
-			Query queryZahtjev = session.createQuery("from Zahtjev where _status='U izvrsavanju'");
-			List<Zahtjev> listZahtjev = (List<Zahtjev>)queryZahtjev.list();
+			String idZahtjeva = zahtjev_id;
+			
+			Query queryZahtjev;
+			Query queryZahtjevid;
+			List<Zahtjev> listZahtjev;
+			
+			if(idZahtjeva!=null)
+			{
+				queryZahtjevid = session.createQuery("from Zahtjev where id='"+idZahtjeva+"'");
+				listZahtjev = (List<Zahtjev>)queryZahtjevid.list();
+			}
+			else
+			{
+				queryZahtjev = session.createQuery("from Zahtjev where _status='U izvrsavanju'");
+				listZahtjev = (List<Zahtjev>)queryZahtjev.list();
+			}
+			
+			//
+			
+			
+			//List<Zahtjev> listZahtjev = (List<Zahtjev>)queryZahtjevid.list();
 			
 			String s = String.valueOf(listZahtjev.get(0).getID());
 			String s1 = String.valueOf(listZahtjev.get(0).getKlijent());
@@ -132,6 +177,8 @@ public class ZatvaranjeZahtjeva {
         
         
 	}
+	
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -146,9 +193,19 @@ public class ZatvaranjeZahtjeva {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
+		
+		//editovanje zahtjeva
 		JButton btnZatvoriZahtjev = new JButton("Zatvori zahtjev");
 		btnZatvoriZahtjev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					Transaction t = session.beginTransaction();
+				}
+				catch (Exception ex) {
+					infoBox(ex.toString(), "UZBUNA");
+				}
+				
 				serviser s = new serviser();
 				frmZatvaranjeZahtjeva.dispose();
 				s.Show();
