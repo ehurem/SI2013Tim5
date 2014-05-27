@@ -19,21 +19,11 @@ import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Formatter;
 
-import org.eclipse.wb.swing.Administrator.*;
-import org.eclipse.wb.swing.Operater.*;
-import org.eclipse.wb.swing.Serviser.*;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
-import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
-import Models.*;
+
+
+import controller.Ulaz;
 
 public class Login {
 
@@ -63,46 +53,15 @@ public class Login {
 	public Login() {
 		initialize();
 	}
-
-	public static void infoBox(String infoMessage, String naslov)
-    {
-        JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
-    }
-	public static String encryptPassword(String password)
-	{
-	    String sha1 = "";
-	    try
-	    {
-	        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-	        crypt.reset();
-	        crypt.update(password.getBytes("UTF-8"));
-	        sha1 = byteToHex(crypt.digest());
-	    }
-	    catch(NoSuchAlgorithmException e)
-	    {
-	        e.printStackTrace();
-	    }
-	    catch(UnsupportedEncodingException e)
-	    {
-	        e.printStackTrace();
-	    }
-	    return sha1;
-	}
-	public static String byteToHex(final byte[] hash)
-	{
-	    Formatter formatter = new Formatter();
-	    for (byte b : hash)
-	    {
-	        formatter.format("%02x", b);
-	    }
-	    String result = formatter.toString();
-	    formatter.close();
-	    return result;
-	}
 	
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
+	public static void infoBox(String infoMessage, String naslov)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
+    }
 	private void initialize() {
 		frmLogin = new JFrame();
 		frmLogin.setResizable(false);
@@ -116,42 +75,12 @@ public class Login {
 		JButton btnPrijava = new JButton("Prijava");
 		btnPrijava.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String username = t_korisnickoIme.getText();
-				@SuppressWarnings("deprecation")
-				String password = t_sifra.getText();
-				if (username.equals("") || password.equals("")) infoBox("Pogrešni podaci za prijavu", "Greška");
-				else {
-					Session session = HibernateUtil.getSessionFactory().openSession();
-					try {
-						Transaction t = session.beginTransaction();
-						Criteria criteria = session.createCriteria(Zaposlenik.class);
-						criteria.add(Restrictions.eq("_korisnickoIme", username));
-						Zaposlenik zaposlenik = (Zaposlenik) criteria.uniqueResult();
-						if (zaposlenik != null && zaposlenik.getKorisnickaSifra().equals(encryptPassword(password)))  {
-							if (zaposlenik.getPrivilegija().equals("Administrator"))						
-								Main.main(null, zaposlenik.getId());
-							else if (zaposlenik.getPrivilegija().equals("Operater"))
-								MainOperater.main(null, zaposlenik.getId());
-							else if (zaposlenik.getPrivilegija().equals("Serviser"))
-								serviser.main(null, zaposlenik.getId());
-						}
-						else infoBox ("Unijeli ste neispravne korisnicke podatke", null);
-						//infoBox (encryptPassword(t_sifra.getText()), t_korisnickoIme.getText());
-						t.commit();
-					}
-					catch (Exception ex) {
-						infoBox(ex.toString(), "Greška");
-					}
-					finally {
-						if (session != null) 
-							try {
-								session.close();
-							}
-							catch (Exception e2) {
-								infoBox(e2.toString(), "Greška");
-							}
-					}
-					
+				try {
+					Long id = Ulaz.provjeraUlaznihPodataka(t_korisnickoIme, t_sifra);
+					if (id == 0) throw new Exception("Niste logovani");
+					org.eclipse.wb.swing.Administrator.Main.main(null, id);
+				} catch (Exception e1) {
+					infoBox(e1.toString(), "Greška");
 				}
 			}
 		});
