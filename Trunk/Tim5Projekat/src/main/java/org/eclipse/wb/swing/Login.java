@@ -78,7 +78,7 @@ public class Login {
 				try {
 					Ulaz ulaz = new Ulaz();
 					String id = Ulaz.provjeraUlaznihPodataka(t_korisnickoIme, t_sifra);
-					infoBox(ulaz.get_zaposlenik() + "", null);
+					//infoBox(ulaz.get_zaposlenik() + "", null);
 					if (id == null) throw new Exception("Niste logovani");
 					else if (id == "Administrator") org.eclipse.wb.swing.Administrator.Main.main(null, ulaz.get_zaposlenik());
 					else if (id == "Serviser") org.eclipse.wb.swing.Serviser.serviser.main(null, ulaz.get_zaposlenik());

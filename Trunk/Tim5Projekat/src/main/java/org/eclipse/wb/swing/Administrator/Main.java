@@ -187,6 +187,7 @@ public class Main {
 		t_imeIPrezime.setColumns(10);
 		
 		t_datumRodjenja = new JTextField();
+		t_datumRodjenja.setText("YYYY-MM-DD");
 		t_datumRodjenja.setColumns(10);
 		
 		t_mjestoStanovanja = new JTextField();
