@@ -1,6 +1,7 @@
 package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
+import java.awt.Point;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class Zalbe {
 	private JFrame frmzalbe;
 	//private List<Zalba> listZalbe;
 	private Long id;
-	
+	String komentari[]=null;
 	
 
 	private JTable table;
@@ -150,6 +151,7 @@ public class Zalbe {
 								
 								String imeKlijenta = (klijenti.get(i)).get_imeIPrezime();
 								String komentar = listZalbe.get(i).getKomentar();
+								komentari[i]=komentar;
 								Date datum = listZalbe.get(i).getDatumPodnosenja();
 								tmodel.addRow(new Object[] { imeKlijenta, komentar, datum});
 							}
@@ -172,7 +174,18 @@ public class Zalbe {
 				
 		});
 		
-		
+		table.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent me) {
+		        JTable table =(JTable) me.getSource();
+		        Point p = me.getPoint();
+		        int row = table.rowAtPoint(p);
+		        if (me.getClickCount() == 2) {
+		        	
+		            Komentar forma1 = new Komentar();
+		            forma1.main(null,komentari[row-1]);
+		        }
+		    }
+		});
 		
 		
 		
@@ -186,12 +199,7 @@ public class Zalbe {
 		});
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				
-			}
-		});
+		
 		GroupLayout groupLayout = new GroupLayout(frmzalbe.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
