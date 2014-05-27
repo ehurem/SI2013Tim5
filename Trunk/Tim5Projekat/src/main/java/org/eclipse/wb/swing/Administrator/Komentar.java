@@ -49,7 +49,7 @@ public class Komentar {
 		frmKomentar.setResizable(false);
 		frmKomentar.setTitle("Komentar");
 		frmKomentar.setBounds(100, 100, 322, 247);
-		frmKomentar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmKomentar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setText(komentar);
