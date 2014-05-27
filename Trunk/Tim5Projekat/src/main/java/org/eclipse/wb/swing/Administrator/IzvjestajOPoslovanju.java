@@ -43,6 +43,9 @@ public class IzvjestajOPoslovanju {
 	private ArrayList<Zaposlenik> zaposlenici;
 	private static int broj;
     private Zaposlenik z;
+    private static int otvoreni;
+    private static int zatvoreni;
+    private static int ukupno;
 
 
 	/**
@@ -53,6 +56,7 @@ public class IzvjestajOPoslovanju {
 			public void run() {
 				try {
 					broj=broj_sedmice+1;
+					otvoreni=zatvoreni=ukupno=0;
 					IzvjestajOPoslovanju window = new IzvjestajOPoslovanju();
 					window.frmIzvjestajOPoslovanju.setVisible(true);
 				} catch (Exception e) {
@@ -115,24 +119,34 @@ public class IzvjestajOPoslovanju {
 		JLabel label = new JLabel("Ukupno:");
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		//za potrebe prototipa uneseno, ina�e se ra�una
-        textField = new JTextField("3");
+		//racunanje sumarnih podataka
+		for (int i=0;i<zahtjevi.size();i++){
+			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
+				ukupno++;
+				if (zahtjevi.get(i).getStatus()=="Otvoren") {
+					otvoreni++;				
+				}
+				if (zahtjevi.get(i).getStatus()=="Zatvoren") {
+					zatvoreni++;
+			}
+		}	
+		
+        textField = new JTextField(ukupno);
 		textField.setEditable(false);
 		textField.setColumns(10);
 		
 		JLabel label_1 = new JLabel("Zatvorenih:");
 		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		//za potrebe prototipa uneseno, ina�e se ra�una
-		textField_1 = new JTextField("2");
+		textField_1 = new JTextField(zatvoreni);
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
 		
 		JLabel label_2 = new JLabel("Otvorenih:");
 		label_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		//za potrebe prototipa uneseno, ina�e se ra�una
-		textField_2 = new JTextField("1");
+		textField_2 = new JTextField(otvoreni);
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
