@@ -1,11 +1,6 @@
 package org.eclipse.wb.swing.Operater;
 
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.TextField;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -20,18 +15,10 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JTextField;
 
 import Models.*;
-
-import org.eclipse.wb.swing.Operater.MainOperater;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import controller.KontrolerKlijent;
-import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+import controller.DodavanjeKlijenta;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class DodajKlijenta {
 
@@ -43,7 +30,7 @@ public class DodajKlijenta {
 	
 	private static Klijent _klijent;
 	
-	private static KontrolerKlijent _kontroler;
+	private static DodavanjeKlijenta _kontroler;
 	
 
 	/**
@@ -52,6 +39,7 @@ public class DodajKlijenta {
 	public static void main(String[] args, final Klijent klijent) {
 		
 		set_klijent(klijent);
+		_kontroler = new DodavanjeKlijenta();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -81,61 +69,6 @@ public class DodajKlijenta {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
 	
-	private static Boolean validirajPrazno(JTextField t1) {
-		
-			if(t1.getText().equals(""))
-			{
-				t1.setBackground(new Color(216,210,139));
-				return false;
-			}
-			else
-			{
-				t1.setBackground(new Color(255,255,255));
-			}
-			
-		return true;
-		
-		
-	}
-	
-	private Boolean validirajTelefon(JTextField t)
-	{
-		
-	      Pattern pattern = Pattern.compile("\\d{3}/\\d{3}-\\d{3}");
-	      Matcher matcher = pattern.matcher(t.getText());
-	 
-	      if (matcher.matches()) {
-	    	  
-	    	  t.setBackground(new Color(255,255,255));
-	    	  return true;
-	      }
-	      else
-	      {
-	    	  infoBox("Pogrešan format broja telefona. Prihvaćeni format je xxx/xxx-xxx", "Nevalidan broj telefona");
-	    	  t.setBackground(new Color(216,210,139));
-	    	  return false;
-	      }
-	}
-	
-	private Boolean validirajMail(JTextField t)
-	{
-		
-		 Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-	      Matcher matcher = pattern.matcher(t.getText());
-	 
-	      if (matcher.matches()) {
-	    	  
-	    	  t.setBackground(new Color(255,255,255));
-	    	  return true;
-	      }
-	      else
-	      {
-	    	  t.setBackground(new Color(216,210,139));
-	    	  infoBox("Pogrešan format e-maila. Prihvaćeni format je abc1@abc2.ab", "Nevalidan e-mail");
-	    	  return false;
-	      }
-	}
 	private void initialize() {
 		frmUnosNovogKlijenta = new JFrame();
 		frmUnosNovogKlijenta.setResizable(false);
@@ -151,7 +84,17 @@ public class DodajKlijenta {
 		btnUnesi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				_kontroler.unesiKlijentaUBazu(_klijent);
+				try {
+					Long vratio =_kontroler.unesiKlijentaUBazu(_klijent, textField, textField_2, textField_3, textField_1 );
+					
+					if(vratio != 0){
+						infoBox("Uspješno unesen klijent sa id:"+Long.toString(vratio), "Unos OK");
+						frmUnosNovogKlijenta.dispose();
+					}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					infoBox(e1.toString(), "Greška");
+				}
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(frmUnosNovogKlijenta.getContentPane());
@@ -189,42 +132,18 @@ public class DodajKlijenta {
 		lblEmailAdresa.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		textField = new JTextField();
-		textField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				validirajPrazno(textField);
-			}
-		});
 		textField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				validirajPrazno(textField_1);
-			}
-		});
-		
+		textField_1 = new JTextField();		
 		
 		textField_1.setColumns(10);
 		
 		
 		textField_2 = new JTextField();
-		textField_2.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				validirajPrazno(textField_2);
-			}
-		});
 		textField_2.setColumns(10);
 		
 		textField_3 = new JTextField();
-		textField_3.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				validirajPrazno(textField_3);
-			}
-		});
+		
 		textField_3.setColumns(10);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
