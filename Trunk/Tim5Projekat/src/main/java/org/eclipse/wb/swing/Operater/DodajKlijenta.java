@@ -25,6 +25,7 @@ import org.eclipse.wb.swing.Operater.MainOperater;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import controller.KontrolerKlijent;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 import java.awt.event.ActionListener;
@@ -41,6 +42,8 @@ public class DodajKlijenta {
 	private JTextField textField_3;
 	
 	private static Klijent _klijent;
+	
+	private static KontrolerKlijent _kontroler;
 	
 
 	/**
@@ -148,40 +151,7 @@ public class DodajKlijenta {
 		btnUnesi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Session sesija = HibernateUtil.getSessionFactory().openSession(); 
-				
-				Transaction transakcija = sesija.beginTransaction(); 
-				
-				try
-				{
-					_klijent.set_imeIPrezime(textField.getText());
-					_klijent.setBrojTelefona(textField_2.getText());
-					_klijent.setEmail(textField_3.getText());
-					_klijent.set_adresa(textField_1.getText());		
-					
-					if(validirajPrazno(textField) && validirajPrazno(textField_1) && validirajPrazno(textField_2) && validirajPrazno(textField_3) 
-							&& validirajTelefon(textField_2) && validirajMail(textField_3))
-					{
-						Long id = (Long)sesija.save(_klijent); 
-						transakcija.commit(); 
-					
-						infoBox("Klijent " + get_klijent().get_imeIPrezime() + " je unesen", "UnesenKLijent");
-						frmUnosNovogKlijenta.dispose();
-					}
-					else if (!validirajPrazno(textField) || !validirajPrazno(textField_1) || !validirajPrazno(textField_2) || !validirajPrazno(textField_3))
-					{
-						infoBox("Svi unosi moraju biti prisutni !", "Prazno polje");
-					}
-					
-				}
-				catch(Exception e1)
-				{
-					infoBox(e1.getMessage(), "Greska !");
-				}
-				finally
-				{
-					sesija.close();
-				}
+				_kontroler.unesiKlijentaUBazu(_klijent, );
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(frmUnosNovogKlijenta.getContentPane());
