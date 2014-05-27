@@ -31,6 +31,7 @@ import org.hibernate.Transaction;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import controller.UnosZahtjeva;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.*;
 
@@ -63,14 +64,14 @@ public class MainOperater {
 	private JFrame frmInterfejsZaOperatera;
 	private JTextField textField_2;
 	
+	//zaposlenik koji je logovan na sistem
 	private static Long _zaposlenik;
-	//private static Zaposlenik _zaposlenik2;
-	//private static Zalba _zalba;
 	
-	//private static ArrayList<Klijent>_klijenti;
-	//private static ArrayList<Zahtjev>_zahtjevi;
 	//the client we make if there is no one in the database already
 	private static Klijent _noviKlijent;
+	
+	//kontroler
+	private static UnosZahtjeva _kontroler;
 	
 	
 	
@@ -81,6 +82,7 @@ public class MainOperater {
 	public static void main(String[] args, Long zaposlenik) {
 		
 		_zaposlenik = zaposlenik;
+		_kontroler = new UnosZahtjeva();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -109,24 +111,6 @@ public class MainOperater {
     {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
-	
-	
-	private static Boolean validirajPrazno(JTextField t1) {
-		
-		if(t1.getText().equals(""))
-		{
-			t1.setBackground(new Color(216,210,139));
-			return false;
-		}
-		else
-		{
-			t1.setBackground(new Color(255,255,255));
-		}
-		
-	return true;
-	
-	
-	}
 	
 	private static Boolean validirajPrazno(JTextArea t1) {
 		
@@ -243,20 +227,7 @@ public class MainOperater {
 		label_4.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		final JTextArea textArea = new JTextArea();
-		textArea.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				validirajPrazno(textArea);
-			}
-		});
-		
 		textField_2 = new JTextField();
-		textField_2.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				validirajPrazno(textField_2);
-			}
-		});
 		textField_2.setColumns(10);
 		
 		JPanel panel_3 = new JPanel();
@@ -272,66 +243,37 @@ public class MainOperater {
 		grupaGarancija.add(radioButton);
 		grupaGarancija.add(radioButton_1);
 		
+		final JComboBox comboBox_3 = new JComboBox();
+		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
+		
+		
 		JButton button = new JButton("Unesi");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
-				Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
+				Enumeration elementiGrupe = grupaGarancija.getElements();
+				Boolean garancija_DA = false;
+				while(elementiGrupe.hasMoreElements()){
+					JRadioButton dugme = (JRadioButton)elementiGrupe.nextElement();
+					if(dugme.isSelected()){
+						if(dugme == radioButton) garancija_DA = true;
+						break;
+					}
+				}
 				
-				try
-				{				
-					Zahtjev noviZahtjev = new Zahtjev();
-										
-					noviZahtjev.setKlijent(((Klijent)comboBox_1.getSelectedItem()).getId());
-					noviZahtjev.setTipUredaja(textField_2.getText());
-
-					Enumeration elementiGrupe = grupaGarancija.getElements();
-					while(elementiGrupe.hasMoreElements()){
-						JRadioButton dugme = (JRadioButton)elementiGrupe.nextElement();
-						if(dugme.isSelected()){
-							if(dugme == radioButton) noviZahtjev.setGarancija(true);
-							else noviZahtjev.setGarancija(false);
-							break;
-						}
-					}
-					
-					noviZahtjev.setKomentar(textArea.getText());
-					
-					
-					Date dat = new Date(System.currentTimeMillis());
-					
-					noviZahtjev.setDatumOtvaranja(dat);
-					
-					noviZahtjev.set_cijena(0);
-					noviZahtjev.setPrioritet(1);
-					noviZahtjev.setStatus("otvoren");
-					
-					noviZahtjev.setZaposlenik(_zaposlenik);
-					//get_zahtjevi().add(noviZahtjev);
-					
-					if(validirajPrazno(textField_2) && validirajPrazno(textArea))
+				try {
+					Long vratio = _kontroler.unesiZahtjevUBazu(_zaposlenik, comboBox_1, comboBox_3, textField_2, garancija_DA, textArea);
+					if(vratio != 0)
 					{
-						Long id = (Long)sesija.save(noviZahtjev); //spašava u bazu
-						
-						transakcija.commit(); //završava transakciju
-						
-						infoBox("Zahtjev "+id+ " uspješno unesen!", "Zahtjev unesen");
+						infoBox("Zahtjev"+Long.toString(vratio)+"unesen", "Unesen zahtjev");
 					}
-					
-					else
-					{
-						infoBox("Svi unosi moraju biti prisutni !", "Prazno polje");
-					}					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				catch(Exception izuzetak)
-				{
-					infoBox(izuzetak.getMessage(), "Greska u unosu !");
-				}
-				finally
-				{
-					sesija.close();
-				}
+				
+				
+				
 			}
 		});
 		
@@ -358,8 +300,6 @@ public class MainOperater {
 		JLabel lblPrioritet = new JLabel("Prioritet:");
 		lblPrioritet.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		JComboBox comboBox_3 = new JComboBox();
-		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
 		
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
