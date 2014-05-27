@@ -21,7 +21,7 @@ public class Komentar {
 			public void run() {
 				try {
 					
-					Komentar window = new Komentar(komentar);
+					Komentar window = new Komentar();
 					window.frmKomentar.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,8 +33,8 @@ public class Komentar {
 	/**
 	 * Create the application.
 	 */
-	public Komentar(String kom){
-		komentar = kom;
+	public Komentar(){
+		
 		initialize();
 		
 	}
