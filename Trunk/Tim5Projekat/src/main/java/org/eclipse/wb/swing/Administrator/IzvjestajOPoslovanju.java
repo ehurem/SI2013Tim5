@@ -107,7 +107,7 @@ public class IzvjestajOPoslovanju {
 		frmIzvjestajOPoslovanju.setResizable(false);
 		frmIzvjestajOPoslovanju.setTitle("Izvje\u0161taj o poslovanju");
 		frmIzvjestajOPoslovanju.setBounds(100, 100, 452, 394);
-		frmIzvjestajOPoslovanju.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmIzvjestajOPoslovanju.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		
@@ -120,17 +120,24 @@ public class IzvjestajOPoslovanju {
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		//racunanje sumarnih podataka
-		for (int i=0;i<zahtjevi.size();i++){
-			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
-			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
+		try {
+		for (int m=0;m<zahtjevi.size();m++){
+			Calendar n = dateToCalendar(zahtjevi.get(m).getDatumZatvaranja());
+			if (n.get(Calendar.WEEK_OF_YEAR)==broj) {
 				ukupno++;
-				if (zahtjevi.get(i).getStatus()=="Otvoren") {
+				if (zahtjevi.get(m).getStatus()=="Otvoren") {
 					otvoreni++;				
 				}
-				if (zahtjevi.get(i).getStatus()=="Zatvoren") {
+				if (zahtjevi.get(m).getStatus()=="Zatvoren") {
 					zatvoreni++;
 			}
-		}	
+		}}
+		}
+		catch(Exception ex)
+		{
+			JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+		}
+		
 		
         textField = new JTextField(ukupno);
 		textField.setEditable(false);
@@ -257,6 +264,7 @@ public class IzvjestajOPoslovanju {
 				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
 		);
 		frmIzvjestajOPoslovanju.getContentPane().setLayout(groupLayout);
+		try {
 		//ispis zahtjeva u tabelu
 				for (int i=0;i<zahtjevi.size();i++){
 					Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
@@ -269,6 +277,11 @@ public class IzvjestajOPoslovanju {
 						}
 						tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		}
 				}	
+		}
+		catch(Exception ex)
+		{
+			JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+		}
 		
 	}
 

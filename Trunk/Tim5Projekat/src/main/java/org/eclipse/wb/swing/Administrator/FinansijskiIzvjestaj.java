@@ -94,19 +94,26 @@ public class FinansijskiIzvjestaj {
 		frmFinansijskiIzvjestaj.setResizable(false);
 		frmFinansijskiIzvjestaj.setTitle("Finansijski izvjestaj");
 		frmFinansijskiIzvjestaj.setBounds(100, 100, 367, 346);
-		frmFinansijskiIzvjestaj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmFinansijskiIzvjestaj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
 		JLabel lblUkupnaZaradaOdabrane = new JLabel("Ukupna zarada odabrane sedmice:");
 		
 		//izracunavanje ukupne zarade za prikazane zahtjeve
+		try {
 		for (int i=0;i<zahtjevi.size();i++){
 			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
 			zarada += zahtjevi.get(i).get_cijena();
 			}
 		}
+		}
+		catch(Exception ex)
+		{
+			JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+		}
+		
 		
 		textField = new JTextField(Double.toString(zarada));
 		textField.setEditable(false);
@@ -152,11 +159,18 @@ public class FinansijskiIzvjestaj {
 		scrollPane.setViewportView(table);
 		frmFinansijskiIzvjestaj.getContentPane().setLayout(groupLayout);
 		//ispis zahtjeva u tabelu
+		try {
 		for (int i=0;i<zahtjevi.size();i++){
 			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
 				tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).get_cijena())} );		}
 		}	
+		}
+		catch(Exception ex)
+		{
+			JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+		}
+		
 	
 	}
 
