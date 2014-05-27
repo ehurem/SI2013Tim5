@@ -76,9 +76,13 @@ public class Login {
 		btnPrijava.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Long id = Ulaz.provjeraUlaznihPodataka(t_korisnickoIme, t_sifra);
-					if (id == 0) throw new Exception("Niste logovani");
-					org.eclipse.wb.swing.Administrator.Main.main(null, id);
+					Ulaz ulaz = new Ulaz();
+					String id = Ulaz.provjeraUlaznihPodataka(t_korisnickoIme, t_sifra);
+					infoBox(ulaz.get_zaposlenik() + "", null);
+					if (id == null) throw new Exception("Niste logovani");
+					else if (id == "Administrator") org.eclipse.wb.swing.Administrator.Main.main(null, ulaz.get_zaposlenik());
+					else if (id == "Serviser") org.eclipse.wb.swing.Serviser.serviser.main(null, ulaz.get_zaposlenik());
+					else if (id == "Operater") org.eclipse.wb.swing.Operater.MainOperater.main(null, ulaz.get_zaposlenik());
 				} catch (Exception e1) {
 					infoBox(e1.toString(), "Greška");
 				}

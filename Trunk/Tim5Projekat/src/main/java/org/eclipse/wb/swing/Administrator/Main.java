@@ -51,6 +51,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import controller.DodavanjeZaposlenika;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 import java.awt.event.MouseAdapter;
@@ -83,37 +84,6 @@ public class Main {
 	private static String [] niz = new String[1000];
 	private static int [] brojevi = new int [Calendar.getInstance().get(Calendar.WEEK_OF_YEAR)];
 	private static Calendar sada;
-	public static String encryptPassword(String password)
-	{
-		String sha1 = "";
-	    try
-	    {
-	        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-	        crypt.reset();
-	        crypt.update(password.getBytes("UTF-8"));
-	        sha1 = byteToHex(crypt.digest());
-	    }
-	    catch(NoSuchAlgorithmException e)
-	    {
-	        e.printStackTrace();
-	    }
-	    catch(UnsupportedEncodingException e)
-	    {
-	        e.printStackTrace();
-	    }
-	    return sha1;
-	}
-	public static String byteToHex(final byte[] hash)
-	{
-	    Formatter formatter = new Formatter();
-	    for (byte b : hash)
-	    {
-	        formatter.format("%02x", b);
-	    }
-	    String result = formatter.toString();
-	    formatter.close();
-	    return result;
-	}
 	/**
 	 * Launch the application.
 	 */
@@ -393,12 +363,6 @@ public class Main {
 		
 		final JComboBox c_i_ImeIPrezime = new JComboBox(niz);
 		
-		
-		
-
-		
-		
-
 		
 		c_i_ImeIPrezime.addPopupMenuListener(new PopupMenuListener() {
 			public void popupMenuCanceled(PopupMenuEvent arg0) {
@@ -721,86 +685,13 @@ public class Main {
 		});
 		btnUnesi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				try {
+					Long id = DodavanjeZaposlenika.DodajZaposlenik(t_imeIPrezime, t_mjestoStanovanja, t_brojTelefona, t_emailAdresa, t_korisnickaSifra, t_korisnickoIme, c_i_Privilegije, t_datumRodjenja);
 					
-					Session session = HibernateUtil.getSessionFactory().openSession();
-					
-					try {
-						Transaction t = session.beginTransaction();
-						Zaposlenik novi = new Zaposlenik();
-						novi.set_imeIPrezime(t_imeIPrezime.getText());
-						novi.setAdresa(t_mjestoStanovanja.getText());
-						novi.setBrojTelefona(t_brojTelefona.getText());
-						novi.setEmail(t_emailAdresa.getText());
-						novi.setKorisnickaSifra(encryptPassword(t_korisnickaSifra.getText()));
-						novi.setKorisnickoIme(t_korisnickoIme.getText());
-						novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
-						
-						Pattern pattern = Pattern.compile("^[A-Z]{1}[a-z]{2,}\\s[A-Z][a-z]{2,}$");
-						Matcher matcher = pattern.matcher(novi.get_imeIPrezime());
-						boolean dobro = matcher.matches();
-						if (!dobro) {
-							infoBox("Ime i prezime nisu u dobrom formatu" , "Uzbuna");
-							return;
-						}
-						if (novi.getEmail().equals("")) {
-							infoBox("Email nije u dobrom formatu" , "Uzbuna");
-							return;
-						}
-						if (novi.getAdresa().equals("")) {
-							infoBox("Adresa nije u dobrom formatu" , "Uzbuna");
-							return;
-						}
-						
-						if (novi.getBrojTelefona().equals("")) {
-							infoBox("Broj telefona nije u dobrom formatu" , "Uzbuna");
-							return;
-						}
-						
-						if (t_korisnickaSifra.equals("")) {
-							infoBox("Korisnicka sifra nije u dobrom formatu" , "Uzbuna");
-							return;
-						}
-						if (novi.getKorisnickoIme().equals("")) {
-							infoBox("Korisnicko ime nije u dobrom formatu" , "Uzbuna");
-							return;
-						}
-						if (t_datumRodjenja.getText().equals("")) {
-							infoBox("Datum rodjenja nije u dobrom formatu" , "Uzbuna");
-							return;
-						}
-						
-						java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-						java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
-						@SuppressWarnings("deprecation")
-						Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
-						//infoBox(datum.toString(), null);
-						
-						novi.setId( (Long ) session.save(novi));
-						
-						novi.set_datumRodjenja(datum);
-						
-						infoBox("Dodan zaposlenik: " + novi.getId() + "", "Dodavanje uspješno");
-						t.commit();
-					}
-					catch (Exception e2) {
-						infoBox(e2.toString(), "Greška");
-					}
-					finally {
-						if (session != null) 
-							try {
-								session.close();
-							}
-							catch (Exception e3) {
-								infoBox(e3.toString(), "Greška");
-							}
-					}
-					
-					
-				}
-				catch (Exception ex) {
-					infoBox(ex.toString(), "Greška");
+					if (id == 0) throw new Exception("Nešto je krenulo po zlu!!!");
+					else infoBox("Uspješno dodan novi zaposlenik", "Poruka");
+				} catch (Exception e) {
+					infoBox(e.toString(), "Greška");
 				}
 			}
 		});
@@ -883,7 +774,7 @@ public class Main {
 						novi.setEmail(t_i_email.getText());
 							
 						if(!t_i_korisnickaSifra.getText().equals("")){
-							novi.setKorisnickaSifra(encryptPassword(t_i_korisnickaSifra.getText()));
+							novi.setKorisnickaSifra(DodavanjeZaposlenika.encryptPassword(t_i_korisnickaSifra.getText()));
 						}
 							
 						novi.setKorisnickoIme(t_i_korisnickoIme.getText());
@@ -908,7 +799,7 @@ public class Main {
 					novi.setEmail(t_i_email.getText());
 						
 					if(!t_i_korisnickaSifra.getText().equals("")){
-						novi.setKorisnickaSifra(encryptPassword(t_i_korisnickaSifra.getText()));
+						novi.setKorisnickaSifra(DodavanjeZaposlenika.encryptPassword(t_i_korisnickaSifra.getText()));
 					}
 						
 					novi.setKorisnickoIme(t_i_korisnickoIme.getText());

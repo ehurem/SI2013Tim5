@@ -19,9 +19,12 @@ import Models.Zaposlenik;
 
 public class Ulaz {
 	
-	public static Long provjeraUlaznihPodataka(JTextField t_korisnickoIme, JTextField t_sifra) throws Exception {
+	private static long _zaposlenik;
+	
+	public static String provjeraUlaznihPodataka(JTextField t_korisnickoIme, JTextField t_sifra) throws Exception {
 		String username = t_korisnickoIme.getText();
 		String password = t_sifra.getText();
+		String id = null;
 		if (username.equals("") || password.equals("")) throw new Exception("Pogrešni podaci za prijavu");
 		else {
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -32,11 +35,12 @@ public class Ulaz {
 				Zaposlenik zaposlenik = (Zaposlenik) criteria.uniqueResult();
 				if (zaposlenik != null && zaposlenik.getKorisnickaSifra().equals(encryptPassword(password)))  {
 					if (zaposlenik.getPrivilegija().equals("Administrator"))						
-						Main.main(null, zaposlenik.getId());
+						id = "Administrator";
 					else if (zaposlenik.getPrivilegija().equals("Operater"))
-						MainOperater.main(null, zaposlenik.getId());
+						id = "Operater";
 					else if (zaposlenik.getPrivilegija().equals("Serviser"))
-						return zaposlenik.getId();
+						id = "Serviser";
+					set_zaposlenik(zaposlenik.getId());
 				}
 				else {
 					throw new Exception("Unijeli ste neispravne korisnicke podatke");
@@ -58,7 +62,7 @@ public class Ulaz {
 					}
 			}
 		}
-		return new Long(0);
+		return id;
 	}
 	
 	public static String encryptPassword(String password)
@@ -91,6 +95,14 @@ public class Ulaz {
 	    String result = formatter.toString();
 	    formatter.close();
 	    return result;
+	}
+
+	public static long get_zaposlenik() {
+		return _zaposlenik;
+	}
+
+	public static void set_zaposlenik(long _zaposlenik) {
+		Ulaz._zaposlenik = _zaposlenik;
 	}
 	
 }
