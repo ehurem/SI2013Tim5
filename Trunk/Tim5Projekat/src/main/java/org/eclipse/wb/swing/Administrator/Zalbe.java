@@ -1,6 +1,7 @@
 package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
+import java.awt.Point;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,8 @@ public class Zalbe {
 	private JFrame frmzalbe;
 	//private List<Zalba> listZalbe;
 	private Long id;
-	String komentar;
+	String komentari[];
+
 	
 
 	private JTable table;
@@ -76,6 +78,7 @@ public class Zalbe {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		final String[] komentari = new String[100];
 		frmzalbe = new JFrame();
 		frmzalbe.setResizable(false);
 		frmzalbe.setTitle("Pregled \u017Ealbi");
@@ -128,8 +131,8 @@ public class Zalbe {
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				for(int i=0;i<tmodel.getRowCount();i++)
-					tmodel.removeRow(i);
+				
+					tmodel.setNumRows(0);
 				
 				Session session = HibernateUtil.getSessionFactory().openSession();
 				   try {
@@ -139,27 +142,34 @@ public class Zalbe {
 						
 						Zaposlenik z = (Zaposlenik) comboBox.getSelectedItem();
 						setId(z.getId());											
-						Query queryZalbe = session.createQuery("from Zalba where _zaposlenikId = "+id);
+						Query queryZalbe = session.createQuery("from Zalba where zaposlenik_id = "+id);
 						List<Zalba> listZalbe = (List<Zalba>) queryZalbe.list();
 						
 						
 						Query queryImeKlijenta = session.createQuery("from Klijent");
 						List<Klijent> klijenti = queryImeKlijenta.list();
+						
 						for(int i=0;i<listZalbe.size();i++){
-							if(listZalbe.get(i).get_klijent() == klijenti.get(i).getId()){
-								
-								String imeKlijenta = (klijenti.get(i)).get_imeIPrezime();
-								String komentar1 = listZalbe.get(i).getKomentar();
-								komentar = komentar1;
-								Date datum = listZalbe.get(i).getDatumPodnosenja();
-								tmodel.addRow(new Object[] { imeKlijenta, komentar1, datum});
+							String imeKlijenta=null;			
+							long idKlijenta = listZalbe.get(i).get_klijent();
+							for(int j=0;j<klijenti.size();j++)
+								if(klijenti.get(j).getId()==idKlijenta)
+									imeKlijenta=klijenti.get(j).get_imeIPrezime();
+							
+									String komentar = listZalbe.get(i).getKomentar();
+									komentari[i] = komentar;
+									Date datum = listZalbe.get(i).getDatumPodnosenja();
+									tmodel.addRow(new Object[] { imeKlijenta, komentar, datum});
 							}
-						}
+
 						
 						tr.commit();
 						
 						
 					}
+				   catch(NullPointerException ex){
+					   JOptionPane.showMessageDialog(table, "Ovdje");
+				   }
 					catch (Exception ex) {
 						JOptionPane.showMessageDialog(table, ex.toString());
 					}
@@ -173,8 +183,17 @@ public class Zalbe {
 				
 		});
 		
-		
-		
+		table.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent me) {
+		        JTable table =(JTable) me.getSource();
+		        Point p = me.getPoint();
+		        int row = table.rowAtPoint(p);
+		        if (me.getClickCount() == 2) {
+		            Komentar formaK = new Komentar();
+		            formaK.main(null, komentari[row]);
+		        }
+		    }
+		});
 		
 		
 		JButton btnOk = new JButton("Zatvori");
@@ -187,13 +206,7 @@ public class Zalbe {
 		});
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				Komentar forma = new Komentar(komentar);
-				forma.main(null, komentar);
-			}
-		});
+
 		GroupLayout groupLayout = new GroupLayout(frmzalbe.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -230,6 +243,7 @@ public class Zalbe {
 		scrollPane.setViewportView(table);
 		frmzalbe.getContentPane().setLayout(groupLayout);
 	}
+	
 	public Long getId() {
 		return id;
 	}
