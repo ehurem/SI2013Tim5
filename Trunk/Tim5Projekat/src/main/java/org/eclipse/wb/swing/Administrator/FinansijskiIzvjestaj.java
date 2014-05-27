@@ -111,7 +111,7 @@ public class FinansijskiIzvjestaj {
 		}
 		catch(Exception ex)
 		{
-			JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		
@@ -168,7 +168,7 @@ public class FinansijskiIzvjestaj {
 		}
 		catch(Exception ex)
 		{
-			JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 	

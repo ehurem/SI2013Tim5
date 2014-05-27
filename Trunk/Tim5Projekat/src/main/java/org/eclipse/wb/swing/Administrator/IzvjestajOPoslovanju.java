@@ -131,29 +131,30 @@ public class IzvjestajOPoslovanju {
 				if (zahtjevi.get(m).getStatus()=="Zatvoren") {
 					zatvoreni++;
 			}
-		}}
+		}
+        }
 		}
 		catch(Exception ex)
 		{
-			JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		
-        textField = new JTextField(ukupno);
+        textField = new JTextField(Integer.toString(ukupno));
 		textField.setEditable(false);
 		textField.setColumns(10);
 		
 		JLabel label_1 = new JLabel("Zatvorenih:");
 		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		textField_1 = new JTextField(zatvoreni);
+		textField_1 = new JTextField(Integer.toString(zatvoreni));
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
 		
 		JLabel label_2 = new JLabel("Otvorenih:");
 		label_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		textField_2 = new JTextField(otvoreni);
+		textField_2 = new JTextField(Integer.toString(otvoreni));
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -280,7 +281,7 @@ public class IzvjestajOPoslovanju {
 		}
 		catch(Exception ex)
 		{
-			JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 	}
