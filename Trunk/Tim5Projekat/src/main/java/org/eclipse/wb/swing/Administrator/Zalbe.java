@@ -42,7 +42,7 @@ public class Zalbe {
 	private JFrame frmzalbe;
 	//private List<Zalba> listZalbe;
 	private Long id;
-	String komentari[]=null;
+	String komentari[];
 	
 
 	private JTable table;
@@ -77,6 +77,7 @@ public class Zalbe {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		final String[] komentari = new String[100];
 		frmzalbe = new JFrame();
 		frmzalbe.setResizable(false);
 		frmzalbe.setTitle("Pregled \u017Ealbi");
@@ -129,8 +130,8 @@ public class Zalbe {
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				for(int i=0;i<tmodel.getRowCount();i++)
-					tmodel.removeRow(i);
+				
+					tmodel.setNumRows(0);
 				
 				Session session = HibernateUtil.getSessionFactory().openSession();
 				   try {
@@ -140,27 +141,34 @@ public class Zalbe {
 						
 						Zaposlenik z = (Zaposlenik) comboBox.getSelectedItem();
 						setId(z.getId());											
-						Query queryZalbe = session.createQuery("from Zalba where _zaposlenikId = "+id);
+						Query queryZalbe = session.createQuery("from Zalba where zaposlenik_id = "+id);
 						List<Zalba> listZalbe = (List<Zalba>) queryZalbe.list();
 						
 						
 						Query queryImeKlijenta = session.createQuery("from Klijent");
 						List<Klijent> klijenti = queryImeKlijenta.list();
+						
 						for(int i=0;i<listZalbe.size();i++){
-							if(listZalbe.get(i).get_klijent() == klijenti.get(i).getId()){
+							String imeKlijenta=null;			
+							long idKlijenta = listZalbe.get(i).get_klijent();
+							for(int j=0;j<klijenti.size();j++)
+								if(klijenti.get(j).getId()==idKlijenta)
+									imeKlijenta=klijenti.get(j).get_imeIPrezime();
+							
+									String komentar = listZalbe.get(i).getKomentar();
+									komentari[i] = komentar;
+									Date datum = listZalbe.get(i).getDatumPodnosenja();
+									tmodel.addRow(new Object[] { imeKlijenta, komentar, datum});
 								
-								String imeKlijenta = (klijenti.get(i)).get_imeIPrezime();
-								String komentar = listZalbe.get(i).getKomentar();
-								komentari[i]=komentar;
-								Date datum = listZalbe.get(i).getDatumPodnosenja();
-								tmodel.addRow(new Object[] { imeKlijenta, komentar, datum});
-							}
 						}
 						
 						tr.commit();
 						
 						
 					}
+				   catch(NullPointerException ex){
+					   JOptionPane.showMessageDialog(table, "Ovdje");
+				   }
 					catch (Exception ex) {
 						JOptionPane.showMessageDialog(table, ex.toString());
 					}
@@ -180,13 +188,11 @@ public class Zalbe {
 		        Point p = me.getPoint();
 		        int row = table.rowAtPoint(p);
 		        if (me.getClickCount() == 2) {
-		        	
-		            Komentar forma1 = new Komentar();
-		            forma1.main(null,komentari[row-1]);
+		            Komentar formaK = new Komentar();
+		            formaK.main(null, komentari[row]);
 		        }
 		    }
 		});
-		
 		
 		
 		JButton btnOk = new JButton("Zatvori");
@@ -236,6 +242,7 @@ public class Zalbe {
 		scrollPane.setViewportView(table);
 		frmzalbe.getContentPane().setLayout(groupLayout);
 	}
+	
 	public Long getId() {
 		return id;
 	}
