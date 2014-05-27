@@ -666,33 +666,37 @@ public class Main {
 				return values[index];
 			}};
 		
-		final JList sedmice = new JList(model2);
-		//promjene na listi sedmica
-		sedmice.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		sedmice.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		sedmice.setVisibleRowCount(-1);
-		JScrollPane listScroller = new JScrollPane(sedmice);
-		listScroller.setPreferredSize(new Dimension(129, 100));
-		GroupLayout gl_panel_8 = new GroupLayout(panel_8);
-		gl_panel_8.setHorizontalGroup(
-			gl_panel_8.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_8.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblIzaberiSedmicu)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(sedmice, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		gl_panel_8.setVerticalGroup(
-			gl_panel_8.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_8.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setPreferredSize(new Dimension(129, 100));
+			
+			GroupLayout gl_panel_8 = new GroupLayout(panel_8);
+			gl_panel_8.setHorizontalGroup(
+				gl_panel_8.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel_8.createSequentialGroup()
+						.addContainerGap()
 						.addComponent(lblIzaberiSedmicu)
-						.addComponent(sedmice, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(95, Short.MAX_VALUE))
-		);
-		panel_8.setLayout(gl_panel_8);
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(22, Short.MAX_VALUE))
+			);
+			gl_panel_8.setVerticalGroup(
+				gl_panel_8.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel_8.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblIzaberiSedmicu)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addContainerGap(111, Short.MAX_VALUE))
+			);
+			
+			final JList sedmice = new JList(model2);
+			scrollPane.setViewportView(sedmice);
+			
+			//promjene na listi sedmica
+			sedmice.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			sedmice.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+			sedmice.setVisibleRowCount(-1);
+			panel_8.setLayout(gl_panel_8);
 		
 		JButton btnNewButton = new JButton("Izvje\u0161taj o nalozima");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -777,7 +781,7 @@ public class Main {
 						
 						novi.set_datumRodjenja(datum);
 						
-						infoBox("DODAN zaposlnenik: " + novi.getId() + "", null);
+						infoBox("Dodan zaposlenik: " + novi.getId() + "", "Dodavanje uspješno");
 						t.commit();
 					}
 					catch (Exception e2) {
@@ -796,7 +800,7 @@ public class Main {
 					
 				}
 				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
+					infoBox(ex.toString(), "Greška");
 				}
 			}
 		});
@@ -892,7 +896,7 @@ public class Main {
 						novi.set_datumRodjenja(datum);
 						
 						session.update(novi);
-						infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", null);
+						infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", "Izmjena uspješna");
 						
 						t.commit();
 			        }
@@ -917,7 +921,7 @@ public class Main {
 					novi.set_datumRodjenja(datum);
 					
 					session.update(novi);
-					infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", null);
+					infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", "Izmjena uspješna");
 					
 					t.commit();
 			        }
@@ -1062,7 +1066,7 @@ public class Main {
 					/*Komitanje u bazu izmjena nad zaposlenicima*/
 			        tx.commit();
 			         
-			        infoBox("Uspjesno ste deaktivirali racun: " + employee.get_imeIPrezime() , null);
+			        infoBox("Uspjesno ste deaktivirali racun: " + employee.get_imeIPrezime() , "Deaktivacija uspješna");
 			      }
 			      catch (Exception ex) {
 						infoBox(ex.toString(), "UZBUNA");
