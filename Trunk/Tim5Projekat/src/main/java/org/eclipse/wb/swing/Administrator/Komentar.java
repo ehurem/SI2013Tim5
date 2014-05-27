@@ -33,6 +33,8 @@ public class Komentar {
 	/**
 	 * Create the application.
 	 */
+	
+	//ispravljen konstruktor
 	public Komentar(){
 		
 		initialize();

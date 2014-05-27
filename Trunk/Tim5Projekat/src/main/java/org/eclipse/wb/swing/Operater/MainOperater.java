@@ -73,6 +73,7 @@ public class MainOperater {
 	private static Klijent _noviKlijent;
 	
 	
+	
 	/**
 	 * Launch the application.
 	 *  Long zaposlenik je id u bazi logovanog zaposlenika
@@ -80,40 +81,10 @@ public class MainOperater {
 	public static void main(String[] args, Long zaposlenik) {
 		
 		_zaposlenik = zaposlenik;
-		/*_zaposlenik = new Zaposlenik();
-		_zaposlenik.setAdresa("Adresa Stanovanja 5");
-		_zaposlenik.setBrojTelefona("061 321-654");
-		_zaposlenik.setEmail("zaposlenik@test.ba");
-		_zaposlenik.set_imeIPrezime("Nadimko");
 		
-		
-		_zaposlenik2 = new Zaposlenik();
-		_zaposlenik2.setAdresa("Bulevar Nestanovanja 5");
-		_zaposlenik2.setBrojTelefona("065 987-679");
-		_zaposlenik2.setEmail("zaposlenik2@test.ba");
-		_zaposlenik2.set_imeIPrezime("Nadimkovec");
-
-		
-		_zalba = new Zalba();
-		Date dat = new Date(System.currentTimeMillis());
-		_zalba.setDatumPodnosenja(dat);
-		_zalba.setKomentar("Ovo je komentar!");
-		//_zalba.setZaposlenik(_zaposlenik);
-	*/
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//set_klijenti(new ArrayList<Klijent>());
-					//set_zahtjevi(new ArrayList<Zahtjev>());
-
-					//an example of a client that we input into list
-					/*Klijent primjer = new Klijent();
-					primjer.set_imeIPrezime("Mujo Mujic");
-					primjer.set_adresa("Skenderija");
-					primjer.setBrojTelefona("012345678");
-					primjer.setEmail("mujom@gmail.com");
-					
-					get_klijenti().add(primjer);*/
 					
 					MainOperater window = new MainOperater();
 					window.frmInterfejsZaOperatera.setVisible(true);
@@ -543,8 +514,10 @@ public class MainOperater {
 		            java.util.Date utilDate = new java.util.Date();
 		            
 		            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-					 
-					Zalba nova = new Zalba();
+					
+		            
+					
+		            Zalba nova = new Zalba();
 					
 					nova.setKomentar(textArea_1.getText());
 					nova.setDatumPodnosenja(sqlDate);
@@ -553,8 +526,10 @@ public class MainOperater {
 					nova.set_klijent( (Long)k.getId());
 					nova.setZaposlenik( (Long)z.getId() );
 					
+					if(validirajPrazno(textArea_1)){
 					nova.setId( (Long ) session.save(nova));
-					infoBox("Uspješno dodana žalba: " + nova.getId() + "", null);
+					infoBox("Uspješno dodana žalba! ", "Žalba dodana");
+					}
 					t.commit();
 					
 					
@@ -649,22 +624,6 @@ public class MainOperater {
 		frmInterfejsZaOperatera.getContentPane().setLayout(groupLayout);
 	}
 
-	/*private static ArrayList<Klijent> get_klijenti() {
-		return _klijenti;
-	}
-
-	private static void set_klijenti(ArrayList<Klijent> _klijenti) {
-		MainOperater._klijenti = _klijenti;
-	}
-
-	private static ArrayList<Zahtjev> get_zahtjevi() {
-		return _zahtjevi;
-	}
-
-	private static void set_zahtjevi(ArrayList<Zahtjev> _zahtjevi) {
-		MainOperater._zahtjevi = _zahtjevi;
-	}*/
-
 
 	public static Klijent get_noviKlijent() {
 		return _noviKlijent;
@@ -674,22 +633,9 @@ public class MainOperater {
 		MainOperater._noviKlijent = _noviKlijent;
 	}
 	
-	/*public static Zaposlenik get_zaposlenik() {
-		return _zaposlenik;
-	}
-
-	public static void set_zaposlenik(Zaposlenik _zaposlenik) {
-		MainOperater._zaposlenik = _zaposlenik;
-	}
-
-	public static Zalba get_zalba() {
-		return _zalba;
-	}
-
-	public static void set_zalba(Zalba _zalba) {
-		MainOperater._zalba = _zalba;
-	}
-	*/
+	
+	
+	
 	
 
 
