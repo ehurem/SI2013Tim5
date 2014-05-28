@@ -21,12 +21,14 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import controller.ZahtjevController;
 import Models.Klijent;
 import Models.Zahtjev;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,11 +39,13 @@ public class ZatvaranjeZahtjeva {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	
+	private ArrayList<String> listRez;
 	private JRadioButton rdbtnDa;
 	private JRadioButton rdbtnNe;
 	
 	private JTextArea textArea;
+	
+	private ZahtjevController kontroler;
 	
 	public static String zahtjev_id;
 	public static Long zaposlenik_id;
@@ -95,7 +99,33 @@ public class ZatvaranjeZahtjeva {
 	public ZatvaranjeZahtjeva() {
 		
 		initialize();
-		PopuniPodatke();
+		kontroler = new ZahtjevController();
+		listRez = new ArrayList<String>();
+		try {
+			listRez = kontroler.PopuniPodatke(textField, textField_1, textField_2, textField_3, textArea, zahtjev_id, rdbtnDa, rdbtnNe);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			textField.setText(listRez.get(0));
+			textField_1.setText(listRez.get(1));
+			textField_2.setText(listRez.get(2));
+			textField_3.setText(listRez.get(3));
+			textArea.setText(listRez.get(4));
+			if(listRez.get(0).equals("true"))
+			{
+				rdbtnDa.setSelected(true);
+				rdbtnNe.setSelected(false);
+			}
+			else
+			{
+				rdbtnDa.setSelected(false);
+				rdbtnNe.setSelected(true);
+			}
+		}
+		
+		//PopuniPodatke();
 	}
 	
 	/*public ZatvaranjeZahtjeva() {
@@ -109,93 +139,7 @@ public class ZatvaranjeZahtjeva {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
 	
-	boolean garancija;
 	
-	public void PopuniPodatke()
-	{
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			//Session session = HibernateUtil.getSessionFactory().openSession();
-			//Transaction t = session.beginTransaction();
-			
-			String idZahtjeva = zahtjev_id;
-			
-			Query queryZahtjev;
-			Query queryZahtjevid;
-			Query queryZahtjevklijent;
-			List<Zahtjev> listZahtjev;
-			
-			if(idZahtjeva!=null)
-			{
-				queryZahtjevid = session.createQuery("from Zahtjev where id='"+idZahtjeva+"'");
-				listZahtjev = (List<Zahtjev>)queryZahtjevid.list();
-			}
-			else
-			{
-				queryZahtjev = session.createQuery("from Zahtjev where _status='U izvrsavanju'");
-				listZahtjev = (List<Zahtjev>)queryZahtjev.list();
-			}
-			
-			String s1 = String.valueOf(listZahtjev.get(0).getKlijent());
-			
-			queryZahtjevklijent = session.createQuery("from Klijent where id='" + s1  + "'");
-			List <Klijent> k = queryZahtjevklijent.list();
-			
-			String s5 = k.get(0).get_imeIPrezime();
-			
-			//
-			
-			
-			//List<Zahtjev> listZahtjev = (List<Zahtjev>)queryZahtjevid.list();
-			
-			String s = String.valueOf(listZahtjev.get(0).getID());
-			//String s1 = String.valueOf(listZahtjev.get(0).getKlijent());
-			String s2 = String.valueOf(listZahtjev.get(0).getTipUredaja());
-			String s3 = String.valueOf(listZahtjev.get(0).get_cijena());
-			String s4 = String.valueOf(listZahtjev.get(0).getKomentar());
-			
-			garancija = listZahtjev.get(0).getGarancija();
-
-			rdbtnDa = new JRadioButton("Da");
-			rdbtnNe = new JRadioButton("Ne");
-			
-			rdbtnDa.setEnabled(false);
-			rdbtnNe.setEnabled(false);
-			
-			//rdbtnDa.setFocusable(false);
-			
-			rdbtnDa.setSelected(garancija);
-			rdbtnNe.setSelected(!garancija);
-			
-			textField.setText(s);
-			textField_1.setText(s5);
-			textField_2.setText(s2);
-			textField_3.setText(s3);
-			textArea.setText(s4);
-			
-			
-			
-			
-			
-			
-			t.commit();
-			
-			//session.close();
-			
-		}
-		catch (Exception ex) {
-			infoBox(ex.toString(), "UZBUNA");
-		}
-		finally
-		{
-			session.close();
-		}
-        
-        
-	}
-	
-
 
 	/**
 	 * Initialize the contents of the frame.
@@ -215,38 +159,10 @@ public class ZatvaranjeZahtjeva {
 		JButton btnZatvoriZahtjev = new JButton("Zatvori zahtjev");
 		btnZatvoriZahtjev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Session session = HibernateUtil.getSessionFactory().openSession();
-				Transaction t = session.beginTransaction();
+				//Session session = HibernateUtil.getSessionFactory().openSession();
+				//Transaction t = session.beginTransaction();
 				try {
-					
-					String idZahtjeva = zahtjev_id;
-					
-					Query queryZahtjevid;
-					List<Zahtjev> listZahtjev;
-					
-					queryZahtjevid = session.createQuery("from Zahtjev where id='"+idZahtjeva+"'");
-					listZahtjev = (List<Zahtjev>)queryZahtjevid.list();
-					Zahtjev z = listZahtjev.get(0);
-					z.setStatus("Zatvoren");
-					
-					Double cij = Double.parseDouble(textField_3.getText());
-					z.set_cijena(cij);
-					
-					String kom = textArea.getText();
-					z.setKomentar(kom);
-					
-					z.setZaposlenik(zaposlenik_id);
-					//z.setZaposlenik((long) 1);
-					
-					Date d = new Date();
-					java.sql.Date dat = new java.sql.Date(d.getTime()); 
-					z.setDatumZatvaranja(dat);
-				
-				
-					t.commit();
-					
-					//session.close();
-
+					kontroler.UpisivanjeZatvorenogZahtjeva(zahtjev_id, textField_3.getText(), textArea.getText(), zaposlenik_id);
 					
 				}
 				catch (Exception ex) {
@@ -254,7 +170,7 @@ public class ZatvaranjeZahtjeva {
 				}
 				finally
 				{
-					session.close();
+					//session.close();
 				}
 				
 				serviser s = new serviser();

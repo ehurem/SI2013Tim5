@@ -3,6 +3,7 @@ package controller;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,15 +28,16 @@ import Models.Zahtjev;
 
 public class ZahtjevController {
 
-	ZahtjevController() {
+	public ZahtjevController() {
 	}
 
-	public void PopuniPodatke(JTextField textField, JTextField textField_1,
+	public ArrayList<String> PopuniPodatke(JTextField textField, JTextField textField_1,
 			JTextField textField_2, JTextField textField_3, JTextArea textArea,
 			String zahtjev_id, JRadioButton rdbtnDa, JRadioButton rdbtnNe)
 			throws Exception {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
+		ArrayList<String> listRez = new ArrayList<String>();
 		try {
 			boolean garancija;
 			String idZahtjeva = zahtjev_id;
@@ -44,6 +46,7 @@ public class ZahtjevController {
 			Query queryZahtjevid;
 			Query queryZahtjevklijent;
 			List<Zahtjev> listZahtjev;
+			
 
 			if (idZahtjeva != null) {
 				queryZahtjevid = session.createQuery("from Zahtjev where id='"
@@ -87,13 +90,26 @@ public class ZahtjevController {
 			textField_2.setText(s2);
 			textField_3.setText(s3);
 			textArea.setText(s4);
+			
+			listRez.add(s);
+			listRez.add(s5);
+			listRez.add(s2);
+			listRez.add(s3);
+			listRez.add(s4);
+			listRez.add(String.valueOf(garancija));
+			
+			
 
 			t.commit();
+			
+			
 		} catch (Exception ex) {
 			throw ex;
 		} finally {
 			session.close();
 		}
+		
+		return listRez;
 	}
 
 	private static Boolean validirajPrazno(JTextField t1) {
@@ -116,32 +132,24 @@ public class ZahtjevController {
 		return true;
 	}
 
-	public void UpisivanjeZatvorenogZahtjeva(JTextField textField_3,
-			JTextArea textArea, String zahtjev_id, long zaposlenik_id)
+	public boolean UpisivanjeZatvorenogZahtjeva(String zahtjev_id, String cijena, String komentar, long zaposlenik_id)
 			throws Exception {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
+		boolean status = false;
 		try {
-
-			String idZahtjeva = zahtjev_id;
-
 			Query queryZahtjevid;
 			List<Zahtjev> listZahtjev;
-
 			queryZahtjevid = session.createQuery("from Zahtjev where id='"
-					+ idZahtjeva + "'");
+					+ zahtjev_id + "'");
 			listZahtjev = (List<Zahtjev>) queryZahtjevid.list();
 			Zahtjev z = listZahtjev.get(0);
 			z.setStatus("Zatvoren");
 
-			Double cij = Double.parseDouble(textField_3.getText());
+			Double cij = Double.parseDouble(cijena);
 			z.set_cijena(cij);
-
-			String kom = textArea.getText();
-			z.setKomentar(kom);
-
+			z.setKomentar(komentar);
 			z.setZaposlenik(zaposlenik_id);
-			// z.setZaposlenik((long) 1);
 
 			Date d = new Date();
 			java.sql.Date dat = new java.sql.Date(d.getTime());
@@ -149,13 +157,15 @@ public class ZahtjevController {
 
 			t.commit();
 
-			// session.close();
-
+			
+			status = true;
 		} catch (Exception ex) {
+			 status = false;
 			throw ex;
 		} finally {
 			session.close();
 		}
+		return status;
 	}
 
 	public void PopunjavanjeListePreuzetihZahtjeva() throws Exception {
