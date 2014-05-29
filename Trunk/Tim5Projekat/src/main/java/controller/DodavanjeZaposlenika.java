@@ -42,27 +42,27 @@ public class DodavanjeZaposlenika {
 				Matcher matcher = pattern.matcher(novi.get_imeIPrezime());
 				boolean dobro = matcher.matches();
 				if (!dobro) {
-					throw new Exception("Ime i prezime nisu u dobrom formatu" );
+					throw new IllegalArgumentException("Ime i prezime nisu u dobrom formatu" );
 				}
 				if (novi.getEmail().equals("")) {
-					throw new Exception("Email nije u dobrom formatu");
+					throw new IllegalArgumentException("Email nije u dobrom formatu");
 				}
 				if (novi.getAdresa().equals("")) {
-					throw new Exception("Adresa nije u dobrom formatu");
+					throw new IllegalArgumentException("Adresa nije u dobrom formatu");
 				}
 				
 				if (novi.getBrojTelefona().equals("")) {
-					throw new Exception("Broj telefona nije u dobrom formatu");
+					throw new IllegalArgumentException("Broj telefona nije u dobrom formatu");
 				}
 				
 				if (t_korisnickaSifra.equals("")) {
-					throw new Exception("Korisnicka sifra nije u dobrom formatu");
+					throw new IllegalArgumentException("Korisnicka sifra nije u dobrom formatu");
 				}
 				if (novi.getKorisnickoIme().equals("")) {
-					throw new Exception("Korisnicko ime nije u dobrom formatu");
+					throw new IllegalArgumentException("Korisnicko ime nije u dobrom formatu");
 				}
 				if (t_datumRodjenja.getText().equals("")) {
-					throw new Exception("Datum rodjenja nije u dobrom formatu");
+					throw new IllegalArgumentException("Datum rodjenja nije u dobrom formatu");
 				}
 				
 				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
