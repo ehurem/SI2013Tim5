@@ -168,7 +168,7 @@ public class ZahtjevController {
 		return status;
 	}
 
-	public void PopunjavanjeListePreuzetihZahtjeva() throws Exception {
+	public DefaultListModel PopunjavanjeListePreuzetihZahtjeva() throws Exception {
 		final JList list = new JList();
 		final DefaultListModel listModel = new DefaultListModel();
 
@@ -195,6 +195,7 @@ public class ZahtjevController {
 		} finally {
 			session.close();
 		}
+		return listModel;
 
 	}
 }

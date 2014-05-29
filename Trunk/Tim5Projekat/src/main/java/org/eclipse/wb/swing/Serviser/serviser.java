@@ -30,6 +30,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import controller.ZahtjevController;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
 import Models.Zahtjev;
@@ -50,6 +51,9 @@ public class serviser {
 	private JTable table;
 	private static Long _zaposlenik; //ID u bazi logovanog zaposlenika
 	List<Zahtjev> listZahtjev;
+	private ZahtjevController kontroler;
+	public JList list;
+	public DefaultListModel listModel;
 	/**
 	 * Launch the application.
 	 */
@@ -87,7 +91,9 @@ public class serviser {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
+		kontroler = new ZahtjevController();
+		list = new JList();
+		listModel = new DefaultListModel();
 	
 		frmInterfejsZaServisera = new JFrame();
 		frmInterfejsZaServisera.setResizable(false);
@@ -276,44 +282,19 @@ public class serviser {
 		panel.setLayout(gl_panel);
 		
 
-		final JList list = new JList();
-		final DefaultListModel listModel = new DefaultListModel();
+		//final JList list = new JList();
+		//final DefaultListModel listModel = new DefaultListModel();
 		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
-		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-		        int index = sourceTabbedPane.getSelectedIndex();
-		        listModel.clear();
-		        
 		        try {
-					Session session = HibernateUtil.getSessionFactory().openSession();
-					Transaction t = session.beginTransaction();
-					
-					Query queryZahtjev = session.createQuery("from Zahtjev where _status='U izvrsavanju'");
-					List listZahtjev = queryZahtjev.list();
-					
-					
-					for(int i=0;i<listZahtjev.size();i++){
-					listModel.addElement(((Zahtjev) listZahtjev.get(i)).getID());
-					}
-					
-					list.setModel(listModel);
-					
-					//Zahtjev z = (Zahtjev) list.getSelectedValue();
-					//z.getID();
-					t.commit();
-					
-					session.close();
-					
+		        	//list.
+					listModel = kontroler.PopunjavanjeListePreuzetihZahtjeva();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
-				}
-		        
-		        
-		       // comboBox.addItem(_zaposlenik);
-		       // comboBox.addItem(_zaposlenik2);
-		        
+		        list.setModel(listModel);
 		      }
 		    };
 		tabbedPane.addChangeListener(changeListener);
