@@ -3,9 +3,12 @@ package controller;
 import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.JTextField;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 import Models.Klijent;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
@@ -48,49 +51,54 @@ public class DodavanjeKlijenta {
 		}
 		finally
 		{
+			//if(sesija!=null)
 			sesija.close();
 		}
 		
 		return new Long(0);
 	}
 	
-	private static Boolean validirajPrazno(JTextField t1) {
-		
+public static Boolean validirajPrazno(JTextField t1) throws IllegalArgumentException {
+		Boolean izlaz = false;
+	
 		if(t1.getText().equals(""))
 		{
 			t1.setBackground(new Color(216,210,139));
-			return false;
+			throw new IllegalArgumentException("Bla"/*"Sva polja moraju biti popunjena"*/);
 		}
 		else
 		{
+			izlaz = true;
 			t1.setBackground(new Color(255,255,255));
 		}
-		
-	return true;
 	
+	return izlaz;
 	
 }
 
-private Boolean validirajTelefon(JTextField t) throws Exception
+public static Boolean validirajTelefon(JTextField t) throws IllegalArgumentException
 {
-	
+	Boolean izlaz = false;
       Pattern pattern = Pattern.compile("\\d{3}/\\d{3}-\\d{3}");
       Matcher matcher = pattern.matcher(t.getText());
  
       if (matcher.matches()) {
     	  
     	  t.setBackground(new Color(255,255,255));
-    	  return true;
+    	  izlaz = true;
       }
       else
       {
     	  t.setBackground(new Color(216,210,139));
-    	  throw new Exception("Pogrešan format broja telefona. Prihvaćeni format je xxx/xxx-xxx");
-    	  }
+    	  throw new IllegalArgumentException("Pogrešan format broja telefona. Prihvaćeni format je xxx/xxx-xxx");
+      }
+      
+      return izlaz;
 }
 
-private Boolean validirajMail(JTextField t) throws Exception
+public static Boolean validirajMail(JTextField t) throws Exception
 {
+	Boolean izlaz = false;
 	
 	 Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -99,14 +107,15 @@ private Boolean validirajMail(JTextField t) throws Exception
       if (matcher.matches()) {
     	  
     	  t.setBackground(new Color(255,255,255));
-    	  return true;
+    	  izlaz = true;
       }
       else
       {
     	  t.setBackground(new Color(216,210,139));
     	  throw new Exception("Pogrešan format e-maila. Prihvaćeni format je abc1@abc2.ab");
-    	  //return false;
       }
+      
+      return izlaz;
 }
 
 }
