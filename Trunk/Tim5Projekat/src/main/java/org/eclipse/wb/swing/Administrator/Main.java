@@ -676,7 +676,6 @@ public class Main {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					Long id = DodavanjeZaposlenika.DodajZaposlenik(t_imeIPrezime, t_mjestoStanovanja, t_brojTelefona, t_emailAdresa, t_korisnickaSifra, t_korisnickoIme, c_i_Privilegije, t_datumRodjenja);
-					
 					if (id == 0) throw new Exception("Nešto je krenulo po zlu!!!");
 					else infoBox("Uspješno dodan novi zaposlenik", "Poruka");
 				} catch (Exception e) {
