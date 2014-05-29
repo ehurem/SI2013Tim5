@@ -51,7 +51,6 @@ public class DodavanjeKlijenta {
 		}
 		finally
 		{
-			//if(sesija!=null)
 			sesija.close();
 		}
 		
@@ -64,7 +63,7 @@ public static Boolean validirajPrazno(JTextField t1) throws IllegalArgumentExcep
 		if(t1.getText().equals(""))
 		{
 			t1.setBackground(new Color(216,210,139));
-			throw new IllegalArgumentException("Bla"/*"Sva polja moraju biti popunjena"*/);
+			throw new IllegalArgumentException("Sva polja moraju biti popunjena");
 		}
 		else
 		{
@@ -96,7 +95,7 @@ public static Boolean validirajTelefon(JTextField t) throws IllegalArgumentExcep
       return izlaz;
 }
 
-public static Boolean validirajMail(JTextField t) throws Exception
+public static Boolean validirajMail(JTextField t) throws IllegalArgumentException
 {
 	Boolean izlaz = false;
 	
@@ -112,7 +111,7 @@ public static Boolean validirajMail(JTextField t) throws Exception
       else
       {
     	  t.setBackground(new Color(216,210,139));
-    	  throw new Exception("Pogrešan format e-maila. Prihvaćeni format je abc1@abc2.ab");
+    	  throw new IllegalArgumentException("Pogrešan format e-maila. Prihvaćeni format je abc1@abc2.ab");
       }
       
       return izlaz;

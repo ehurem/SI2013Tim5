@@ -77,36 +77,42 @@ public class UnosZahtjeva {
 		}
 	}
 
-	private static Boolean validirajPrazno(JTextField t1) {
+	public static Boolean validirajPrazno(JTextField t1) {
+		
+		Boolean izlaz = false;
 		
 		if(t1.getText().equals(""))
 		{
 			t1.setBackground(new Color(216,210,139));
-			return false;
+			throw new IllegalArgumentException("Sva polja moraju biti popunjena");
 		}
 		else
 		{
+			izlaz = true;
 			t1.setBackground(new Color(255,255,255));
 		}
-		
-	return true;
+	
+		return izlaz;
 	
 	
 	}
 	
-	private static Boolean validirajPrazno(JTextArea t1) {
+	public static Boolean validirajPrazno(JTextArea t1) {
+		
+		Boolean izlaz = false;
 		
 		if(t1.getText().equals(""))
 		{
 			t1.setBackground(new Color(216,210,139));
-			return false;
+			throw new IllegalArgumentException("Sva polja moraju biti popunjena");
 		}
 		else
 		{
+			izlaz = true;
 			t1.setBackground(new Color(255,255,255));
 		}
-		
-	return true;
+	
+		return izlaz;
 	
 	
 	}
