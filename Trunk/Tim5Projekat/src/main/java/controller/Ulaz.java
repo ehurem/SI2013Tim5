@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.IllegalComponentStateException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,11 +22,11 @@ public class Ulaz {
 	
 	private static long _zaposlenik;
 	
-	public static String provjeraUlaznihPodataka(JTextField t_korisnickoIme, JTextField t_sifra) throws Exception {
+	public static String provjeraUlaznihPodataka(JTextField t_korisnickoIme, JTextField t_sifra) throws Exception{
 		String username = t_korisnickoIme.getText();
 		String password = t_sifra.getText();
 		String id = null;
-		if (username.equals("") || password.equals("")) throw new Exception("Pogrešni podaci za prijavu");
+		if (username.equals("") || password.equals("")) throw new IllegalArgumentException("Pogrešni podaci za prijavu");
 		else {
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			try {
@@ -43,14 +44,14 @@ public class Ulaz {
 					set_zaposlenik(zaposlenik.getId());
 				}
 				else {
-					throw new Exception("Unijeli ste neispravne korisnicke podatke");
+					throw new IllegalArgumentException("Unijeli ste neispravne korisnicke podatke");
 					//infoBox ("Unijeli ste neispravne korisnicke podatke", null);
 				}
 				//infoBox (encryptPassword(t_sifra.getText()), t_korisnickoIme.getText());
 				t.commit();
 			}
 			catch (Exception ex) {
-				throw new Exception("Greška: " + ex.toString());
+				throw new IllegalArgumentException("Greška: " + ex.toString());
 			}
 			finally {
 				if (session != null) 
@@ -58,7 +59,7 @@ public class Ulaz {
 						session.close();
 					}
 					catch (Exception e2) {
-						throw new Exception("Greška: " + e2.toString());
+						throw new IllegalComponentStateException("Greška: " + e2.toString());
 					}
 			}
 		}
