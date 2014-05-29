@@ -16,9 +16,17 @@ public class MainTest extends TestCase {
 		fail("Not yet implemented"); // TODO
 	}
 
-	
 	public void testGet_zaposlenik() {
-		fail("Not yet implemented"); // TODO
+		Throwable e = null;
+
+		  try {
+		    //neka metoda koja baca izuzetak
+		  } catch (Throwable ex) {
+		    e = ex;
+		  }
+		  assertTrue(e instanceof ExceptionInInitializerError);
+		
+		//fail("Not yet implemented"); // TODO
 	}
 
 	public void testSet_zaposlenik() {
