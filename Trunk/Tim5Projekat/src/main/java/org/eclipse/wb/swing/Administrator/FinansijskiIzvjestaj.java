@@ -20,6 +20,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import controller.IzvjestajiKontroler;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Zahtjev;
 import Models.Zaposlenik;
@@ -33,6 +34,7 @@ public class FinansijskiIzvjestaj {
 	private  ArrayList<Zahtjev> zahtjevi;
 	private static int broj;
 	private static double zarada;
+	private IzvjestajiKontroler kontroler;
 
 
 
@@ -65,30 +67,17 @@ public class FinansijskiIzvjestaj {
 	 * Initialize the contents of the frame.
 	 */
 	
-	public static Calendar dateToCalendar(Date date){ 
-		  Calendar cal = Calendar.getInstance();
-		  cal.setTime(date);
-		  return cal;
-		};
+	
 	
 	private void initialize() {
 		//dodavanje zahtjeva u listu iz baze
-				Session sesija = HibernateUtil.getSessionFactory().openSession();
-				Transaction t = sesija.beginTransaction();
-				try
-				{
-					Query queryZahtjev = sesija.createQuery("from Zahtjev");
-					zahtjevi = (ArrayList<Zahtjev>) queryZahtjev.list();
-					t.commit();
-				}
-				catch(Exception ex)
-				{
-					JOptionPane.showMessageDialog(table, ex.toString());
-				}
-				finally
-				{
-					sesija.close();
-				}		
+		try {
+		zahtjevi = kontroler.iscitajListuZahtjevaIzBaze();
+		}
+		catch(Exception ex)
+		{
+			JOptionPane.showMessageDialog(table, ex.toString());
+		}
 
 		frmFinansijskiIzvjestaj = new JFrame();
 		frmFinansijskiIzvjestaj.setResizable(false);
@@ -102,12 +91,7 @@ public class FinansijskiIzvjestaj {
 		
 		//izracunavanje ukupne zarade za prikazane zahtjeve
 		try {
-		for (int i=0;i<zahtjevi.size();i++){
-			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
-			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
-			zarada += zahtjevi.get(i).get_cijena();
-			}
-		}
+	    zarada= kontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
 		}
 		catch(Exception ex)
 		{
@@ -161,7 +145,7 @@ public class FinansijskiIzvjestaj {
 		//ispis zahtjeva u tabelu
 		try {
 		for (int i=0;i<zahtjevi.size();i++){
-			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+			Calendar c = kontroler.dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
 				tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).get_cijena())} );		}
 		}	

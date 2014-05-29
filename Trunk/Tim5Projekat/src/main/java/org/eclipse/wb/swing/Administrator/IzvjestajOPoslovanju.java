@@ -28,6 +28,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import controller.IzvjestajiKontroler;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Zahtjev;
 import Models.Zaposlenik;
@@ -46,6 +47,8 @@ public class IzvjestajOPoslovanju {
     private static int otvoreni;
     private static int zatvoreni;
     private static int ukupno;
+	private IzvjestajiKontroler kontroler;
+
 
 
 	/**
@@ -73,34 +76,19 @@ public class IzvjestajOPoslovanju {
 		initialize();
 	}
 
-	public static Calendar dateToCalendar(Date date){ 
-		  Calendar cal = Calendar.getInstance();
-		  cal.setTime(date);
-		  return cal;
-		};
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		//dodavanje zahtjeva u listu iz baze
-		Session sesija = HibernateUtil.getSessionFactory().openSession();
-		Transaction t = sesija.beginTransaction();
-		try
-		{
-			Query queryZahtjev = sesija.createQuery("from Zahtjev");
-			Query queryZaposlenik = sesija.createQuery("from Zaposlenik");
-            zaposlenici =(ArrayList<Zaposlenik>) queryZaposlenik.list();
-			zahtjevi = (ArrayList<Zahtjev>) queryZahtjev.list();
-			t.commit();
-		}
-		catch(Exception ex)
-		{
-			JOptionPane.showMessageDialog(table, ex.toString());
-		}
-		finally
-		{
-			sesija.close();
-		}		
+		try {
+			zahtjevi = kontroler.iscitajListuZahtjevaIzBaze();
+			}
+			catch(Exception ex)
+			{
+				JOptionPane.showMessageDialog(table, ex.toString());
+			}
 		
 		        
 		frmIzvjestajOPoslovanju = new JFrame();
@@ -122,16 +110,26 @@ public class IzvjestajOPoslovanju {
 		//racunanje sumarnih podataka
 		try {
 		for (int m=0;m<zahtjevi.size();m++){
-			Calendar n = dateToCalendar(zahtjevi.get(m).getDatumZatvaranja());
+			Calendar n = kontroler.dateToCalendar(zahtjevi.get(m).getDatumZatvaranja());
+			Calendar b = kontroler.dateToCalendar(zahtjevi.get(m).getDatumOtvaranja());
 			if (n.get(Calendar.WEEK_OF_YEAR)==broj) {
 				ukupno++;
-				if (zahtjevi.get(m).getStatus()=="Otvoren") {
+				if (zahtjevi.get(m).getStatus()=="otvoren") {
 					otvoreni++;				
 				}
-				if (zahtjevi.get(m).getStatus()=="Zatvoren") {
+				if (zahtjevi.get(m).getStatus()=="zatvoren") {
 					zatvoreni++;
-			}
+				}		
 		}
+			if (b.get(Calendar.WEEK_OF_YEAR)==broj) {
+				ukupno++;
+				if (zahtjevi.get(m).getStatus()=="otvoren") {
+					otvoreni++;				
+				}
+				if (zahtjevi.get(m).getStatus()=="zatvoren") {
+					zatvoreni++;
+				}		
+		}	
         }
 		}
 		catch(Exception ex)
@@ -268,16 +266,27 @@ public class IzvjestajOPoslovanju {
 		try {
 		//ispis zahtjeva u tabelu
 				for (int i=0;i<zahtjevi.size();i++){
-					Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+					Calendar c = kontroler.dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+					Calendar k = kontroler.dateToCalendar(zahtjevi.get(i).getDatumOtvaranja());
 					if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
 						for (int j=0;j<zaposlenici.size();j++){
 							//pretraga zaposlenika po ID radi ispisa u tabelu
 							if (zahtjevi.get(i).getZaposlenik()==zaposlenici.get(j).getId()) {
 							z= zaposlenici.get(j);
 							}
+							tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		}
 						}
-						tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		}
-				}	
+					if (k.get(Calendar.WEEK_OF_YEAR)==broj) {
+						for (int j=0;j<zaposlenici.size();j++){
+							//pretraga zaposlenika po ID radi ispisa u tabelu
+							if (zahtjevi.get(i).getZaposlenik()==zaposlenici.get(j).getId()) {
+							z= zaposlenici.get(j);
+							}
+							tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		}
+						}
+				}
+				
+				
 		}
 		catch(Exception ex)
 		{
