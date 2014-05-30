@@ -23,7 +23,7 @@ public class UnosZahtjeva {
 	
 	public UnosZahtjeva() {}
 	
-	public Long unesiZahtjevUBazu(Long _zaposlenik, JComboBox comboBox_1, JComboBox comboBox_3, JTextField textField_2, Boolean dugme, JTextArea textArea) throws Exception{
+	public static Long unesiZahtjevUBazu(Long _zaposlenik, Long c1, Integer c3, JTextField textField_2, Boolean dugme, JTextArea textArea) throws Exception{
 		
 		Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
 		Transaction transakcija = sesija.beginTransaction(); //otvara vezu sa bazom
@@ -32,7 +32,7 @@ public class UnosZahtjeva {
 		{				
 			Zahtjev noviZahtjev = new Zahtjev();
 								
-			noviZahtjev.setKlijent(((Klijent)comboBox_1.getSelectedItem()).getId());
+			noviZahtjev.setKlijent(c1);
 			noviZahtjev.setTipUredaja(textField_2.getText());
 
 			noviZahtjev.setGarancija(dugme);
@@ -45,7 +45,7 @@ public class UnosZahtjeva {
 			noviZahtjev.setDatumOtvaranja(dat);
 			
 			noviZahtjev.set_cijena(0);
-			noviZahtjev.setPrioritet(1);
+			noviZahtjev.setPrioritet(c3);
 			noviZahtjev.setStatus("otvoren");
 			
 			noviZahtjev.setZaposlenik(_zaposlenik);

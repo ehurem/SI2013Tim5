@@ -263,7 +263,8 @@ public class MainOperater {
 				}
 				
 				try {
-					Long vratio = _kontroler.unesiZahtjevUBazu(_zaposlenik, comboBox_1, comboBox_3, textField_2, garancija_DA, textArea);
+					Long vratio = UnosZahtjeva.unesiZahtjevUBazu(_zaposlenik, ((Klijent)comboBox_1.getSelectedItem()).getId(), 
+							(Integer)comboBox_3.getSelectedItem(), textField_2, garancija_DA, textArea);
 					if(vratio != 0)
 					{
 						infoBox("Zahtjev"+Long.toString(vratio)+"unesen", "Unesen zahtjev");
