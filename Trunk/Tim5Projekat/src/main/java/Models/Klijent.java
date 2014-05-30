@@ -1,7 +1,7 @@
 package Models;
 
 public class Klijent implements java.io.Serializable {
-	private long id;
+	private Long id;
 	private String _imeIPrezime;
 	private String _adresa;
 	private String _brojTelefona;
@@ -53,12 +53,12 @@ public class Klijent implements java.io.Serializable {
 	}
 
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

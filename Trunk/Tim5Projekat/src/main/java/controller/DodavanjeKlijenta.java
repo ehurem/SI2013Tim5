@@ -17,7 +17,7 @@ public class DodavanjeKlijenta {
 		
 	public DodavanjeKlijenta(){}
 	
-	public static Long unesiKlijentaUBazu(Klijent _klijent, JTextField textField, JTextField textField_2, JTextField textField_3, JTextField textField_1 ) throws Exception
+	public static Long unesiKlijentaUBazu(Klijent _klijent, JTextField textField, JTextField textField_2, JTextField textField_3, JTextField textField_1 ) throws IllegalArgumentException
 	{
 		Session sesija = HibernateUtil.getSessionFactory().openSession(); 
 		
@@ -45,7 +45,7 @@ public class DodavanjeKlijenta {
 			}
 			
 		}
-		catch(Exception e1)
+		catch(IllegalArgumentException e1)
 		{
 			throw e1;
 		}

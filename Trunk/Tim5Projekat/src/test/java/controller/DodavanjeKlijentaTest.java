@@ -1,28 +1,15 @@
 package controller;
 
 import static org.junit.Assert.*;
-
-import java.util.List;
-
 import javax.swing.JTextField;
 
-import junit.framework.Assert;
-
-import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
-import Models.Zaposlenik;
-
 
 public class DodavanjeKlijentaTest{
 	
@@ -95,7 +82,7 @@ public class DodavanjeKlijentaTest{
 			assertFalse(DodavanjeKlijenta.validirajMail(t));
 		}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = Exception.class)
 	public final void testUnesiKlijentaPrazno() throws Exception {		
 		
 		t.setText("");
@@ -105,7 +92,7 @@ public class DodavanjeKlijentaTest{
 		DodavanjeKlijenta.unesiKlijentaUBazu(_klijent, t, t2, t3, t1);
 	}
 	
-	@Test (expected = IllegalArgumentException.class)
+	@Test (expected = Exception.class)
 	//svi prisutni, jedan u neispravnom formatu
 	public final void testUnesiKlijenta() throws Exception {
 		t.setText("Ime i prezime");
