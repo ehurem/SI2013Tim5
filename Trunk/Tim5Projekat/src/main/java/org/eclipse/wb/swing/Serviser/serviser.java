@@ -30,6 +30,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import controller.TableHeaderMouseListener;
 import controller.ZahtjevController;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
@@ -129,10 +130,9 @@ public class serviser {
 		   try {
 				
 				Transaction tr = session.beginTransaction();
-				Query queryZahtjev = session.createQuery("from Zahtjev where _status='Otvoren'");
+				Query queryZahtjev = session.createQuery("from Zahtjev where _status='otvoren'");
 				listZahtjev = queryZahtjev.list();
 				for(int i=0;i<listZahtjev.size();i++){
-					if((listZahtjev.get(i)).getStatus().equals("Otvoren"))
 						tmodel.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
 				}
 				tr.commit();
@@ -149,7 +149,7 @@ public class serviser {
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			// klasa za event za klik na zaglavlje tabele
-			class TableHeaderMouseListener extends MouseAdapter {
+			/*class TableHeaderMouseListener extends MouseAdapter {
 			     
 			    private JTable table;
 			     
@@ -178,9 +178,8 @@ public class serviser {
 			        }
 			        	
 			    }
-			}
-			JTableHeader header = table.getTableHeader();
-			header.addMouseListener(new TableHeaderMouseListener(table));
+			}*/
+			table.getTableHeader().addMouseListener(new TableHeaderMouseListener(table, listZahtjev));
 			// centriran tekst u tabeli
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
