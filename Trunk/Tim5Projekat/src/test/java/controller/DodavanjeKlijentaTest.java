@@ -2,18 +2,51 @@ package controller;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import javax.swing.JTextField;
 
+import junit.framework.Assert;
+
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+import Models.Klijent;
+import Models.Zaposlenik;
 
 
 public class DodavanjeKlijentaTest{
 	
+	private static JTextField t;
+	private static JTextField t1;
+	private static JTextField t2;
+	private static JTextField t3;
+	private static Klijent _klijent;
+	private static Long id;
+	
+	//setup
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		t = new JTextField();
+		t1 = new JTextField();
+		t2 = new JTextField();
+		t3 = new JTextField();
+		_klijent = new Klijent();
+	}
+	
 	//validacija praznog polja - nije prazno polje
 	@Test
 	public final void testValidirajPrazno() {
-		
-		JTextField t = new JTextField();		
+				
 		t.setText("Ovo nije prazan string");
 		
 		assertTrue(DodavanjeKlijenta.validirajPrazno(t));
@@ -30,8 +63,7 @@ public class DodavanjeKlijentaTest{
 	//validacija broja telefona - neispravan format
 	@Test(expected = IllegalArgumentException.class)
 	public final void testValidirajTelefon() {
-		
-		JTextField t = new JTextField();
+	
 		t.setText("123456789");
 		
 		DodavanjeKlijenta.validirajTelefon(t);
@@ -41,7 +73,6 @@ public class DodavanjeKlijentaTest{
 	@Test	
 	public final void testValidirajTelefonIspravno() 
 		{
-			JTextField t = new JTextField();
 			t.setText("123/456-789");
 			
 			assertTrue(DodavanjeKlijenta.validirajTelefon(t));
@@ -51,7 +82,6 @@ public class DodavanjeKlijentaTest{
 	@Test
 	public final void testValidirajMail() {
 		
-		JTextField t = new JTextField();
 		t.setText("123456789@hotmail.com");
 		
 		assertTrue(DodavanjeKlijenta.validirajMail(t));
@@ -60,17 +90,59 @@ public class DodavanjeKlijentaTest{
 	//neispravan mail	
 	@Test(expected = IllegalArgumentException.class)
 	public final void testValidirajMailNeispravno() {
-			
-			JTextField t = new JTextField();
 			t.setText("123/456-789");
 			
 			assertFalse(DodavanjeKlijenta.validirajMail(t));
 		}
 	
-	@Test
-	public final void testUnesiKlijentaUBazu() {
-		fail("Not yet implemented"); // TODO
+	@Test(expected = IllegalArgumentException.class)
+	public final void testUnesiKlijentaPrazno() throws Exception {		
+		
+		t.setText("");
+		t1.setText("");
+		t2.setText("");
+		t3.setText("");
+		DodavanjeKlijenta.unesiKlijentaUBazu(_klijent, t, t2, t3, t1);
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	//svi prisutni, jedan u neispravnom formatu
+	public final void testUnesiKlijenta() throws Exception {
+		t.setText("Ime i prezime");
+		t2.setText("123456789");
+		t3.setText("mail1@mail.com");
+		t1.setText("Neka adresa");
+				
+		DodavanjeKlijenta.unesiKlijentaUBazu(_klijent, t, t2, t3, t1);
+	}
+	
+	//unos ok
+	@Test 
+	public final void testUnesiKlijentaOK() throws Exception
+	{
+		t.setText("Ime i prezime");
+		t2.setText("123/456-789");
+		t3.setText("mail5@mail.com");
+		t1.setText("Neka adresa");
+				
+		id = DodavanjeKlijenta.unesiKlijentaUBazu(_klijent, t, t2, t3, t1);
+		assertNotEquals(Long.valueOf(0), id);
+	}
+	
+	//za brisanje iz baze klijenta koji se napravi zbog testa	
+	@AfterClass
+	public static void tearDown()
+	{
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		
+		Klijent klijent = (Klijent) session.get(Klijent.class, id); 
+		session.delete(klijent); 
+		tx.commit();
+		session.close();
+	}
+		
 
 
 }

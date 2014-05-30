@@ -17,7 +17,7 @@ public class DodavanjeKlijenta {
 		
 	public DodavanjeKlijenta(){}
 	
-	public Long unesiKlijentaUBazu(Klijent _klijent, JTextField textField, JTextField textField_2, JTextField textField_3, JTextField textField_1 ) throws Exception
+	public static Long unesiKlijentaUBazu(Klijent _klijent, JTextField textField, JTextField textField_2, JTextField textField_3, JTextField textField_1 ) throws Exception
 	{
 		Session sesija = HibernateUtil.getSessionFactory().openSession(); 
 		
@@ -41,7 +41,7 @@ public class DodavanjeKlijenta {
 			}
 			else if (!validirajPrazno(textField) || !validirajPrazno(textField_1) || !validirajPrazno(textField_2) || !validirajPrazno(textField_3))
 			{
-				throw new Exception("Svi unosi moraju biti prisutni !" + "\n" +"Prazno polje");
+				throw new IllegalArgumentException("Svi unosi moraju biti prisutni !");
 			}
 			
 		}
