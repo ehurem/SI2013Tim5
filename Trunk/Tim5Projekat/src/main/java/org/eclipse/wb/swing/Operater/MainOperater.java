@@ -262,16 +262,18 @@ public class MainOperater {
 					}
 				}
 				
+				//int i = (Integer)(comboBox_3.getSelectedItem());
+				
 				try {
 					Long vratio = UnosZahtjeva.unesiZahtjevUBazu(_zaposlenik, ((Klijent)comboBox_1.getSelectedItem()).getId(), 
-							(Integer)comboBox_3.getSelectedItem(), textField_2, garancija_DA, textArea);
+						comboBox_3.getSelectedIndex()+1, textField_2, garancija_DA, textArea);
 					if(vratio != 0)
 					{
 						infoBox("Zahtjev"+Long.toString(vratio)+"unesen", "Unesen zahtjev");
 					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					infoBox("Sva polja moraju biti popunjena!", "Neispravan unos");
 				}
 				
 				
