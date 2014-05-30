@@ -10,17 +10,17 @@ import javax.swing.JTextArea;
 public class Komentar {
 
 	private JFrame frmKomentar;
-	String komentar;
+	static String komentar;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args, final String komentar) {
+	public static void main(String[] args, final String komentar1) {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
+					komentar = komentar1;
 					Komentar window = new Komentar();
 					window.frmKomentar.setVisible(true);
 				} catch (Exception e) {

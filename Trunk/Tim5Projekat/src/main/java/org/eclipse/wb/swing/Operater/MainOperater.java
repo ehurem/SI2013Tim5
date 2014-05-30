@@ -32,6 +32,7 @@ import org.hibernate.Transaction;
 import com.mysql.jdbc.PreparedStatement;
 
 import controller.UnosZahtjeva;
+import controller.UnosZalbe;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.*;
 
@@ -446,42 +447,13 @@ public class MainOperater {
 		JButton btnZabiljeialbu = new JButton("Zabilje\u017Ei \u017Ealbu");
 		btnZabiljeialbu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Session session = HibernateUtil.getSessionFactory().openSession();
 				try {
-					
-					Transaction t = session.beginTransaction();
-					
-		            java.util.Date utilDate = new java.util.Date();
-		            
-		            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-					
-		            
-					
-		            Zalba nova = new Zalba();
-					
-					nova.setKomentar(textArea_1.getText());
-					nova.setDatumPodnosenja(sqlDate);
-					Zaposlenik z = (Zaposlenik)comboBox.getSelectedItem();
-					Klijent k = (Klijent)comboBox_2.getSelectedItem();
-					nova.set_klijent( (Long)k.getId());
-					nova.setZaposlenik( (Long)z.getId() );
-					
-					if(validirajPrazno(textArea_1)){
-					nova.setId( (Long ) session.save(nova));
-					infoBox("Uspješno dodana žalba! ", "Žalba dodana");
-					}
-					t.commit();
-					
-					
+					Long id = UnosZalbe.unesiZalbuUBazu(textArea_1, comboBox, comboBox_2);
+					if (id == 0) throw new Exception("Nešto je krenulo po zlu!!!");
+					else infoBox("Uspješno dodana žalba", "Poruka");
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
-				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
-				}
-				finally{
-					session.close();
-				}
-	
-			
 			}
 		});
 		
