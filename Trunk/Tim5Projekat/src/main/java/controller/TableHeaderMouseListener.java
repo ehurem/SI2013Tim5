@@ -29,17 +29,13 @@ public class TableHeaderMouseListener extends MouseAdapter {
        if (column==0) {   
     	   ((DefaultTableModel) tabela.getModel()).setRowCount(0);
            Collections.sort(zahtjevi);
-       	for(int i=0; i<zahtjevi.size(); i++) {
-       		((DefaultTableModel) tabela.getModel()).addRow(new Object[] {( zahtjevi.get(i)).getID(), ( zahtjevi.get(i)).getPrioritet()});
-		        }
+           kontroler.popuniTabelu(tabela, zahtjevi);
        }
    
        else {
-       	Collections.sort(zahtjevi, new Zahtjev.PoPrioritetu());
-       	((DefaultTableModel) tabela.getModel()).setRowCount(0);
-       	for(int i=0; i<zahtjevi.size(); i++) {
-       		((DefaultTableModel) tabela.getModel()).addRow(new Object[] {( zahtjevi.get(i)).getID(), ( zahtjevi.get(i)).getPrioritet()});
-		        }
+    	   Collections.sort(zahtjevi, new Zahtjev.PoPrioritetu());
+    	   ((DefaultTableModel) tabela.getModel()).setRowCount(0);
+    	   kontroler.popuniTabelu(tabela, zahtjevi);
        }
        	
    }

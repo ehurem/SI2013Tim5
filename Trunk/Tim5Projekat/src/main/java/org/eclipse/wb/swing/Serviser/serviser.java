@@ -32,6 +32,7 @@ import org.hibernate.Transaction;
 
 import controller.TableHeaderMouseListener;
 import controller.ZahtjevController;
+import controller.serviserKontroler;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
 import Models.Zahtjev;
@@ -49,9 +50,10 @@ import java.util.List;
 public class serviser {
 
 	private JFrame frmInterfejsZaServisera;
-	private JTable table;
+	private JTable tabela;
 	private static Long _zaposlenik; //ID u bazi logovanog zaposlenika
-	List<Zahtjev> listZahtjev;
+	List<Zahtjev> zahtjevi;
+	private serviserKontroler metoda;
 	private ZahtjevController kontroler;
 	public JList list;
 	public DefaultListModel listModel;
@@ -95,7 +97,7 @@ public class serviser {
 		kontroler = new ZahtjevController();
 		list = new JList();
 		listModel = new DefaultListModel();
-	
+	    metoda = new serviserKontroler();
 		frmInterfejsZaServisera = new JFrame();
 		frmInterfejsZaServisera.setResizable(false);
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
@@ -122,117 +124,71 @@ public class serviser {
 	    		}
 	   	    
 	    };
-		table = new JTable();
-		table.setModel(tmodel);
+		tabela = new JTable();
+		tabela.setModel(tmodel);
 		tmodel.addColumn("ID Zahtjeva");
 		tmodel.addColumn("Prioritet");
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		   try {
-				
-				Transaction tr = session.beginTransaction();
-				Query queryZahtjev = session.createQuery("from Zahtjev where _status='otvoren'");
-				listZahtjev = queryZahtjev.list();
-				for(int i=0;i<listZahtjev.size();i++){
-						tmodel.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
-				}
-				tr.commit();
-				//session.close();
-				
-			}
-			catch (Exception ex) {
-				JOptionPane.showMessageDialog(table, ex.toString());
-			}
-		finally { 
-			session.close();
-		}
-		   // dozvoliti selekciju samo jednog reda u tabeli
-			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		zahtjevi=metoda.ucitajOtvoreneZahtjeve();
+        metoda.popuniTabelu(tabela, zahtjevi);
+		// dozvoliti selekciju samo jednog reda u tabeli
+			tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
-			// klasa za event za klik na zaglavlje tabele
-			/*class TableHeaderMouseListener extends MouseAdapter {
-			     
-			    private JTable table;
-			     
-			    public TableHeaderMouseListener(JTable table) {
-			        this.table = table;
-			    }
-			     
-			    public void mouseClicked(MouseEvent event) {
-			        Point point = event.getPoint();
-			        int column = table.columnAtPoint(point);
-			      
-			        if (column==0) {   
-			        	tmodel.setRowCount(0);
-			            Collections.sort(listZahtjev);
-			        	for(int i=0; i<listZahtjev.size(); i++) {
-			        		 tmodel.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
-					        }
-			        }
-			    
-			        else {
-			        	Collections.sort(listZahtjev, new Zahtjev.PoPrioritetu());
-			        	tmodel.setRowCount(0);
-			        	for(int i=0; i<listZahtjev.size(); i++) {
-			        		 tmodel.addRow(new Object[] {( listZahtjev.get(i)).getID(), ( listZahtjev.get(i)).getPrioritet()});
-					        }
-			        }
-			        	
-			    }
-			}*/
-			table.getTableHeader().addMouseListener(new TableHeaderMouseListener(table, listZahtjev));
-			// centriran tekst u tabeli
-			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-			table.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
-			table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
-			// zabranjeno mijenjanje redoslijeda kolona
-			table.getTableHeader().setReorderingAllowed(false);
-			// zabranjeno mijenjanje veličine kolona u tabeli
-			table.getTableHeader().setResizingAllowed(false);
+		// event za zaglavlje tabele
+		tabela.getTableHeader().addMouseListener(new TableHeaderMouseListener(tabela, zahtjevi));
+		// centriran tekst u tabeli
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tabela.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+		tabela.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+		// zabranjeno mijenjanje redoslijeda kolona
+		tabela.getTableHeader().setReorderingAllowed(false);
+		// zabranjeno mijenjanje veličine kolona u tabeli
+		tabela.getTableHeader().setResizingAllowed(false);
+			
         // Button za promjenu statusa zahtjeva iz "Otvoren" u "U izvrsavanju" 
 		JButton btnStatus = new JButton("Odaberi");
 		btnStatus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int i=-1;
-			 i=table.getSelectedRow();  
+			 i=tabela.getSelectedRow();  
 			 if(i>=0) {
-				 String s = table.getValueAt(i, 0).toString();
+				 String s = tabela.getValueAt(i, 0).toString();
 				 int k=-1;
 				  Session session = HibernateUtil.getSessionFactory().openSession();
 				  try {
 					
 					Transaction tr = session.beginTransaction();
 					Query queryZahtjev = session.createQuery("from Zahtjev where _status='Otvoren'");
-					listZahtjev = queryZahtjev.list();
-					for (int j=0; j<listZahtjev.size(); j++) {
-						if (listZahtjev.get(j).getID()==Integer.parseInt(s)) {
-							listZahtjev.get(j).setStatus("U izvrsavanju");
-							listZahtjev.get(j).setZaposlenik(get_zaposlenik());
-							((DefaultTableModel)table.getModel()).removeRow(i);
-							JOptionPane.showMessageDialog(table, "Uspješno ste uzeli zahtjev na izvršavanje!");
+					zahtjevi = queryZahtjev.list();
+					for (int j=0; j<zahtjevi.size(); j++) {
+						if (zahtjevi.get(j).getID()==Integer.parseInt(s)) {
+							zahtjevi.get(j).setStatus("U izvrsavanju");
+							zahtjevi.get(j).setZaposlenik(get_zaposlenik());
+							((DefaultTableModel)tabela.getModel()).removeRow(i);
+							JOptionPane.showMessageDialog(tabela, "Uspješno ste uzeli zahtjev na izvršavanje!");
 							k=j;
 							break;
 		        	 } 
 		         }
 				
-				session.save(listZahtjev.get(k));
+				session.save(zahtjevi.get(k));
 				tr.commit();
-				listZahtjev.remove(k);
+				zahtjevi.remove(k);
 				//session.close();
 				 }
 				  catch (Exception ex) {
-					  JOptionPane.showMessageDialog(table, ex.toString());
+					  JOptionPane.showMessageDialog(tabela, ex.toString());
 				  }
 				finally { 
 					session.close(); 
 					}
 			 }
-			 else JOptionPane.showMessageDialog(table, "Niste odabrali nijedan red!");
+			 else JOptionPane.showMessageDialog(tabela, "Niste odabrali nijedan red!");
 			}
 		});
 		
 		// event za dvostruki klik na red tabele
-				 table.addMouseListener(new MouseAdapter() {
+				 tabela.addMouseListener(new MouseAdapter() {
 					   public void mouseClicked(MouseEvent e) {
 						   JTable target = (JTable)e.getSource();
 						   if (e.getClickCount() == 2) {
@@ -240,14 +196,14 @@ public class serviser {
 					         int column = target.getSelectedColumn();
 					         String s = target.getValueAt(row, 0).toString();
 					         int index = 0;
-					         for (int i=0; i<listZahtjev.size(); i++) {
-					        	 if (listZahtjev.get(i).getID()==Integer.parseInt(s)) {
+					         for (int i=0; i<zahtjevi.size(); i++) {
+					        	 if (zahtjevi.get(i).getID()==Integer.parseInt(s)) {
 					        		 index=i;
 					        		 break;
 					        	 } 
 					         }
 					         PregledOdabranogZahtjeva forma = new PregledOdabranogZahtjeva();
-					         forma.main(null, listZahtjev.get(index));
+					         forma.main(null, zahtjevi.get(index));
 					         }
 					      
 					   }
@@ -273,9 +229,9 @@ public class serviser {
 					.addContainerGap(42, Short.MAX_VALUE))
 		);
 	
-		table.getColumnModel().getColumn(0).setPreferredWidth(101);
-		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		scrollPane.setViewportView(table);
+		tabela.getColumnModel().getColumn(0).setPreferredWidth(101);
+		tabela.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		scrollPane.setViewportView(tabela);
 
 		
 		panel.setLayout(gl_panel);
