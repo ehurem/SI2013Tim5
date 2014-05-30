@@ -56,7 +56,6 @@ public class UnosZahtjeva {
 				Long id = (Long)sesija.save(noviZahtjev); //spašava u bazu
 				
 				transakcija.commit(); //završava transakciju
-				sesija.close();
 				return id;
 				
 			}
@@ -72,7 +71,6 @@ public class UnosZahtjeva {
 		}
 		finally
 		{
-			if(sesija!=null)
 			sesija.close();
 		}
 	}

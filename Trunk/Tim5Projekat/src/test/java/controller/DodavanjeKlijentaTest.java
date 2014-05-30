@@ -20,7 +20,7 @@ public class DodavanjeKlijentaTest{
 	}	
 	
 	@Test (expected = IllegalArgumentException.class)
-	public final void testValidirajPraznoFieldNeg() {
+	public final void testValidirajPraznoNeg() {
 		
 		DodavanjeKlijenta.validirajPrazno(new JTextField(""));
 		
