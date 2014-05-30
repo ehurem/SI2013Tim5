@@ -76,7 +76,7 @@ public class FinansijskiIzvjestaj {
 		}
 		catch(Exception ex)
 		{
-			JOptionPane.showMessageDialog(table, ex.toString());
+			//JOptionPane.showMessageDialog(table, ex.toString());
 		}
 
 		frmFinansijskiIzvjestaj = new JFrame();

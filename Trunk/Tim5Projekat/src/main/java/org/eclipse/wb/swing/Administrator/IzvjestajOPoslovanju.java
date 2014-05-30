@@ -87,7 +87,7 @@ public class IzvjestajOPoslovanju {
 			}
 			catch(Exception ex)
 			{
-				JOptionPane.showMessageDialog(table, ex.toString());
+				//JOptionPane.showMessageDialog(table, ex.toString());
 			}
 		
 		        
