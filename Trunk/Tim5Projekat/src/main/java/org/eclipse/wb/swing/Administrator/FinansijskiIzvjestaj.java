@@ -147,8 +147,9 @@ public class FinansijskiIzvjestaj {
 		for (int i=0;i<zahtjevi.size();i++){
 			Calendar c = kontroler.dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
-				tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).get_cijena())} );		}
+				tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).get_cijena())} );
 		}	
+		}
 		}
 		catch(Exception ex)
 		{

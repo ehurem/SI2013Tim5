@@ -81,15 +81,28 @@ public class IzvjestajOPoslovanju {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		//dodavanje zahtjeva u listu iz baze
-		try {
-			zahtjevi = kontroler.iscitajListuZahtjevaIzBaze();
-			}
-			catch(Exception ex)
-			{
-				//JOptionPane.showMessageDialog(table, ex.toString());
-			}
-		
+		//dodavanje zahtjeva i zaposlenika u listu iz baze
+		Session sesija = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = sesija.beginTransaction();
+		try
+		{
+			zahtjevi = new ArrayList<Zahtjev>();
+			zaposlenici = new ArrayList<Zaposlenik>();
+			Query queryZahtjev = sesija.createQuery("from Zahtjev");
+			Query queryZaposlenik = sesija.createQuery("from Zaposlenik");
+			zahtjevi = (ArrayList<Zahtjev>) queryZahtjev.list();
+			zaposlenici = (ArrayList<Zaposlenik>) queryZaposlenik.list();
+			t.commit();
+		}
+		catch(Exception ex)
+		{
+			JOptionPane.showMessageDialog(table, ex.toString());
+
+		}
+		finally
+		{
+			sesija.close();
+		}		
 		        
 		frmIzvjestajOPoslovanju = new JFrame();
 		frmIzvjestajOPoslovanju.setResizable(false);
@@ -295,7 +308,7 @@ public class IzvjestajOPoslovanju {
 		
 	}
 
-	private java.util.List getZahtjevi() {
+	private ArrayList<Zahtjev> getZahtjevi() {
 		return zahtjevi;
 	}
 
