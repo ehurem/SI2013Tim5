@@ -33,7 +33,6 @@ import java.util.List;
 
 import Models.*;
 
-
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuListener;
@@ -44,6 +43,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import controller.DodavanjeZaposlenika;
+import controller.IzmjenaZaposlenika;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 import java.awt.event.MouseAdapter;
@@ -714,42 +714,22 @@ public class Main {
 				
 				Session session = HibernateUtil.getSessionFactory().openSession();
 				boolean provjera=true;
-				if(t_i_adresaStanovanja.getText().equals("")){
-					provjera = false;
-					infoBox("Niste unijeli Adresu stanovanja", "UZBUNA");
+				try{
+					IzmjenaZaposlenika.ValidirajDodavanje(t_i_adresaStanovanja.getText(), t_i_brojTelefona.getText(), t_i_email.getText(), t_i_korisnickoIme.getText());
 				}
-				
-				else if(t_i_brojTelefona.getText().equals("")){
+				catch(Exception b){
+					infoBox(b.toString(),"Uzbuna");
 					provjera = false;
-					infoBox("Niste unijeli broj telefona", "UZBUNA");
 				}
-				
-				else if(t_i_email.getText().equals("")){
-					provjera = false;
-					infoBox("Niste unijeli email", "UZBUNA");
-				}
-				
-				else if(t_i_korisnickoIme.getText().equals("")){
-					provjera = false;
-					infoBox("Niste unijeli Korisnicko ime", "UZBUNA");
-				}
-				else if(!t_i_brojTelefona.getText().matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{3}")){
-					
-					provjera = false;
-					infoBox("Niste unijeli pravilno telefonski broj.", "UZBUNA");
-				}
-				
-				//System.out.println("Tab changed to: " + t_i_brojTelefona.getText().matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"));
-				
-				
-				
+	
+				Zaposlenik novi = new Zaposlenik();
 				if(provjera){
 				try {
 					
 					
 					Transaction t = session.beginTransaction();
 					long EmployeeID = ((Zaposlenik) c_i_ImeIPrezime.getSelectedItem()).getId();
-					Zaposlenik novi = (Zaposlenik)session.get(Zaposlenik.class, EmployeeID); 
+					novi = (Zaposlenik)session.get(Zaposlenik.class, EmployeeID); 
 					/*Provjera da li postoji zaposlenik sa tim korisnickim imenom.*/
 					Query query = session.createQuery("from Zaposlenik where korisnickoIme = :ime ");
 			        query.setParameter("ime", t_i_korisnickoIme.getText());
@@ -774,10 +754,9 @@ public class Main {
 						Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
 						novi.set_datumRodjenja(datum);
 						
-						session.update(novi);
+						
 						infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", "Izmjena uspješna");
 						
-						t.commit();
 			        }
 			        else{
 			        if((list.get(0).getId() == novi.getId())  || ((list.get(0).getKorisnickoIme() == t_i_korisnickoIme.getText()) && (list.get(0).getId() == novi.getId()))){
@@ -799,10 +778,10 @@ public class Main {
 					Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
 					novi.set_datumRodjenja(datum);
 					
-					session.update(novi);
+					
 					infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", "Izmjena uspješna");
 					
-					t.commit();
+					
 			        }
 			        else{
 			        	
@@ -819,7 +798,13 @@ public class Main {
 					infoBox(ex.toString(), "UZBUNA");
 				}}
 				finally {
-			         session.close(); 
+			         session.close();
+			         try{
+			         IzmjenaZaposlenika.izmjeni(novi);
+			         }
+			         catch(Exception ex){
+			        	 infoBox("Dogodila se greska prilikom izmjene zaposlenika.", "UZBUNA");
+			         }
 			      }
 			}}
 		});
@@ -888,9 +873,11 @@ public class Main {
 						
 						
 						for(int i=0;i<listZaposlenik.size();i++){
-							model.addElement(listZaposlenik.get(i));
-							elements[i] = listZaposlenik.get(i).toString();
-							
+							if(listZaposlenik.get(i).get_status()){
+								model.addElement(listZaposlenik.get(i));
+								elements[i] = listZaposlenik.get(i).toString();
+								}
+								
 						}
 						
 						
@@ -925,8 +912,7 @@ public class Main {
 			      try{
 			    	/*Brisanje zaposlenika iz baze*/
 			        tx = session.beginTransaction();
-			        Zaposlenik employee = (Zaposlenik) session.get(Zaposlenik.class, EmployeeID); 
-			        session.delete(employee); 
+			        IzmjenaZaposlenika.obrisiZaposlenika(EmployeeID);
 			         
 			        /*Obnavljanje liste zaposlenika*/
 			     	Query queryZaposlenik = session.createQuery("from Zaposlenik");
@@ -935,8 +921,10 @@ public class Main {
 					String[] elements = new String[listZaposlenik.size()];
 					
 					for(int i=0;i<listZaposlenik.size();i++){
+						if(listZaposlenik.get(i).get_status()){
 						model.addElement(listZaposlenik.get(i));
 						elements[i] = listZaposlenik.get(i).toString();
+						}
 						
 					}
 					
@@ -945,7 +933,7 @@ public class Main {
 					/*Komitanje u bazu izmjena nad zaposlenicima*/
 			        tx.commit();
 			         
-			        infoBox("Uspjesno ste deaktivirali racun: " + employee.get_imeIPrezime() , "Deaktivacija uspješna");
+			        infoBox("Uspjesno ste deaktivirali racun", "Deaktivacija uspješna");
 			      }
 			      catch (Exception ex) {
 						infoBox(ex.toString(), "UZBUNA");
