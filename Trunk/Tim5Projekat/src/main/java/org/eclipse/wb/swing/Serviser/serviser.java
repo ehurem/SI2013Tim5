@@ -101,7 +101,7 @@ public class serviser {
 		frmInterfejsZaServisera = new JFrame();
 		frmInterfejsZaServisera.setResizable(false);
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
-		frmInterfejsZaServisera.setBounds(100, 100, 332, 357);
+		frmInterfejsZaServisera.setBounds(100, 100, 332, 365);
 		//frmInterfejsZaServisera.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);

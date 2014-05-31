@@ -54,7 +54,7 @@ public class ZahtjevController {
 				listZahtjev = (List<Zahtjev>) queryZahtjevid.list();
 			} else {
 				queryZahtjev = session
-						.createQuery("from Zahtjev where _status='U izvrsavanju'");
+						.createQuery("from Zahtjev where _status='u izvrsavanju'");
 				listZahtjev = (List<Zahtjev>) queryZahtjev.list();
 			}
 
@@ -125,7 +125,7 @@ public class ZahtjevController {
 					+ zahtjev_id + "'");
 			listZahtjev = (List<Zahtjev>) queryZahtjevid.list();
 			Zahtjev z = listZahtjev.get(0);
-			z.setStatus("Zatvoren");
+			z.setStatus("zatvoren");
 
 			Double cij = Double.parseDouble(cijena);
 			z.set_cijena(cij);
@@ -159,7 +159,7 @@ public class ZahtjevController {
 
 		try {
 			Query queryZahtjev = session
-					.createQuery("from Zahtjev where _status='U izvrsavanju'");
+					.createQuery("from Zahtjev where _status='u izvrsavanju'");
 			List listZahtjev = queryZahtjev.list();
 
 			for (int i = 0; i < listZahtjev.size(); i++) {
@@ -181,9 +181,8 @@ public class ZahtjevController {
 	}
 	
 	public static boolean validirajCijenu(String s){
-	    return s.matches("^([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$");
-	    // simpler from for
-//	    return s.matches("[a-Z][a-Z][a-Z]");
+	    
+	    return (Double.parseDouble(s)>0);
 	  }
 	public static Boolean validirajPrazno(JTextArea t1) {
 		
