@@ -99,7 +99,7 @@ public class UnosZahtjevaTest {
 		
 		id = UnosZahtjeva.unesiZahtjevUBazu(_zaposlenik, idKlijenta, c3, textField_2, dugme, textArea);
 		
-		assertNotEquals(Long.valueOf(0), id);
+		assertNotNull(id);
 		
 	}
 	

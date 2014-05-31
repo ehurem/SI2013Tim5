@@ -17,17 +17,21 @@
     <defaultGoal>install</defaultGoal>
   </build>
   <dependencies>  
-    <dependency>
+   
+   <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
+   
+   
     <dependency>
     	<groupId>mysql</groupId>
     	<artifactId>mysql-connector-java</artifactId>
     	<version>5.1.30</version>
     </dependency>
+    
     <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-core</artifactId>

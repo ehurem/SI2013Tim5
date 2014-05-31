@@ -1,13 +1,17 @@
 package controller;
 
 import static org.junit.Assert.*;
+
 import javax.swing.JTextField;
+
+import junit.framework.Assert;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
 
@@ -113,7 +117,8 @@ public class DodavanjeKlijentaTest{
 		t1.setText("Neka adresa");
 				
 		id = DodavanjeKlijenta.unesiKlijentaUBazu(_klijent, t, t2, t3, t1);
-		assertNotEquals(Long.valueOf(0), id);
+		//Assert.assertNotEquals(Long.valueOf(0), id);
+		assertNotNull(id);
 	}
 	
 	//za brisanje iz baze klijenta koji se napravi zbog testa	
