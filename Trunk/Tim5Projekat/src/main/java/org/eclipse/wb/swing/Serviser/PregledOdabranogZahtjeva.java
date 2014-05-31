@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -145,8 +146,12 @@ public class PregledOdabranogZahtjeva {
 		textField_2 = new JTextField(tipuredaja);
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
-		
-		JTextArea textArea = new JTextArea(komentar);
+		JScrollPane scrollPane = new JScrollPane();
+
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		textArea.setLineWrap(true);
+		textArea.setText(komentar);
 		textArea.setEditable(false);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -164,7 +169,7 @@ public class PregledOdabranogZahtjeva {
 							.addComponent(textField_2)
 							.addComponent(textField_1)
 							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
-						.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(41, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
@@ -185,7 +190,7 @@ public class PregledOdabranogZahtjeva {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblDodatniKomentar)
-						.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(83, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
