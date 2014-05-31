@@ -199,15 +199,11 @@ public class serviser {
 
 		
 		panel.setLayout(gl_panel);
-		
-
-		//final JList list = new JList();
-		//final DefaultListModel listModel = new DefaultListModel();
+	
 		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        try {
-		        	//list.
 					listModel = kontroler.PopunjavanjeListePreuzetihZahtjeva();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -236,13 +232,7 @@ public class serviser {
 				if (list.getSelectedValue()!=null)
 				{
 				String id_zahtjeva = String.valueOf(list.getSelectedValue());
-	//			Zahtjev z = (Zahtjev) list.getSelectedValue();
-				//String info[] = new String[2];
-				//info[0] = String.valueOf(z.getID());
-				//info[0] = "2";
-				//info[1] = "1";
 				ZatvaranjeZahtjeva jf = new ZatvaranjeZahtjeva();
-				//frmInterfejsZaServisera.dispose();
 				jf.main(null, id_zahtjeva, get_zaposlenik());
 				//jf.Show();
 				}
