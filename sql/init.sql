@@ -2,12 +2,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema hajskontacemo
--- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `hajskontacemo` ;
 CREATE SCHEMA IF NOT EXISTS `hajskontacemo` DEFAULT CHARACTER SET utf8 ;
 USE `hajskontacemo` ;
 
@@ -23,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `hajskontacemo`.`tblklijenti` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB
-AUTO_INCREMENT = 12
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -39,11 +34,12 @@ CREATE TABLE IF NOT EXISTS `hajskontacemo`.`tblzaposlenici` (
   `korisnickoIme` VARCHAR(45) NOT NULL,
   `sifra` VARCHAR(80) NOT NULL,
   `privilegija` VARCHAR(45) NOT NULL,
-  `datumRodjenja` DATETIME NULL DEFAULT NULL,
+  `datumRodjenja` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` TINYINT(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `korisnickoIme_UNIQUE` (`korisnickoIme` ASC))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 20
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -61,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `hajskontacemo`.`tblzahtjevi` (
   `prioritet` INT(11) NOT NULL,
   `cijena` DOUBLE NULL DEFAULT NULL,
   `klijent_id` INT(10) UNSIGNED NOT NULL,
-  `zaposlenik_id` INT(11) NULL DEFAULT NULL,
+  `zaposlenik_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_tblZahtjevi_tblKlijenti_idx` (`klijent_id` ASC),
   INDEX `fk_tblZahtjevi_tblZaposlenici1_idx` (`zaposlenik_id` ASC),
@@ -76,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `hajskontacemo`.`tblzahtjevi` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -111,6 +107,7 @@ DEFAULT CHARACTER SET = utf8;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 
 -- -----------------------------------------------------
