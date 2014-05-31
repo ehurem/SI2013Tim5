@@ -16,7 +16,7 @@ import Models.Zahtjev;
 public class serviserKontroler {
 	
 	
-	public static List <Zahtjev> ucitajOtvoreneZahtjeve () {
+	public static List <Zahtjev> ucitajOtvoreneZahtjeve () throws Exception {
 		List <Zahtjev> zahtjevi = null;
 		Session sesija = HibernateUtil.getSessionFactory().openSession();
 		   try {
@@ -26,7 +26,7 @@ public class serviserKontroler {
 				tr.commit();
 		   }
 		   catch (Exception ex) { 
-			   JOptionPane.showMessageDialog(null, ex.toString());
+			   throw ex;
 		   }
 		   finally { 
 			   sesija.close();

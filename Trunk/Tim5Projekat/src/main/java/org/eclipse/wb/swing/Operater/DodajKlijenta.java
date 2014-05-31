@@ -92,7 +92,7 @@ public class DodajKlijenta {
 						frmUnosNovogKlijenta.dispose();
 					}
 				} catch (Exception e1) {
-					infoBox(e1.toString(), "Greška");
+					infoBox(e1.getLocalizedMessage(), "Greška");
 				}
 			}
 		});

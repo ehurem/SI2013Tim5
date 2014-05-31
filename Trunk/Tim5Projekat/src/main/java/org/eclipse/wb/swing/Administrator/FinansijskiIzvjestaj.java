@@ -14,9 +14,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 
 
+
 import controller.IzvjestajiKontroler;
+
 import java.util.*;
+
 import Models.Zahtjev;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -63,7 +67,10 @@ public class FinansijskiIzvjestaj {
 	 * Initialize the contents of the frame.
 	 */
 	
-	
+	public static void infoBox(String infoMessage, String naslov)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
+    }
 	
 	private void initialize() {
 		//dodavanje zahtjeva u listu iz baze
@@ -73,7 +80,7 @@ public class FinansijskiIzvjestaj {
 		}
 		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			infoBox(ex.getLocalizedMessage(), "Greška");
 		}
 		//izracunavanje ukupne zarade za prikazane zahtjeve
 		try {
@@ -81,7 +88,7 @@ public class FinansijskiIzvjestaj {
 		}
 		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			infoBox(ex.getLocalizedMessage(), "Greška");
 		}
 		frmFinansijskiIzvjestaj = new JFrame();
 		frmFinansijskiIzvjestaj.setResizable(false);
@@ -149,6 +156,7 @@ public class FinansijskiIzvjestaj {
 		}
 		catch(Exception ex)
 		{
+			infoBox("Nema zahtjeva u odabranoj sedmici", "Greška");
 			//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
 		}
 	

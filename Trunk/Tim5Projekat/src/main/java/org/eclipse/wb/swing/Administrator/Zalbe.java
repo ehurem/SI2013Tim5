@@ -121,7 +121,7 @@ public class Zalbe {
 			
 		}
 		catch (Exception ex) {
-			JOptionPane.showMessageDialog(table, ex.toString());
+			JOptionPane.showMessageDialog(table, ex.getLocalizedMessage());
 		}
 		finally{
 			session.close();
@@ -171,7 +171,7 @@ public class Zalbe {
 					   JOptionPane.showMessageDialog(table, "Ovdje");
 				   }
 					catch (Exception ex) {
-						JOptionPane.showMessageDialog(table, ex.toString());
+						JOptionPane.showMessageDialog(table, ex.getLocalizedMessage());
 					}
 				   finally{
 					   session.close();				  

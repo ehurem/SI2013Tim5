@@ -103,8 +103,7 @@ public class serviser {
 				try {
 					listModel = kontroler.PopunjavanjeListePreuzetihZahtjeva();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					infoBox(e.getLocalizedMessage(), "Greška");
 				}
 		        list.setModel(listModel);
 		        ///OVDJE
@@ -140,7 +139,11 @@ public class serviser {
 		tabela.setModel(tmodel);
 		tmodel.addColumn("ID Zahtjeva");
 		tmodel.addColumn("Prioritet");
-		zahtjevi=metoda.ucitajOtvoreneZahtjeve();
+		try {
+			zahtjevi=serviserKontroler.ucitajOtvoreneZahtjeve();
+		} catch (Exception e1) {
+			infoBox(e1.getLocalizedMessage(), "Greška");
+		}
         metoda.popuniTabelu(tabela, zahtjevi);
 		// dozvoliti selekciju samo jednog reda u tabeli
 			tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -168,7 +171,7 @@ public class serviser {
 					serviserKontroler.uzmiZahtjevNaIzvrsavanje(tabela, zahtjevi, get_zaposlenik(), red);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					infoBox(e.getMessage(), "Greska !!!!!!!");
+					infoBox(e.getLocalizedMessage(), "Greska !!");
 				}
 				JOptionPane.showMessageDialog(tabela, "Uspješno ste uzeli zahtjev na izvršavanje!");
 			 }
@@ -227,8 +230,7 @@ public class serviser {
 		        	//list.
 					listModel = kontroler.PopunjavanjeListePreuzetihZahtjeva();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					infoBox(e.getLocalizedMessage(), "Greška");
 				}
 		        list.setModel(listModel);
 		      }
@@ -245,24 +247,16 @@ public class serviser {
 		/* Launches ZatvaranjeZahtjeva.java with selected Zahtjev */
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Code is here
-				//list.getSelectedValue()
+				
 				if (list.getSelectedValue()!=null)
 				{
 				String id_zahtjeva = String.valueOf(list.getSelectedValue());
-	//			Zahtjev z = (Zahtjev) list.getSelectedValue();
-				//String info[] = new String[2];
-				//info[0] = String.valueOf(z.getID());
-				//info[0] = "2";
-				//info[1] = "1";
 				ZatvaranjeZahtjeva jf = new ZatvaranjeZahtjeva();
-				//frmInterfejsZaServisera.dispose();
 				jf.main(null, id_zahtjeva, get_zaposlenik());
-				//jf.Show();
 				}
 				else
 				{
-					infoBox("Niste odabrali nijedan zahtjev", "UZBUNA");
+					infoBox("Niste odabrali nijedan zahtjev", "Greška");
 				}
 			}
 		});

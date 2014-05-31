@@ -77,6 +77,10 @@ public class IzvjestajOPoslovanju {
 		initialize();
 	}
 
+	public static void infoBox(String infoMessage, String naslov)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
+    }
 	
 	/**
 	 * Initialize the contents of the frame.
@@ -89,7 +93,7 @@ public class IzvjestajOPoslovanju {
 				}
 				catch(Exception ex)
 				{
-					ex.printStackTrace();
+					infoBox(ex.getLocalizedMessage(), "Greška");
 				}
 				//dodavanje zaposlenika u listu iz baze
 				try {
@@ -98,7 +102,7 @@ public class IzvjestajOPoslovanju {
 				}
 				catch(Exception ex)
 				{
-					ex.printStackTrace();
+					infoBox(ex.getLocalizedMessage(), "Greška");
 				}
 				try {
 					//Racunanje sumarnih podataka
@@ -236,8 +240,8 @@ public class IzvjestajOPoslovanju {
 		table.setModel(tmodel);
 		tmodel.addColumn("ID Zahtjeva");
 		tmodel.addColumn("Datum otvaranja zahtjeva");
-		tmodel.addColumn("Iznos zatvaranja zahtjeva");
-		tmodel.addColumn("Serviser");
+		tmodel.addColumn("Datum zatvaranja zahtjeva");
+		tmodel.addColumn("Zaposlenik");
 
 
 		table.getColumnModel().getColumn(1).setPreferredWidth(103);

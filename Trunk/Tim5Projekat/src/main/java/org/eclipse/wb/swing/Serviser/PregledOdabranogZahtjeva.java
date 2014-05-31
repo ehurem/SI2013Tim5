@@ -56,7 +56,7 @@ public class PregledOdabranogZahtjeva {
 				session.close();
 			}
 			catch (Exception ex) {
-				JOptionPane.showMessageDialog(null, ex.toString());
+				JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
 			}
 	
 		  

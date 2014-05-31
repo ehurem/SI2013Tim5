@@ -84,7 +84,7 @@ public class Login {
 					else if (id == "Serviser") org.eclipse.wb.swing.Serviser.serviser.main(null, ulaz.get_zaposlenik());
 					else if (id == "Operater") org.eclipse.wb.swing.Operater.MainOperater.main(null, ulaz.get_zaposlenik());
 				} catch (Exception e1) {
-					infoBox(e1.toString(), "Greška");
+					infoBox(e1.getLocalizedMessage(), "Greška");
 				}
 			}
 		});

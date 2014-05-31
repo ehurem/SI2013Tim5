@@ -34,7 +34,8 @@ public class Ulaz {
 				Criteria criteria = session.createCriteria(Zaposlenik.class);
 				criteria.add(Restrictions.eq("_korisnickoIme", username));
 				Zaposlenik zaposlenik = (Zaposlenik) criteria.uniqueResult();
-				if (zaposlenik != null && zaposlenik.getKorisnickaSifra().equals(encryptPassword(password)))  {
+				if (zaposlenik != null && zaposlenik.getKorisnickaSifra().equals(encryptPassword(password)) 
+						&& zaposlenik.get_status().equals(true))  {
 					if (zaposlenik.getPrivilegija().equals("Administrator"))						
 						id = "Administrator";
 					else if (zaposlenik.getPrivilegija().equals("Operater"))
@@ -51,7 +52,7 @@ public class Ulaz {
 				t.commit();
 			}
 			catch (Exception ex) {
-				throw new IllegalArgumentException("Greška: " + ex.toString());
+				throw new IllegalArgumentException(ex.getLocalizedMessage());
 			}
 			finally {
 				if (session != null) 
@@ -59,7 +60,7 @@ public class Ulaz {
 						session.close();
 					}
 					catch (Exception e2) {
-						throw new IllegalComponentStateException("Greška: " + e2.toString());
+						throw new IllegalComponentStateException(e2.getLocalizedMessage());
 					}
 			}
 		}

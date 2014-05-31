@@ -393,13 +393,9 @@ public class Main {
 					
 				}
 				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
+					infoBox(ex.getLocalizedMessage(), "Greška");
 				}
-			
-		        
-				
-				
-				
+					
 			}
 			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
 				
@@ -546,9 +542,6 @@ public class Main {
 		JLabel lblIzaberiZaposlenike = new JLabel("Izaberi zaposlenike:");
 		
 		
-		
-
-		
 		final DefaultListModel model = new DefaultListModel() {
 			String[] values = niz;
 			public int getSize() {
@@ -682,7 +675,7 @@ public class Main {
 					if (id == 0) throw new Exception("Nešto je krenulo po zlu!!!");
 					else infoBox("Uspješno dodan novi zaposlenik", "Poruka");
 				} catch (Exception e) {
-					infoBox(e.toString(), "Greška");
+					infoBox(e.getLocalizedMessage(), "Greška");
 				}
 			}
 		});
@@ -724,7 +717,7 @@ public class Main {
 					IzmjenaZaposlenika.ValidirajDodavanje(t_i_adresaStanovanja.getText(), t_i_brojTelefona.getText(), t_i_email.getText(), t_i_korisnickoIme.getText(),t_i_korisnickaSifra.getText());
 				}
 				catch(Exception b){
-					infoBox(b.getLocalizedMessage(),"Uzbuna");
+					infoBox(b.getLocalizedMessage(),"Greška");
 					provjera = false;
 				}
 	
@@ -796,7 +789,7 @@ public class Main {
 			        }
 			        else{
 			        	
-			        	infoBox("Korisnicko ime je zauzeto!", "UZBUNA");
+			        	infoBox("Korisnicko ime je zauzeto!", "Greška");
 			        }
 			        }
 				}
@@ -806,7 +799,7 @@ public class Main {
 						infoBox("Nepravilno ste unijeli datum. \nUnesite datum u formatu yyyy-mm-dd.", "UZBUNA");
 					}
 					else{
-					infoBox(ex.toString(), "UZBUNA");
+					infoBox(ex.getLocalizedMessage(), "Greška");
 				}}
 				finally {
 						/*Nakon prikuljanja podataka iz baze spremno je sve za izmjenu podataka.*/
@@ -815,7 +808,7 @@ public class Main {
 			         IzmjenaZaposlenika.izmjeni(novi);
 			         }
 			         catch(Exception ex){
-			        	 infoBox("Dogodila se greska prilikom izmjene zaposlenika.", "UZBUNA");
+			        	 infoBox("Dogodila se greska prilikom izmjene zaposlenika.", "Greška");
 			         }
 			      }
 			}}
@@ -862,7 +855,7 @@ public class Main {
 					
 				}
 				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
+					infoBox(ex.getLocalizedMessage(), "Greška");
 				}
 		        
 		        
@@ -893,7 +886,7 @@ public class Main {
 						
 					}
 				catch (Exception ex) {
-						infoBox(ex.toString(), "UZBUNA");
+						infoBox(ex.getLocalizedMessage(), "Greška");
 					}
 			        
 			        
@@ -939,7 +932,7 @@ public class Main {
 			        infoBox("Uspjesno ste deaktivirali racun", "Deaktivacija uspješna");
 			      }
 			      catch (Exception ex) {
-						infoBox(ex.toString(), "UZBUNA");
+						infoBox(ex.getLocalizedMessage(), "Greška");
 			      }
 			      finally {
 			         session.close(); 

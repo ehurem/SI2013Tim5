@@ -45,7 +45,7 @@ public class serviserKontrolerTest {
 		idKlijenta = new Long(0);
 }
 	@Test
-	public final void testUcitajOtvoreneZahtjeve() {
+	public final void testUcitajOtvoreneZahtjeve() throws Exception {
 		List <Zahtjev> zahtjevi = null;
 		boolean test=true;
 		zahtjevi = serviserKontroler.ucitajOtvoreneZahtjeve();
@@ -59,7 +59,7 @@ public class serviserKontrolerTest {
 	}
 
 	@Test
-	public final void testPopuniTabelu() {
+	public final void testPopuniTabelu() throws Exception {
 		List <Zahtjev> zahtjevi = null;
 		JTable tabela = new JTable();
 		DefaultTableModel tmodel = new DefaultTableModel();

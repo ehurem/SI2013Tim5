@@ -143,7 +143,7 @@ public class MainOperater {
 				}
 				catch(Exception izuzetak)
 				{
-					infoBox(izuzetak.getMessage(), "Greska u čitanju iz baze !");
+					infoBox(izuzetak.getLocalizedMessage(), "Greska u čitanju iz baze !");
 				}
 				finally
 				{
@@ -393,7 +393,7 @@ public class MainOperater {
 		        try {
 					UnosZalbe.popuniCombo(comboBox, comboBox_2);
 				} catch (Exception e) {
-					infoBox(e.getMessage(), "Greška!");
+					infoBox(e.getLocalizedMessage(), "Greška!");
 				}		        
 		      }
 		    };
@@ -419,7 +419,7 @@ public class MainOperater {
 					}
 				} catch (Exception ex) {
 					//ex.printStackTrace();
-					infoBox(ex.getMessage(), "Greška!");
+					infoBox(ex.getLocalizedMessage(), "Greška!");
 				}
 			}
 		});

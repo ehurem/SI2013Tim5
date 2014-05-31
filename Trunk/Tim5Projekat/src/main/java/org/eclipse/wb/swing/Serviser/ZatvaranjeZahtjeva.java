@@ -107,7 +107,7 @@ public class ZatvaranjeZahtjeva {
 		try {
 			listRez = kontroler.PopuniPodatke(textField, textField_1, textField_2, textField_3, textArea, zahtjev_id, rdbtnDa, rdbtnNe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			infoBox(e.getLocalizedMessage(), "Greška");
 		}
 		finally
 		{
@@ -171,7 +171,7 @@ public class ZatvaranjeZahtjeva {
 						infoBox("Zahtjev uspješno zatvoren", "Zatvoren zahtjev");
 					}
 					catch (Exception ex) {
-						infoBox(ex.toString(), "Greška");
+						infoBox(ex.getLocalizedMessage(), "Greška");
 					}
 					finally
 					{

@@ -24,6 +24,7 @@ public class UlazTest extends TestCase {
 		JTextField t_sifra = new JTextField("lijevaSifra");
 		Ulaz.provjeraUlaznihPodataka(t_korisnickoIme, t_sifra);
 	}	
+	
 	@Test
 	public void testProvjeraUlaznihPodatakaUspjesnaAdministrator() throws Exception {
 		JTextField t_korisnickoIme = new JTextField("admin");
@@ -43,6 +44,7 @@ public class UlazTest extends TestCase {
 		Assert.assertEquals(Ulaz.provjeraUlaznihPodataka(t_korisnickoIme, t_sifra), "Serviser");
 	}
 
+	
 	public void testEncryptPassword() {
 		String password = "sifra";
 		String sha1PASSWORD = "4259031dc85f451a2b7731e8f5ea93193dad63ad";
