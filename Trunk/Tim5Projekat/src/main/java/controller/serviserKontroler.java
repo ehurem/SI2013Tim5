@@ -15,11 +15,8 @@ import Models.Zahtjev;
 
 public class serviserKontroler {
 	
-	public serviserKontroler () {
-		
-	}
 	
-	public List <Zahtjev> ucitajOtvoreneZahtjeve () {
+	public static List <Zahtjev> ucitajOtvoreneZahtjeve () {
 		List <Zahtjev> zahtjevi = null;
 		Session sesija = HibernateUtil.getSessionFactory().openSession();
 		   try {
@@ -36,17 +33,16 @@ public class serviserKontroler {
 			   }
 		return zahtjevi;
 	}
-	public boolean popuniTabelu (JTable tabela, List <Zahtjev> zahtjevi) {
+	public static boolean popuniTabelu (JTable tabela, List <Zahtjev> zahtjevi) {
 		for(int i=0;i<zahtjevi.size();i++){
 			((DefaultTableModel) tabela.getModel()).addRow(new Object[] {( zahtjevi.get(i)).getID(), ( zahtjevi.get(i)).getPrioritet()});
 	}
 		return tabela.getRowCount()==zahtjevi.size();
 	}
-	public void uzmiZahtjevNaIzvrsavanje (JTable tabela, List <Zahtjev> zahtjevi, long zaposlenik, int red) {
+	public static void uzmiZahtjevNaIzvrsavanje (JTable tabela, List <Zahtjev> zahtjevi, long zaposlenik, int red) {
 		zahtjevi.get(red).setStatus("u izvrsavanju");
 		zahtjevi.get(red).setZaposlenik(zaposlenik);
 		((DefaultTableModel)tabela.getModel()).removeRow(red);
-		JOptionPane.showMessageDialog(tabela, "Uspješno ste uzeli zahtjev na izvršavanje!");
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			Transaction tr = session.beginTransaction();	

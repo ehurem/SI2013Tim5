@@ -153,7 +153,8 @@ public class serviser {
 				int red=-1;
 			 red=tabela.getSelectedRow();  
 			 if(red>=0) {
-				 metoda.uzmiZahtjevNaIzvrsavanje(tabela, zahtjevi, get_zaposlenik(), red);
+				metoda.uzmiZahtjevNaIzvrsavanje(tabela, zahtjevi, get_zaposlenik(), red);
+				JOptionPane.showMessageDialog(tabela, "Uspješno ste uzeli zahtjev na izvršavanje!");
 			 }
 			 else JOptionPane.showMessageDialog(tabela, "Niste odabrali nijedan red!");
 			}
