@@ -9,6 +9,7 @@ public class Zaposlenik {
 	private String _korisnickoIme;
 	private String _korisnickaSifra;
 	private String _privilegija;	
+	private Boolean _status;
 	private java.sql.Timestamp _datumRodjenja;
 
 	
@@ -70,5 +71,11 @@ public class Zaposlenik {
 	}
 	public void set_datumRodjenja(java.sql.Timestamp _datumRodjenja) {
 		this._datumRodjenja = _datumRodjenja;
+	}
+	public Boolean get_status() {
+		return _status;
+	}
+	public void set_status(Boolean _status) {
+		this._status = _status;
 	}
 }
