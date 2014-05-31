@@ -1,44 +1,38 @@
 package controller;
 
-import java.awt.List;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Calendar;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import java.sql.Date;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import java.util.*;
 
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
-import Models.Klijent;
-import Models.Zahtjev;
+import Models.*;
 
 public class IzvjestajiKontroler {
 	
 	public IzvjestajiKontroler() {}
 	
-	public ArrayList<Zahtjev> iscitajListuZahtjevaIzBaze() throws Exception
+	public static java.util.List<Zahtjev> iscitajListuZahtjevaIzBaze() throws Exception
 	{
-		ArrayList<Zahtjev> zahtjevi;
+		
+		List zahtjevi = null;
 		Session sesija = HibernateUtil.getSessionFactory().openSession();
-		Transaction t = sesija.beginTransaction();
-		try
-		{
-			Query queryZahtjev = sesija.createQuery("from Zahtjev");
-			zahtjevi = (ArrayList<Zahtjev>) queryZahtjev.list();
-			t.commit();
-		}
-		catch(Exception ex)
-		{
-			throw ex;
-		}
-		finally
-		{
-			sesija.close();
-		}		
+		   try {
+				Transaction tr = sesija.beginTransaction();
+				Query queryZahtjev = sesija.createQuery("from Zahtjev");
+				zahtjevi =  queryZahtjev.list();
+				tr.commit();
+		   }
+		   catch (Exception ex) { 
+			   throw ex;
+		   }
+		   finally { 
+			   sesija.close();
+			   }
+		   
 		return zahtjevi;
 	}
 	
@@ -48,8 +42,9 @@ public class IzvjestajiKontroler {
 		  return cal;
 		}
 		
-	public static int sabiranjeCijenaZahtjevaZaOdabranuSedmicu(ArrayList<Zahtjev> zahtjevi, int broj) throws Exception{
+	public static int sabiranjeCijenaZahtjevaZaOdabranuSedmicu(java.util.List<Zahtjev> zahtjevi, int broj) throws Exception{
 		int zarada = 0;
+		if (zahtjevi != null)
 		try {
 			for (int i=0;i<zahtjevi.size();i++){
 				Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());

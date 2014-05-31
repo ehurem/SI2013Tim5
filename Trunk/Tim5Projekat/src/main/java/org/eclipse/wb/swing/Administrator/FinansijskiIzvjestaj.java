@@ -1,9 +1,6 @@
 package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -16,14 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import controller.IzvjestajiKontroler;
-import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+import java.util.*;
 import Models.Zahtjev;
-import Models.Zaposlenik;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class FinansijskiIzvjestaj {
 
@@ -31,11 +26,10 @@ public class FinansijskiIzvjestaj {
 	private JTable table;
 	private JTextField textField;
 	//kreiranje liste zahtjeva
-	private  ArrayList<Zahtjev> zahtjevi;
+	private static  java.util.List<Zahtjev> zahtjevi;
 	private static int broj;
 	private static double zarada;
-	private IzvjestajiKontroler kontroler;
-
+	private static IzvjestajiKontroler kontroler;
 
 
 	/**
@@ -49,6 +43,8 @@ public class FinansijskiIzvjestaj {
 					zarada=0;
 					FinansijskiIzvjestaj window = new FinansijskiIzvjestaj();
 					window.frmFinansijskiIzvjestaj.setVisible(true);
+					//dodavanje zahtjeva u listu iz baze
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -73,13 +69,42 @@ public class FinansijskiIzvjestaj {
 		//dodavanje zahtjeva u listu iz baze
 		try {
 		zahtjevi = kontroler.iscitajListuZahtjevaIzBaze();
+		//org.eclipse.wb.swing.Administrator.Main.infoBox(zahtjevi.size()+ "", "Broj zahtjeva");
 		}
 		catch(Exception ex)
 		{
-			//JOptionPane.showMessageDialog(table, ex.toString());
+			ex.printStackTrace();
 		}
-
+		//izracunavanje ukupne zarade za prikazane zahtjeve
+		try {
+	    zarada= kontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		frmFinansijskiIzvjestaj = new JFrame();
+		frmFinansijskiIzvjestaj.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				try {
+					zahtjevi = kontroler.iscitajListuZahtjevaIzBaze();
+					//org.eclipse.wb.swing.Administrator.Main.infoBox(zahtjevi.size()+ "", "Broj zahtjeva");
+					}
+					catch(Exception ex)
+					{
+						org.eclipse.wb.swing.Administrator.Main.infoBox(ex.toString(), null);
+					}
+					//izracunavanje ukupne zarade za prikazane zahtjeve
+					try {
+				    zarada= kontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
+					}
+					catch(Exception ex)
+					{
+						ex.printStackTrace();
+					}
+			}
+		});
 		frmFinansijskiIzvjestaj.setResizable(false);
 		frmFinansijskiIzvjestaj.setTitle("Finansijski izvjestaj");
 		frmFinansijskiIzvjestaj.setBounds(100, 100, 367, 346);
@@ -88,17 +113,7 @@ public class FinansijskiIzvjestaj {
 		JScrollPane scrollPane = new JScrollPane();
 		
 		JLabel lblUkupnaZaradaOdabrane = new JLabel("Ukupna zarada odabrane sedmice:");
-		
-		//izracunavanje ukupne zarade za prikazane zahtjeve
-		try {
-	    zarada= kontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
-		}
-		catch(Exception ex)
-		{
-			//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
-		}
-		
-		
+
 		textField = new JTextField(Double.toString(zarada));
 		textField.setEditable(false);
 		textField.setColumns(10);
@@ -134,7 +149,7 @@ public class FinansijskiIzvjestaj {
 	    		}
 	   	    
 	    };
-		table = new JTable();
+	    table = new JTable();
 		table.setModel(tmodel);
 		tmodel.addColumn("ID Zahtjeva");
 		tmodel.addColumn("Datum zatvaranja zahtjeva");
@@ -155,15 +170,14 @@ public class FinansijskiIzvjestaj {
 		{
 			//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
 		}
-		
 	
 	}
 
-	private ArrayList<Zahtjev> getZahtjevi() {
+	private java.util.List<Zahtjev> getZahtjevi() {
 		return zahtjevi;
 	}
 
-	private void setZahtjevi(ArrayList<Zahtjev> zahtjevi) {
+	private void setZahtjevi(java.util.List<Zahtjev> zahtjevi) {
 		this.zahtjevi = zahtjevi;
 	}
 }
