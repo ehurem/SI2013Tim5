@@ -557,7 +557,8 @@ public class Main {
 			public Object getElementAt(int index) {
 				return values[index];
 			}};
-		final JList list_zaposlenici = new JList(model);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
 
 		GroupLayout gl_panel_6 = new GroupLayout(panel_6);
 		gl_panel_6.setHorizontalGroup(
@@ -565,19 +566,21 @@ public class Main {
 				.addGroup(gl_panel_6.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblIzaberiZaposlenike)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(list_zaposlenici, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-					.addContainerGap())
+					.addGap(10)
+					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(10, Short.MAX_VALUE))
 		);
 		gl_panel_6.setVerticalGroup(
 			gl_panel_6.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_6.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel_6.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblIzaberiZaposlenike)
-						.addComponent(list_zaposlenici, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(133, Short.MAX_VALUE))
+					.addGroup(gl_panel_6.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblIzaberiZaposlenike))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
+		final JList list_zaposlenici = new JList(model);
+		scrollPane_1.setViewportView(list_zaposlenici);
 		panel_6.setLayout(gl_panel_6);
 		panel_3.setLayout(gl_panel_3);
 		
