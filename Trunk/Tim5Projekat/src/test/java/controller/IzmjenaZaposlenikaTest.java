@@ -51,12 +51,23 @@ public class IzmjenaZaposlenikaTest extends IzmjenaZaposlenika {
 			
 		}
 	}
+	
+	@Test(expected = Exception.class)
+	public final void testIzmjeniException() {
+		try{
+		IzmjenaZaposlenika.izmjeni(new Zaposlenik());
+		}
+		catch(Exception e){
+			
+		}
+	}
 
 	@Test(expected = Exception.class)
 	public final void testObrisiZaposlenikaException() throws Exception {
 		IzmjenaZaposlenika.obrisiZaposlenika(99999);
 		
 	}
+	@Test
 	public final void testObrisiZaposlenika() {
 		try{
 		IzmjenaZaposlenika.obrisiZaposlenika(_Zaposlenik.getId());
