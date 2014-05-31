@@ -1,8 +1,6 @@
 package controller;
 
 
-import java.util.Random;
-
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
@@ -23,7 +21,6 @@ public class DodavanjeZaposlenikaTest {
 	
 	@Test
 	public void testDodajZaposlenikDobriPodaci() throws Exception {
-		Random random  = new Random();
 		JTextField t_imeIPrezime = new JTextField("Alen Ismic" );
 		JTextField t_mjestoStanovanja= new JTextField("Mjesto");
 		JTextField t_brojTelefona= new JTextField("12312311232");
