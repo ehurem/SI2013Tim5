@@ -42,14 +42,15 @@ public class IzvjestajiKontroler {
 		  return cal;
 		}
 		
-	public static int sabiranjeCijenaZahtjevaZaOdabranuSedmicu(java.util.List<Zahtjev> zahtjevi, int broj) throws Exception{
-		int zarada = 0;
-		if (zahtjevi != null)
+	public static double sabiranjeCijenaZahtjevaZaOdabranuSedmicu(java.util.List<Zahtjev> zahtjevi, int broj) throws Exception{
+		double zarada = 0;
 		try {
 			for (int i=0;i<zahtjevi.size();i++){
+				if (zahtjevi.get(i).getDatumZatvaranja()!=null) {
 				Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 				if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
 				zarada += zahtjevi.get(i).get_cijena();
+				}
 				}
 			}
 			}

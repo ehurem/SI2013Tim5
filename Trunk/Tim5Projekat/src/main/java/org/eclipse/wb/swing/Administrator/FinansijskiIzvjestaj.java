@@ -77,7 +77,7 @@ public class FinansijskiIzvjestaj {
 		}
 		//izracunavanje ukupne zarade za prikazane zahtjeve
 		try {
-	    zarada= kontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
+	    zarada= IzvjestajiKontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
 		}
 		catch(Exception ex)
 		{
@@ -97,7 +97,7 @@ public class FinansijskiIzvjestaj {
 					}
 					//izracunavanje ukupne zarade za prikazane zahtjeve
 					try {
-				    zarada= kontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
+				    zarada = kontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
 					}
 					catch(Exception ex)
 					{
@@ -114,7 +114,7 @@ public class FinansijskiIzvjestaj {
 		
 		JLabel lblUkupnaZaradaOdabrane = new JLabel("Ukupna zarada odabrane sedmice:");
 
-		textField = new JTextField(Double.toString(zarada));
+		textField = new JTextField(String.valueOf(zarada));
 		textField.setEditable(false);
 		textField.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(frmFinansijskiIzvjestaj.getContentPane());
@@ -160,9 +160,11 @@ public class FinansijskiIzvjestaj {
 		//ispis zahtjeva u tabelu
 		try {
 		for (int i=0;i<zahtjevi.size();i++){
+			if (zahtjevi.get(i).getDatumZatvaranja()!=null){
 			Calendar c = kontroler.dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
 			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
 				tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()), (zahtjevi.get(i).getDatumZatvaranja()), (zahtjevi.get(i).get_cijena())} );
+				}
 		}	
 		}
 		}
