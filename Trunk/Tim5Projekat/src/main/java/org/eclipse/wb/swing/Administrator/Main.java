@@ -764,6 +764,8 @@ public class Main {
 						
 						infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", "Izmjena uspješna");
 						
+						
+						
 			        }
 			        else{
 			        /*Ako u bazi postoji korisnik sa tim imenom, provjerava se da li je to isti koji se mjenja ili neki drugi.*/
@@ -788,7 +790,8 @@ public class Main {
 					
 					
 					infoBox("Uspjesno ste izmjenili zaposlenika: " + novi.get_imeIPrezime() + "", "Izmjena uspješna");
-					
+					IzmjenaZaposlenika.resetujPolja(t_i_DatumRodjenja, t_i_adresaStanovanja, t_i_brojTelefona, t_emailAdresa, 
+							t_i_korisnickoIme, t_i_korisnickaSifra);
 					
 			        }
 			        else{

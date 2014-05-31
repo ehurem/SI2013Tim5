@@ -3,6 +3,8 @@ package controller;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.swing.JTextField;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -86,5 +88,14 @@ public class IzmjenaZaposlenika {
 	         session.close(); 
 	      }
 		return true;
+	}
+	
+	public static void resetujPolja(JTextField t1, JTextField t2, JTextField t3, JTextField t4, JTextField t5, JTextField t6){
+		t1.setText("YYYY-MM-DD");
+		t2.setText("");
+		t3.setText("");
+		t4.setText("");
+		t5.setText("");
+		t6.setText("");
 	}
 }

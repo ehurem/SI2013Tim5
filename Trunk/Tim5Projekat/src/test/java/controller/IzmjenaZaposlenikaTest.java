@@ -31,25 +31,17 @@ public class IzmjenaZaposlenikaTest extends IzmjenaZaposlenika {
 		t2 = new String();
 		t3 = new String();
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		try{
-		_Zaposlenik  = (Zaposlenik)session.get(Zaposlenik.class, 2); 
-		}
-		catch(Exception e){
-			
-		}
-		finally{
-			session.close();
-		}
+		
+		_Zaposlenik  = (Zaposlenik)session.get(Zaposlenik.class, new Long(2)); 
+		session.close();
+		
 	}
 	
 	@Test
-	public final void testIzmjeni() {
-		try{
+	public final void testIzmjeni() throws Exception {
+		
 		IzmjenaZaposlenika.izmjeni(_Zaposlenik);
-		}
-		catch(Exception e){
-			
-		}
+		
 	}
 	
 	@Test(expected = Exception.class)
@@ -63,23 +55,15 @@ public class IzmjenaZaposlenikaTest extends IzmjenaZaposlenika {
 		
 	}
 	@Test
-	public final void testObrisiZaposlenika() {
-		try{
+	public final void testObrisiZaposlenika() throws Exception {
+	
 		IzmjenaZaposlenika.obrisiZaposlenika(_Zaposlenik.getId());
-		}
-		catch(Exception e){
-			
-		}
 		
 	}
-	@Test
-	public final void testValidirajDodavanje(){
-		try{
+	@Test (expected = Exception.class)
+	public final void testValidirajDodavanje() throws Exception{
 		assertTrue(IzmjenaZaposlenika.ValidirajDodavanje(t,t1,t2,t3,"sifra"));
-		}
-		catch(Exception e){
-			
-		}
+		
 	}
 	@Test(expected = Exception.class)
 	public final void testValidirajDodavanjeException() throws Exception{
