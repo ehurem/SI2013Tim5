@@ -72,6 +72,7 @@ public class DodavanjeZaposlenika {
 				//infoBox(datum.toString(), null);
 				
 				novi.setId( (Long ) session.save(novi));
+				novi.set_status(true);
 				
 				novi.set_datumRodjenja(datum);
 				t.commit();

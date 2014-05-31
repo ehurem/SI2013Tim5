@@ -23,6 +23,8 @@ public class UnosZahtjeva {
 	
 	public UnosZahtjeva() {}
 	
+	//c1 - id klijenta
+	
 	public static Long unesiZahtjevUBazu(Long _zaposlenik, Long c1, Integer c3, JTextField textField_2, Boolean dugme, JTextArea textArea) throws Exception{
 		
 		Session sesija = HibernateUtil.getSessionFactory().openSession(); //otvorena sesija, omogućena komunikacija
