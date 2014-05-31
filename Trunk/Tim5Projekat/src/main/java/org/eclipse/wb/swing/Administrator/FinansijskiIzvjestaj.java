@@ -84,27 +84,6 @@ public class FinansijskiIzvjestaj {
 			ex.printStackTrace();
 		}
 		frmFinansijskiIzvjestaj = new JFrame();
-		frmFinansijskiIzvjestaj.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowOpened(WindowEvent arg0) {
-				try {
-					zahtjevi = kontroler.iscitajListuZahtjevaIzBaze();
-					//org.eclipse.wb.swing.Administrator.Main.infoBox(zahtjevi.size()+ "", "Broj zahtjeva");
-					}
-					catch(Exception ex)
-					{
-						org.eclipse.wb.swing.Administrator.Main.infoBox(ex.toString(), null);
-					}
-					//izracunavanje ukupne zarade za prikazane zahtjeve
-					try {
-				    zarada = kontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi, broj);
-					}
-					catch(Exception ex)
-					{
-						ex.printStackTrace();
-					}
-			}
-		});
 		frmFinansijskiIzvjestaj.setResizable(false);
 		frmFinansijskiIzvjestaj.setTitle("Finansijski izvjestaj");
 		frmFinansijskiIzvjestaj.setBounds(100, 100, 367, 346);

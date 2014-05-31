@@ -40,10 +40,10 @@ public class IzvjestajOPoslovanju {
 	private JTextField textField_2;
 	private JTable table;
 	//kreiranje liste zahtjeva
-	private  ArrayList<Zahtjev> zahtjevi;
-	private ArrayList<Zaposlenik> zaposlenici;
+	private  java.util.List<Zahtjev> zahtjevi;
+	private java.util.List<Zaposlenik> zaposlenici;
 	private static int broj;
-    private Zaposlenik z;
+    private static Zaposlenik z;
     private static int otvoreni;
     private static int zatvoreni;
     private static int ukupno;
@@ -60,6 +60,7 @@ public class IzvjestajOPoslovanju {
 				try {
 					broj=broj_sedmice+1;
 					otvoreni=zatvoreni=ukupno=0;
+					z=new Zaposlenik();
 					IzvjestajOPoslovanju window = new IzvjestajOPoslovanju();
 					window.frmIzvjestajOPoslovanju.setVisible(true);
 				} catch (Exception e) {
@@ -81,29 +82,37 @@ public class IzvjestajOPoslovanju {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		//dodavanje zahtjeva i zaposlenika u listu iz baze
-		Session sesija = HibernateUtil.getSessionFactory().openSession();
-		Transaction t = sesija.beginTransaction();
-		try
-		{
-			zahtjevi = new ArrayList<Zahtjev>();
-			zaposlenici = new ArrayList<Zaposlenik>();
-			Query queryZahtjev = sesija.createQuery("from Zahtjev");
-			Query queryZaposlenik = sesija.createQuery("from Zaposlenik");
-			zahtjevi = (ArrayList<Zahtjev>) queryZahtjev.list();
-			zaposlenici = (ArrayList<Zaposlenik>) queryZaposlenik.list();
-			t.commit();
-		}
-		catch(Exception ex)
-		{
-			JOptionPane.showMessageDialog(table, ex.toString());
-
-		}
-		finally
-		{
-			sesija.close();
-		}		
-		        
+		//dodavanje zahtjeva u listu iz baze
+				try {
+				zahtjevi = kontroler.iscitajListuZahtjevaIzBaze();
+				//org.eclipse.wb.swing.Administrator.Main.infoBox(zahtjevi.size()+ "", "Broj zahtjeva");
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+				//dodavanje zaposlenika u listu iz baze
+				try {
+				zaposlenici = kontroler.iscitajListuZaposlenikaIzBaze();
+				//org.eclipse.wb.swing.Administrator.Main.infoBox(zahtjevi.size()+ "", "Broj zahtjeva");
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+				try {
+					//Racunanje sumarnih podataka
+							otvoreni = kontroler.dajBrojOtvorenih(zahtjevi, broj);
+							zatvoreni = kontroler.dajBrojZatvorenih(zahtjevi, broj);
+							ukupno=otvoreni+zatvoreni;
+							}
+							
+					
+					catch(Exception ex)
+					{
+						//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
+					}
+				
 		frmIzvjestajOPoslovanju = new JFrame();
 		frmIzvjestajOPoslovanju.setResizable(false);
 		frmIzvjestajOPoslovanju.setTitle("Izvje\u0161taj o poslovanju");
@@ -120,35 +129,7 @@ public class IzvjestajOPoslovanju {
 		JLabel label = new JLabel("Ukupno:");
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		//racunanje sumarnih podataka
-		try {
-		for (int m=0;m<zahtjevi.size();m++){
-			Calendar n = kontroler.dateToCalendar(zahtjevi.get(m).getDatumZatvaranja());
-			Calendar b = kontroler.dateToCalendar(zahtjevi.get(m).getDatumOtvaranja());
-			if (n.get(Calendar.WEEK_OF_YEAR)==broj) {
-				ukupno++;
-				if (zahtjevi.get(m).getStatus()=="otvoren") {
-					otvoreni++;				
-				}
-				if (zahtjevi.get(m).getStatus()=="zatvoren") {
-					zatvoreni++;
-				}		
-		}
-			if (b.get(Calendar.WEEK_OF_YEAR)==broj) {
-				ukupno++;
-				if (zahtjevi.get(m).getStatus()=="otvoren") {
-					otvoreni++;				
-				}
-				if (zahtjevi.get(m).getStatus()=="zatvoren") {
-					zatvoreni++;
-				}		
-		}	
-        }
-		}
-		catch(Exception ex)
-		{
-			//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
-		}
+
 		
 		
         textField = new JTextField(Integer.toString(ukupno));
@@ -277,28 +258,34 @@ public class IzvjestajOPoslovanju {
 		);
 		frmIzvjestajOPoslovanju.getContentPane().setLayout(groupLayout);
 		try {
-		//ispis zahtjeva u tabelu
+		//ispis zahtjeva u tabelu i racunanje sumarnih podataka
 				for (int i=0;i<zahtjevi.size();i++){
+					if (zahtjevi.get(i).getDatumZatvaranja()!=null) {
 					Calendar c = kontroler.dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
-					Calendar k = kontroler.dateToCalendar(zahtjevi.get(i).getDatumOtvaranja());
 					if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
+						
 						for (int j=0;j<zaposlenici.size();j++){
 							//pretraga zaposlenika po ID radi ispisa u tabelu
 							if (zahtjevi.get(i).getZaposlenik()==zaposlenici.get(j).getId()) {
 							z= zaposlenici.get(j);
 							}
-							tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		}
-						}
-					if (k.get(Calendar.WEEK_OF_YEAR)==broj) {
-						for (int j=0;j<zaposlenici.size();j++){
-							//pretraga zaposlenika po ID radi ispisa u tabelu
-							if (zahtjevi.get(i).getZaposlenik()==zaposlenici.get(j).getId()) {
-							z= zaposlenici.get(j);
 							}
-							tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		}
+						tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );	
 						}
+					}
+					else {
+						Calendar k = kontroler.dateToCalendar(zahtjevi.get(i).getDatumOtvaranja());
+						if (k.get(Calendar.WEEK_OF_YEAR)==broj) {	
+							for (int j=0;j<zaposlenici.size();j++){
+								//pretraga zaposlenika po ID radi ispisa u tabelu
+								if (zahtjevi.get(i).getZaposlenik()==zaposlenici.get(j).getId()) {
+								z= zaposlenici.get(j);
+								}
+								}
+							tmodel.addRow(new Object[] {(zahtjevi.get(i).getID()),(zahtjevi.get(i).getDatumOtvaranja()), (zahtjevi.get(i).getDatumZatvaranja()), (z.get_imeIPrezime())} );		
+					}
+					}
 				}
-				
 				
 		}
 		catch(Exception ex)
@@ -308,11 +295,11 @@ public class IzvjestajOPoslovanju {
 		
 	}
 
-	private ArrayList<Zahtjev> getZahtjevi() {
+	private java.util.List<Zahtjev> getZahtjevi() {
 		return zahtjevi;
 	}
 
-	private void setZahtjevi(ArrayList<Zahtjev> zahtjevi) {
+	private void setZahtjevi(java.util.List<Zahtjev> zahtjevi) {
 		this.zahtjevi = zahtjevi;
 	}
 }

@@ -6,6 +6,7 @@ import java.sql.Date;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 import java.util.*;
 
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
@@ -35,6 +36,26 @@ public class IzvjestajiKontroler {
 		   
 		return zahtjevi;
 	}
+	public static java.util.List<Zaposlenik> iscitajListuZaposlenikaIzBaze() throws Exception
+	{
+		
+		List zaposlenici = null;
+		Session sesija = HibernateUtil.getSessionFactory().openSession();
+		   try {
+				Transaction tr = sesija.beginTransaction();
+				Query queryZahtjev = sesija.createQuery("from Zaposlenik");
+				zaposlenici =  queryZahtjev.list();
+				tr.commit();
+		   }
+		   catch (Exception ex) { 
+			   throw ex;
+		   }
+		   finally { 
+			   sesija.close();
+			   }
+		   
+		return zaposlenici;
+	}
 	
 	public static Calendar dateToCalendar(Date date){ 
 		  Calendar cal = Calendar.getInstance();
@@ -60,5 +81,36 @@ public class IzvjestajiKontroler {
 				//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
 			}
 		return zarada;
+	}
+	public static int dajBrojZatvorenih(java.util.List<Zahtjev> zahtjevi, int broj){
+		int zatvoreni=0;
+		for (int i=0;i<zahtjevi.size();i++){
+			if (zahtjevi.get(i).getDatumZatvaranja()!=null) {
+			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
+				
+				zatvoreni ++;
+				}
+			}
+		}
+		return zatvoreni;
+	}
+	public static int dajBrojOtvorenih(java.util.List<Zahtjev> zahtjevi, int broj){
+		int otvoreni=0;
+		for (int i=0;i<zahtjevi.size();i++){
+			if (zahtjevi.get(i).getDatumZatvaranja()!=null) {
+			Calendar c = dateToCalendar(zahtjevi.get(i).getDatumZatvaranja());
+			if (c.get(Calendar.WEEK_OF_YEAR)==broj) {
+				
+				}
+			}
+			else {
+				Calendar k = dateToCalendar(zahtjevi.get(i).getDatumOtvaranja());
+				if (k.get(Calendar.WEEK_OF_YEAR)==broj) {	
+				otvoreni++;	
+			}
+		}
+		}
+		return otvoreni;
 	}
 }
