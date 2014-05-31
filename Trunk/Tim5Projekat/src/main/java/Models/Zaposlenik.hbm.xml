@@ -29,8 +29,12 @@
         <property name="_privilegija" type="java.lang.String" access="field">
             <column name="privilegija" />
         </property>
+		<property name="_status" type="java.lang.Boolean">
+            <column name="status" />
+        </property>
         <property name="_datumRodjenja" type="java.sql.Timestamp">
             <column name="datumRodjenja" />
         </property>
+        
     </class>
 </hibernate-mapping>
