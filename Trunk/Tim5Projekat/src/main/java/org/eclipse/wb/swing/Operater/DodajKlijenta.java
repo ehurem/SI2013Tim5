@@ -88,11 +88,10 @@ public class DodajKlijenta {
 					Long vratio =_kontroler.unesiKlijentaUBazu(_klijent, textField, textField_2, textField_3, textField_1 );
 					
 					if(vratio != 0){
-						infoBox("Uspješno unesen klijent sa id:"+Long.toString(vratio), "Unos OK");
+						infoBox("Uspješno unesen klijent", "Unos OK");
 						frmUnosNovogKlijenta.dispose();
 					}
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					infoBox(e1.toString(), "Greška");
 				}
 			}

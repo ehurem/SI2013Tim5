@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Komentar {
 
@@ -49,26 +51,30 @@ public class Komentar {
 		frmKomentar.setResizable(false);
 		frmKomentar.setTitle("Komentar");
 		frmKomentar.setBounds(100, 100, 322, 247);
-		//frmKomentar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setText(komentar);
-		textArea.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout groupLayout = new GroupLayout(frmKomentar.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(15, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(25, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(17, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(25, Short.MAX_VALUE))
 		);
+		//frmKomentar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		textArea.setLineWrap(true);
+		textArea.setText(komentar);
+		textArea.setEditable(false);
 		frmKomentar.getContentPane().setLayout(groupLayout);
 	}
 }

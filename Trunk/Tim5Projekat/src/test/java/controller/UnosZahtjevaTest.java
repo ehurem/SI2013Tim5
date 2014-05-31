@@ -77,6 +77,8 @@ public class UnosZahtjevaTest {
 		UnosZahtjeva.validirajPrazno(new JTextArea(""));	
 	}
 	
+	
+	
 	@Test
 	public final void testUnesiZahtjevOK() throws Exception {
 		
@@ -93,8 +95,7 @@ public class UnosZahtjevaTest {
 		
 		
 		textField_2.setText("veš mašina");
-		textArea.setText("Skače pri centrifugi");
-		
+		textArea.setText("Skače pri centrifugi");		
 		
 		id = UnosZahtjeva.unesiZahtjevUBazu(_zaposlenik, idKlijenta, c3, textField_2, dugme, textArea);
 		

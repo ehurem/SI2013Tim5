@@ -59,6 +59,7 @@ import javax.swing.event.PopupMenuEvent;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JScrollPane;
 
 public class MainOperater {
 
@@ -113,22 +114,6 @@ public class MainOperater {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
 	
-	private static Boolean validirajPrazno(JTextArea t1) {
-		
-		if(t1.getText().equals(""))
-		{
-			t1.setBackground(new Color(216,210,139));
-			return false;
-		}
-		else
-		{
-			t1.setBackground(new Color(255,255,255));
-		}
-		
-	return true;
-	
-	
-	}
 	
 	/**
 	 * Initialize the contents of the frame.
@@ -226,8 +211,6 @@ public class MainOperater {
 		
 		JLabel label_4 = new JLabel("Garancija:");
 		label_4.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		final JTextArea textArea = new JTextArea();
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
 		
@@ -247,6 +230,10 @@ public class MainOperater {
 		final JComboBox comboBox_3 = new JComboBox();
 		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6"}));
 		
+		JScrollPane scrollPane = new JScrollPane();
+		final JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		textArea.setLineWrap(true);
 		
 		JButton button = new JButton("Unesi");
 		button.addActionListener(new ActionListener() {
@@ -262,17 +249,15 @@ public class MainOperater {
 					}
 				}
 				
-				//int i = (Integer)(comboBox_3.getSelectedItem());
-				
 				try {
 					Long vratio = UnosZahtjeva.unesiZahtjevUBazu(_zaposlenik, ((Klijent)comboBox_1.getSelectedItem()).getId(), 
 						comboBox_3.getSelectedIndex()+1, textField_2, garancija_DA, textArea);
 					if(vratio != 0)
 					{
-						infoBox("Zahtjev"+Long.toString(vratio)+"unesen", "Unesen zahtjev");
+						infoBox("Zahtjev uspješno unesen", "Unesen zahtjev");
+						UnosZahtjeva.resetPolja(textArea, textField_2);
 					}
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					infoBox("Sva polja moraju biti popunjena!", "Neispravan unos");
 				}
 				
@@ -303,40 +288,43 @@ public class MainOperater {
 		
 		JLabel lblPrioritet = new JLabel("Prioritet:");
 		lblPrioritet.setHorizontalAlignment(SwingConstants.RIGHT);
-		
+			
 		
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
-						.addComponent(label_1)
-						.addComponent(lblPrioritet, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-						.addComponent(label_3, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-						.addComponent(label_4, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-						.addComponent(label_2, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
-					.addGap(18)
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
-							.addComponent(btnNoviKlijent)
-							.addGroup(gl_panel_2.createSequentialGroup()
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(comboBox_3, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGroup(gl_panel_2.createSequentialGroup()
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(textField_2))
-							.addGroup(gl_panel_2.createSequentialGroup()
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(panel_3, 0, 0, Short.MAX_VALUE))
-							.addComponent(comboBox_1, Alignment.LEADING, 0, 160, Short.MAX_VALUE))
-						.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
+								.addComponent(label_1)
+								.addComponent(lblPrioritet, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+								.addComponent(label_3, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+								.addComponent(label_4, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
+							.addGap(18))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(label_2, GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnNoviKlijent)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(comboBox_3, 0, 164, Short.MAX_VALUE))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textField_2, 160, 160, 160))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panel_3, 0, 0, Short.MAX_VALUE))
+						.addComponent(comboBox_1, 0, 164, Short.MAX_VALUE)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel_2.setVerticalGroup(
 			gl_panel_2.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGap(32)
+				.addGroup(Alignment.LEADING, gl_panel_2.createSequentialGroup()
+					.addGap(21)
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
 						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(label_1))
@@ -355,43 +343,40 @@ public class MainOperater {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel_2.createSequentialGroup()
 							.addGap(20)
 							.addComponent(label_4)
-							.addPreferredGap(ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
 							.addComponent(label_2)))
-					.addContainerGap())
+					.addGap(33))
 		);
+		
+		
 		panel_2.setLayout(gl_panel_2);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
+			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(245)
-							.addComponent(button, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 330, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(27, Short.MAX_VALUE))
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 330, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(16, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(button)
-					.addGap(16))
+					.addContainerGap(22, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Unos \u017Ealbe", null, panel_1, null);
-		
-		final JTextArea textArea_1 = new JTextArea();
 		
 		final JComboBox comboBox = new JComboBox();
 		comboBox.setEditable(true);
@@ -442,7 +427,10 @@ public class MainOperater {
 		    };
 		tabbedPane.addChangeListener(changeListener);
 		
-		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		final JTextArea textArea_1 = new JTextArea();
+		scrollPane_1.setViewportView(textArea_1);
+		textArea_1.setLineWrap(true);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -470,17 +458,17 @@ public class MainOperater {
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addGap(201)
 							.addComponent(btnZabiljeialbu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
+						.addComponent(panel_4, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
 					.addGap(29))
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addGap(24)
-					.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+					.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
 					.addGap(18)
-					.addComponent(btnZabiljeialbu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(24))
+					.addComponent(btnZabiljeialbu)
+					.addGap(50))
 		);
 		
 		JLabel lblZaposlenik = new JLabel("Zaposlenik:");
@@ -495,27 +483,22 @@ public class MainOperater {
 		
 		JLabel lblKlijent = new JLabel("Klijent:");
 		lblKlijent.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		
+			
 		GroupLayout gl_panel_4 = new GroupLayout(panel_4);
 		gl_panel_4.setHorizontalGroup(
 			gl_panel_4.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel_4.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_4.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblZaposlenik, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
-						.addComponent(lblKlijent, GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
-						.addComponent(lblKomentar, GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
+						.addComponent(lblZaposlenik, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(lblKlijent, GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+						.addComponent(lblKomentar, GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_panel_4.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_4.createSequentialGroup()
-							.addGroup(gl_panel_4.createParallelGroup(Alignment.LEADING)
-								.addComponent(comboBox_2, 0, 186, Short.MAX_VALUE)
-								.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(23))
-						.addGroup(gl_panel_4.createSequentialGroup()
-							.addComponent(textArea_1, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+						.addComponent(comboBox_2, 0, 365, Short.MAX_VALUE)
+						.addComponent(comboBox, 0, 365, Short.MAX_VALUE))
+					.addGap(23))
 		);
 		gl_panel_4.setVerticalGroup(
 			gl_panel_4.createParallelGroup(Alignment.LEADING)
@@ -529,11 +512,13 @@ public class MainOperater {
 						.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblKlijent))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel_4.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textArea_1, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblKomentar))
-					.addContainerGap())
+					.addGroup(gl_panel_4.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblKomentar)
+						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE))
+					.addGap(38))
 		);
+		
+		
 		panel_4.setLayout(gl_panel_4);
 		panel_1.setLayout(gl_panel_1);
 		frmInterfejsZaOperatera.getContentPane().setLayout(groupLayout);

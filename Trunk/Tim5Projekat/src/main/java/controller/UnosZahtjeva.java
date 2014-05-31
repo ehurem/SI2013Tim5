@@ -113,7 +113,10 @@ public class UnosZahtjeva {
 		}
 	
 		return izlaz;
+	}
 	
-	
+	public static void resetPolja(JTextArea ta, JTextField tf){
+		ta.setText("");
+		tf.setText("");
 	}
 }

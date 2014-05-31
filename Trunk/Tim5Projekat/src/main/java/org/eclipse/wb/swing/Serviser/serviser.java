@@ -96,7 +96,6 @@ public class serviser {
 	 */
 	private void initialize() {
 		kontroler = new ZahtjevController();
-		list = new JList();
 		listModel = new DefaultListModel();
 	    metoda = new serviserKontroler();
 		frmInterfejsZaServisera = new JFrame();
@@ -261,19 +260,21 @@ public class serviser {
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
 						.addComponent(btnNewButton)
 						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 253, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(36, Short.MAX_VALUE))
+					.addContainerGap(35, Short.MAX_VALUE))
 		);
 		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+			gl_panel_1.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-					.addGap(18)
+					.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnNewButton)
-					.addContainerGap())
+					.addGap(18))
 		);
 		
 		JLabel lblZahtjeviUIzvavanju = new JLabel("Zahtjevi u izvr\u0161avanju");
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
 		
 //		JList list = new JList();
 //		list.setModel(new AbstractListModel() {
@@ -291,9 +292,9 @@ public class serviser {
 				.addGroup(gl_panel_3.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
-						.addComponent(list, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblZahtjeviUIzvavanju, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
+					.addContainerGap(8, Short.MAX_VALUE))
 		);
 		gl_panel_3.setVerticalGroup(
 			gl_panel_3.createParallelGroup(Alignment.LEADING)
@@ -301,9 +302,11 @@ public class serviser {
 					.addContainerGap()
 					.addComponent(lblZahtjeviUIzvavanju)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(list, GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
+		list = new JList();
+		scrollPane_1.setViewportView(list);
 		panel_3.setLayout(gl_panel_3);
 		panel_1.setLayout(gl_panel_1);
 		frmInterfejsZaServisera.getContentPane().setLayout(groupLayout);

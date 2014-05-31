@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JScrollPane;
 
 public class ZatvaranjeZahtjeva {
 
@@ -231,8 +232,6 @@ public class ZatvaranjeZahtjeva {
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		
-		textArea = new JTextArea();
-		
 		JLabel lblGarancija = new JLabel("Garancija:");
 		lblGarancija.setHorizontalAlignment(SwingConstants.RIGHT);
 		
@@ -244,18 +243,20 @@ public class ZatvaranjeZahtjeva {
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
+		
+		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblKomentar, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-						.addComponent(lblImeIPrezime, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-						.addComponent(lblIdZahtjeva, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-						.addComponent(lblTipUreaja, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-						.addComponent(lblGarancija, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-						.addComponent(lblCijena, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+						.addComponent(lblKomentar, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+						.addComponent(lblImeIPrezime, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(lblIdZahtjeva, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+						.addComponent(lblTipUreaja, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+						.addComponent(lblGarancija, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+						.addComponent(lblCijena, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
@@ -263,14 +264,14 @@ public class ZatvaranjeZahtjeva {
 							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(textField_2)
 							.addComponent(textField_1)
-							.addComponent(textArea))
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
 						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
 					.addGap(43))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap(18, Short.MAX_VALUE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblIdZahtjeva)
 						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -291,14 +292,17 @@ public class ZatvaranjeZahtjeva {
 								.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblCijena))
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE))
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(13)
 							.addComponent(lblGarancija)
-							.addPreferredGap(ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
 							.addComponent(lblKomentar)))
 					.addContainerGap())
 		);
+		
+		textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
 		
 		rdbtnDa = new JRadioButton("Da");
 		rdbtnDa.addActionListener(new ActionListener() {
