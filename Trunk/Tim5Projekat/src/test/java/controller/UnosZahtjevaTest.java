@@ -32,6 +32,7 @@ public class UnosZahtjevaTest {
 	private static JTextArea textArea;
 	
 	private static Long id;
+	private static Long idKlijenta;
 	
 	
 	//setup
@@ -44,6 +45,7 @@ public class UnosZahtjevaTest {
 			dugme = new Boolean(true);
 			textArea = new JTextArea();
 			id = new Long(0);
+			idKlijenta = new Long(0);
 	}
 		
 	@Test
@@ -78,12 +80,23 @@ public class UnosZahtjevaTest {
 	@Test
 	public final void testUnesiZahtjevOK() throws Exception {
 		
+		//dodati klijenta u bazu
+		
+		Klijent k = new Klijent();
+		
+		JTextField t = new JTextField("Niko Nikic");
+		JTextField t1 = new JTextField("033/123-456");
+		JTextField t2 = new JTextField("niko@nesto.com");
+		JTextField t3 = new JTextField("Negdje daleko");
+		
+		idKlijenta = DodavanjeKlijenta.unesiKlijentaUBazu(k, t, t1, t2, t3);
+		
 		
 		textField_2.setText("veš mašina");
 		textArea.setText("Skače pri centrifugi");
 		
 		
-		id = UnosZahtjeva.unesiZahtjevUBazu(_zaposlenik, c1,c3, textField_2, dugme, textArea);
+		id = UnosZahtjeva.unesiZahtjevUBazu(_zaposlenik, idKlijenta, c3, textField_2, dugme, textArea);
 		
 		assertNotEquals(Long.valueOf(0), id);
 		
@@ -105,6 +118,10 @@ public class UnosZahtjevaTest {
 		
 		Zahtjev uneseni = (Zahtjev) session.get(Zahtjev.class, id); 
 		session.delete(uneseni); 
+		
+		Klijent testniKlijent = (Klijent) session.get(Klijent.class, idKlijenta);
+		session.delete(testniKlijent);
+		
 		tx.commit();
 		session.close();
 	}
