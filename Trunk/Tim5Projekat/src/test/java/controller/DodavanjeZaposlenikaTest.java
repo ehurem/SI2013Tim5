@@ -1,23 +1,26 @@
 package controller;
 
-import static org.junit.Assert.*;
 
 import java.util.Random;
 
-import javax.crypto.EncryptedPrivateKeyInfo;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
+import Models.Klijent;
+import Models.Zaposlenik;
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 @RunWith(JUnit4.class)
 public class DodavanjeZaposlenikaTest {
-
+	private static Long id;
+	
 	@Test
 	public void testDodajZaposlenikDobriPodaci() throws Exception {
 		Random random  = new Random();
@@ -26,13 +29,27 @@ public class DodavanjeZaposlenikaTest {
 		JTextField t_brojTelefona= new JTextField("12312311232");
 		JTextField t_emailAdresa= new JTextField("nekimanil.com");
 		JTextField t_korisnickaSifra= new JTextField("sifra");
-		JTextField t_korisnickoIme= new JTextField("alen" + (random.nextInt(30)+97));
+		JTextField t_korisnickoIme= new JTextField("alen");
 		String[] niz = new String[1];
 		niz[0] = "Administrator";
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox c_privilegije = new JComboBox(niz);
 		JTextField t_datumRodjenja = new JTextField("1991-06-01");
-		Boolean test = DodavanjeZaposlenika.DodajZaposlenik(t_imeIPrezime, t_mjestoStanovanja, t_brojTelefona, t_emailAdresa, t_korisnickaSifra, t_korisnickoIme, c_privilegije, t_datumRodjenja) !=0;
+		id = DodavanjeZaposlenika.DodajZaposlenik(t_imeIPrezime, t_mjestoStanovanja, t_brojTelefona, t_emailAdresa, t_korisnickaSifra, t_korisnickoIme, c_privilegije, t_datumRodjenja);
+		Boolean test =  id != 0;
 		Assert.assertTrue(test);
+		
+	}
+	public static void tearDown()
+	{
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		
+		Zaposlenik zaposlenik = (Zaposlenik) session.get(Klijent.class, id); 
+		session.delete(zaposlenik); 
+		tx.commit();
+		session.close();
 	}
 
 	@Test
