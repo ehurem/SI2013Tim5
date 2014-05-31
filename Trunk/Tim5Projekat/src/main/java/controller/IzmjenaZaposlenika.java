@@ -15,7 +15,6 @@ public class IzmjenaZaposlenika {
 	public static Zaposlenik izmjeni(Zaposlenik novi) throws Exception{
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		
 		try{
 			
 			Transaction t = session.beginTransaction();
@@ -32,24 +31,28 @@ public class IzmjenaZaposlenika {
 		return novi;
 	}
 	
-	public static boolean ValidirajDodavanje(String adresa,String brojTel,String Email,String korisnickoIme) throws Exception{
+	public static boolean ValidirajDodavanje(String adresa,String brojTel,String Email,String korisnickoIme,String sifra) throws Exception{
 		if(adresa.equals("")){
-			throw new Exception("Niste unijeli Adresu stanovanja");
+			throw new Exception("Niste unijeli Adresu stanovanja.");
 			
 		}
 		
 		else if(brojTel.equals("")){
 			
-			throw new Exception("Niste unijeli broj telefona");
+			throw new Exception("Niste unijeli broj telefona.");
 		}
 		
 		else if(Email.equals("")){
-			throw new Exception("Niste unijeli email");
+			throw new Exception("Niste unijeli email.");
 		}
 		
 		else if(korisnickoIme.equals("")){
 			
-			throw new Exception("Niste unijeli Korisnicko ime");
+			throw new Exception("Niste unijeli Korisnicko ime.");
+		}
+		else if(sifra.equals("")){
+			
+			throw new Exception("Niste unijeli sifru.");
 		}
 		else if(!brojTel.matches("\\d{3}/\\d{3}-\\d{3}")){
 			

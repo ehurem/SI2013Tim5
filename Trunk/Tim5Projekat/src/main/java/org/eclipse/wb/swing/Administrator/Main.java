@@ -717,40 +717,44 @@ public class Main {
 				
 				Session session = HibernateUtil.getSessionFactory().openSession();
 				boolean provjera=true;
+				Zaposlenik novi = new Zaposlenik();
+				
+				/*Validacija podataka koji se unose*/
 				try{
-					IzmjenaZaposlenika.ValidirajDodavanje(t_i_adresaStanovanja.getText(), t_i_brojTelefona.getText(), t_i_email.getText(), t_i_korisnickoIme.getText());
+					IzmjenaZaposlenika.ValidirajDodavanje(t_i_adresaStanovanja.getText(), t_i_brojTelefona.getText(), t_i_email.getText(), t_i_korisnickoIme.getText(),t_i_korisnickaSifra.getText());
 				}
 				catch(Exception b){
-					infoBox(b.toString(),"Uzbuna");
+					infoBox(b.getLocalizedMessage(),"Uzbuna");
 					provjera = false;
 				}
 	
-				Zaposlenik novi = new Zaposlenik();
+				
 				if(provjera){
 				try {
 					
 					
 					Transaction t = session.beginTransaction();
 					long EmployeeID = ((Zaposlenik) c_i_ImeIPrezime.getSelectedItem()).getId();
+					
 					novi = (Zaposlenik)session.get(Zaposlenik.class, EmployeeID); 
+					
 					/*Provjera da li postoji zaposlenik sa tim korisnickim imenom.*/
 					Query query = session.createQuery("from Zaposlenik where korisnickoIme = :ime ");
 			        query.setParameter("ime", t_i_korisnickoIme.getText());
 			        List<Zaposlenik> list = (List<Zaposlenik>) query.list();
 			        
-			        
+			        /*U slucaju da ne postoji zaposlenik sa tim korisnickim imenom izmjenjuju se podaci u bazi*/
 			        if(list.size() == 0){
 			        	novi.setAdresa(t_i_adresaStanovanja.getText());
 						novi.setBrojTelefona(t_i_brojTelefona.getText());
 						novi.setEmail(t_i_email.getText());
 							
-						if(!t_i_korisnickaSifra.getText().equals("")){
-							novi.setKorisnickaSifra(DodavanjeZaposlenika.encryptPassword(t_i_korisnickaSifra.getText()));
-						}
+						
+						novi.setKorisnickaSifra(DodavanjeZaposlenika.encryptPassword(t_i_korisnickaSifra.getText()));
+						
 							
 						novi.setKorisnickoIme(t_i_korisnickoIme.getText());
 						novi.setPrivilegija(c_i_Privilegije.getSelectedItem().toString());
-						
 						java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 						java.util.Date trenutno = sdf.parse(t_i_DatumRodjenja.getText());
 						@SuppressWarnings("deprecation")
@@ -762,6 +766,7 @@ public class Main {
 						
 			        }
 			        else{
+			        /*Ako u bazi postoji korisnik sa tim imenom, provjerava se da li je to isti koji se mjenja ili neki drugi.*/
 			        if((list.get(0).getId() == novi.getId())  || ((list.get(0).getKorisnickoIme() == t_i_korisnickoIme.getText()) && (list.get(0).getId() == novi.getId()))){
 			        
 			        novi.setAdresa(t_i_adresaStanovanja.getText());
@@ -801,6 +806,7 @@ public class Main {
 					infoBox(ex.toString(), "UZBUNA");
 				}}
 				finally {
+						/*Nakon prikuljanja podataka iz baze spremno je sve za izmjenu podataka.*/
 			         session.close();
 			         try{
 			         IzmjenaZaposlenika.izmjeni(novi);
@@ -861,17 +867,13 @@ public class Main {
 		        
 		      }
 		      else if(sourceTabbedPane.getTitleAt(index).equals("Deaktivacija računa")){
+		    	  /*Kada se otvori tab za deaktivaciju racuna ucitaju se iz baze svi aktivni zaposlenici BEGIN*/
 		    	  try {
-			        	
-
-			          
-						Session session = HibernateUtil.getSessionFactory().openSession();
+			        	Session session = HibernateUtil.getSessionFactory().openSession();
 						Transaction t = session.beginTransaction();
 						
 						Query queryZaposlenik = session.createQuery("from Zaposlenik");
 						List<Zaposlenik> listZaposlenik =(List<Zaposlenik>) queryZaposlenik.list();
-						
-						
 						String[] elements = new String[listZaposlenik.size()];
 						
 						
@@ -880,17 +882,14 @@ public class Main {
 								model.addElement(listZaposlenik.get(i));
 								elements[i] = listZaposlenik.get(i).toString();
 								}
-								
 						}
-						
-						
 						list_zaposlenici.setListData(elements);
-					
+						
 						t.commit();
 						session.close();
 						
 					}
-					catch (Exception ex) {
+				catch (Exception ex) {
 						infoBox(ex.toString(), "UZBUNA");
 					}
 			        
@@ -898,7 +897,7 @@ public class Main {
 			     
 		    	  
 		      }
-		        
+		      /*Kada se otvori tab za deaktivaciju racuna ucitaju se iz baze svi aktivni zaposlenici END*/
 		      
 		      }
 		 
@@ -932,9 +931,7 @@ public class Main {
 					}
 					
 					list_zaposlenici.setListData(elements);
-					
-					/*Komitanje u bazu izmjena nad zaposlenicima*/
-			        tx.commit();
+					tx.commit();
 			         
 			        infoBox("Uspjesno ste deaktivirali racun", "Deaktivacija uspješna");
 			      }
