@@ -2,10 +2,12 @@ package controller;
 
 import java.awt.Color;
 import java.sql.Date;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -17,6 +19,39 @@ import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 public class UnosZalbe {
 	
 	public UnosZalbe() {}
+	
+	public static void popuniCombo(JComboBox comboBox, JComboBox comboBox_2) throws Exception{
+		comboBox.removeAllItems();
+        comboBox_2.removeAllItems();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+			
+			Transaction t = session.beginTransaction();
+			
+			Query queryZaposlenik = session.createQuery("from Zaposlenik where privilegija != 'Administrator' and status = 1");
+			List listZaposlenik = queryZaposlenik.list();
+			
+			Query queryKlijent = session.createQuery("from Klijent");
+			List listKlijent = queryKlijent.list();
+			
+			for(int i=0;i<listZaposlenik.size();i++){
+			comboBox.addItem(listZaposlenik.get(i));;
+			}
+			
+			for(int i=0;i<listKlijent.size();i++){
+				comboBox_2.addItem(listKlijent.get(i));;
+				}
+			
+			t.commit();
+		}
+		catch (Exception ex) {
+			throw ex;
+		}
+        finally{
+        	session.close();
+        }
+		
+	}
 	
 	public static Long unesiZalbuUBazu(JTextArea textArea_1, JComboBox comboBox, JComboBox comboBox_2) throws Exception{
 		

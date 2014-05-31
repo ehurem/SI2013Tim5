@@ -59,6 +59,7 @@ import javax.swing.event.PopupMenuEvent;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JScrollPane;
 
 public class MainOperater {
@@ -389,40 +390,11 @@ public class MainOperater {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 		        
-		        comboBox.removeAllItems();
-		        comboBox_2.removeAllItems();
-		        Session session = HibernateUtil.getSessionFactory().openSession();
 		        try {
-					
-					Transaction t = session.beginTransaction();
-					
-					Query queryZaposlenik = session.createQuery("from Zaposlenik");
-					List listZaposlenik = queryZaposlenik.list();
-					
-					Query queryKlijent = session.createQuery("from Klijent");
-					List listKlijent = queryKlijent.list();
-					
-					for(int i=0;i<listZaposlenik.size();i++){
-					comboBox.addItem(listZaposlenik.get(i));;
-					}
-					
-					for(int i=0;i<listKlijent.size();i++){
-						comboBox_2.addItem(listKlijent.get(i));;
-						}
-					
-					t.commit();
-					
-					
-					
-				}
-				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
-				}
-		        finally{
-		        	session.close();
-		        }
-		     
-		        
+					UnosZalbe.popuniCombo(comboBox, comboBox_2);
+				} catch (Exception e) {
+					infoBox(e.getMessage(), "Greška!");
+				}		        
 		      }
 		    };
 		tabbedPane.addChangeListener(changeListener);
