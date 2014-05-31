@@ -180,9 +180,12 @@ public class ZahtjevController {
 
 	}
 	
-	public static boolean validirajCijenu(String s) throws NumberFormatException{
+	public static boolean validirajCijenu(String s, Boolean imaGaranciju) throws NumberFormatException{
 	    
-	    return (Double.parseDouble(s)>=0);
+	    Double cijena = Double.parseDouble(s);
+	    
+	    if(!imaGaranciju && cijena == 0.0) return false;
+	    return true;
 	  }
 	public static Boolean validirajPrazno(JTextArea t1) {
 		

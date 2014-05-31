@@ -78,13 +78,13 @@ public class ZahtjevControllerTest {
 	@Test
 	public void testvalidirajCijenu()
 	{
-		Assert.assertEquals(ZahtjevController.validirajCijenu("1"), true);
+		Assert.assertEquals(ZahtjevController.validirajCijenu("1",true), true);
 	}
 	
 	@Test (expected = NumberFormatException.class)
 	public void testvalidirajCijenuNaN()
 	{
-		Assert.assertEquals(ZahtjevController.validirajCijenu("a"), false);
+		Assert.assertEquals(ZahtjevController.validirajCijenu("a",true), false);
 	}
 	
 	@Test

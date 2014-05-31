@@ -164,13 +164,14 @@ public class ZatvaranjeZahtjeva {
 			public void actionPerformed(ActionEvent e) {
 				//Session session = HibernateUtil.getSessionFactory().openSession();
 				//Transaction t = session.beginTransaction();
-				if(ZahtjevController.validirajPrazno(textField_3) && ZahtjevController.validirajPrazno(textArea) && ZahtjevController.validirajCijenu(textField_3.getText()))
+				if(ZahtjevController.validirajPrazno(textField_3) && ZahtjevController.validirajPrazno(textArea) && ZahtjevController.validirajCijenu(textField_3.getText(), rdbtnDa.isSelected()))
 				{
 					try {
 						kontroler.UpisivanjeZatvorenogZahtjeva(zahtjev_id, textField_3.getText(), textArea.getText(), zaposlenik_id);
+						infoBox("Zahtjev uspješno zatvoren", "Zatvoren zahtjev");
 					}
 					catch (Exception ex) {
-						infoBox(ex.toString(), "UZBUNA");
+						infoBox(ex.toString(), "Greška");
 					}
 					finally
 					{
