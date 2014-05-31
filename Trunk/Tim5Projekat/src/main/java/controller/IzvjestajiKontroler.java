@@ -110,7 +110,8 @@ public class IzvjestajiKontroler {
 				otvoreni++;	
 			}
 		}
-		}
+	}
 		return otvoreni;
+
 	}
 }
