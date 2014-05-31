@@ -112,25 +112,6 @@ public class ZahtjevController {
 		return listRez;
 	}
 
-	private static Boolean validirajPrazno(JTextField t1) {
-		if (t1.getText().equals("")) {
-			t1.setBackground(new Color(216, 210, 139));
-			return false;
-		} else {
-			t1.setBackground(new Color(255, 255, 255));
-		}
-		return true;
-	}
-
-	private static Boolean validirajPrazno(JTextArea t1) {
-		if (t1.getText().equals("")) {
-			t1.setBackground(new Color(216, 210, 139));
-			return false;
-		} else {
-			t1.setBackground(new Color(255, 255, 255));
-		}
-		return true;
-	}
 
 	public boolean UpisivanjeZatvorenogZahtjeva(String zahtjev_id, String cijena, String komentar, long zaposlenik_id)
 			throws Exception {
@@ -197,5 +178,48 @@ public class ZahtjevController {
 		}
 		return listModel;
 
+	}
+	
+	public static boolean validirajCijenu(String s){
+	    return s.matches("^([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$");
+	    // simpler from for
+//	    return s.matches("[a-Z][a-Z][a-Z]");
+	  }
+	public static Boolean validirajPrazno(JTextArea t1) {
+		
+		Boolean izlaz = false;
+		
+		if(t1.getText().equals(""))
+		{
+			t1.setBackground(new Color(216,210,139));
+			return izlaz;
+		}
+		else
+		{
+			izlaz = true;
+			t1.setBackground(new Color(255,255,255));
+		}
+	
+		return izlaz;
+	}
+	
+	public static Boolean validirajPrazno(JTextField t1) {
+		
+		Boolean izlaz = false;
+		
+		if(t1.getText().equals(""))
+		{
+			t1.setBackground(new Color(216,210,139));
+			izlaz=false;
+		}
+		else
+		{
+			izlaz = true;
+			t1.setBackground(new Color(255,255,255));
+		}
+	
+		return izlaz;
+	
+	
 	}
 }

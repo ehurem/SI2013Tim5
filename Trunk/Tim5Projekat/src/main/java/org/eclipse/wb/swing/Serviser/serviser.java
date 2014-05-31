@@ -269,6 +269,8 @@ public class serviser {
 			public void actionPerformed(ActionEvent arg0) {
 				// Code is here
 				//list.getSelectedValue()
+				if (list.getSelectedValue()!=null)
+				{
 				String id_zahtjeva = String.valueOf(list.getSelectedValue());
 	//			Zahtjev z = (Zahtjev) list.getSelectedValue();
 				//String info[] = new String[2];
@@ -279,6 +281,11 @@ public class serviser {
 				frmInterfejsZaServisera.dispose();
 				jf.main(null, id_zahtjeva, get_zaposlenik());
 				//jf.Show();
+				}
+				else
+				{
+					infoBox("Niste odabrali nijedan zahtjev", "UZBUNA");
+				}
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);

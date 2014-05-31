@@ -20,7 +20,9 @@ import javax.swing.JButton;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.dialect.unique.InformixUniqueDelegate;
 
+import controller.UnosZahtjeva;
 import controller.ZahtjevController;
 import Models.Klijent;
 import Models.Zahtjev;
@@ -161,21 +163,28 @@ public class ZatvaranjeZahtjeva {
 			public void actionPerformed(ActionEvent e) {
 				//Session session = HibernateUtil.getSessionFactory().openSession();
 				//Transaction t = session.beginTransaction();
-				try {
-					kontroler.UpisivanjeZatvorenogZahtjeva(zahtjev_id, textField_3.getText(), textArea.getText(), zaposlenik_id);
-					
-				}
-				catch (Exception ex) {
-					infoBox(ex.toString(), "UZBUNA");
-				}
-				finally
+				if(ZahtjevController.validirajPrazno(textField_3) && ZahtjevController.validirajPrazno(textArea) && ZahtjevController.validirajCijenu(textField_3.getText()))
 				{
-					//session.close();
+					try {
+						kontroler.UpisivanjeZatvorenogZahtjeva(zahtjev_id, textField_3.getText(), textArea.getText(), zaposlenik_id);
+					}
+					catch (Exception ex) {
+						infoBox(ex.toString(), "UZBUNA");
+					}
+					finally
+					{
+						//session.close();
+					}
+					
+					serviser s = new serviser();
+					frmZatvaranjeZahtjeva.dispose();
+					s.Show();
+
 				}
-				
-				serviser s = new serviser();
-				frmZatvaranjeZahtjeva.dispose();
-				s.Show();
+				else
+				{
+					infoBox("Neispravni podaci - cijena ne smije biti prazna i mora biti broj, komentar ne smije biti prazan", "UZBUNA");
+				}
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(frmZatvaranjeZahtjeva.getContentPane());

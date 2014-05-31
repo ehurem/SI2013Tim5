@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -43,23 +45,81 @@ public class ZahtjevControllerTest {
 		}
 		if(list == null || list.get(0) == null || list.get(1) == null || list.get(2) == null || list.get(3) == null || list.get(4) == null)
 		{
-			fail("Lista ili parametri su null");
+			fail("List or list parameters are null");
 		}
-		else
-		{
-			Assert.assertEquals(true, true);
-		}
+		//else
+		//{
+			//Assert.assertEquals(true, true);
+		//}
 		
 	}
 
 	@Test
-	public void testUpisivanjeZatvorenogZahtjeva() {
-		fail("Not yet implemented");
+	public void testUpisivanjeZatvorenogZahtjevaFail() {
+		ZahtjevController c = new ZahtjevController();
+		boolean status = true;
+		String komentar="";
+		String cijena="";
+		String zahtjev_id="a";
+		long zaposlenik_id=1;
+		try {
+			c.UpisivanjeZatvorenogZahtjeva(zahtjev_id, cijena, komentar, zaposlenik_id);
+		} catch (Exception e) {
+			status = false;
+			e.printStackTrace();
+		}
+		finally{
+			Assert.assertEquals(false, status);
+		}
 	}
 
 	@Test
 	public void testPopunjavanjeListePreuzetihZahtjeva() {
-		fail("Not yet implemented");
+		ZahtjevController c = new ZahtjevController();
+		final JList list = new JList();
+		DefaultListModel listModel = new DefaultListModel();
+		try {
+			listModel = c.PopunjavanjeListePreuzetihZahtjeva();
+			list.setModel(listModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Catch block entered");
+		} 
+//		fail("Not yet implemented");
 	}
 
+	@Test
+	public void testvalidirajCijenu()
+	{
+		Assert.assertEquals(ZahtjevController.validirajCijenu("1"), true);
+	}
+	
+	@Test
+	public void testvalidirajCijenuNaN()
+	{
+		Assert.assertEquals(ZahtjevController.validirajCijenu("a"), false);
+	}
+	
+	@Test
+	public void testvalidirajPraznoFail()
+	{
+		boolean rez = true;
+		JTextArea t1 = new JTextArea();
+		t1.setText("");
+		rez = ZahtjevController.validirajPrazno(t1);
+		Assert.assertEquals(rez, false);
+	}
+	
+	@Test
+	public void testvalidirajPraznoOK()
+	{
+		boolean rez = false;
+		JTextArea t1 = new JTextArea();
+		t1.setText("Neki tekst");
+		rez = ZahtjevController.validirajPrazno(t1);
+		Assert.assertEquals(rez, true);
+	}
+	
+	
 }
+
