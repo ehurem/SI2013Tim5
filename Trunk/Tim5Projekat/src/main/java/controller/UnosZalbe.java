@@ -78,4 +78,10 @@ public static Date dajSQLDate(java.util.Date utilDate){
 	java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 	return sqlDate;
 }
+
+public static void resetPolja(JTextArea ta)
+{
+	ta.setText("");;
+}
+
 }

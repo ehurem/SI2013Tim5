@@ -441,9 +441,13 @@ public class MainOperater {
 				try {
 					Long id = UnosZalbe.unesiZalbuUBazu(textArea_1, comboBox, comboBox_2);
 					if (id == 0) throw new Exception("Nešto je krenulo po zlu!!!");
-					else infoBox("Uspješno dodana žalba", "Poruka");
+					else {
+						infoBox("Uspješno dodana žalba", "Poruka");
+						UnosZalbe.resetPolja(textArea_1);
+					}
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					//ex.printStackTrace();
+					infoBox(ex.getMessage(), "Greška!");
 				}
 			}
 		});
