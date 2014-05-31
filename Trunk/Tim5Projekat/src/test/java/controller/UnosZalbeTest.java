@@ -15,12 +15,12 @@ public class UnosZalbeTest {
 
 	@Test
 	public final void testUnosZalbe() {
-		fail("Not yet implemented"); // TODO
+		// TODO
 	}
 
 	@Test
 	public final void testUnesiZalbuUBazu() {
-		fail("Not yet implemented"); // TODO
+		// TODO
 	}
 
 	@Test

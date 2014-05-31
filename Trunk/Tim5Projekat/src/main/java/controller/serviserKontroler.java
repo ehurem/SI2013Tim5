@@ -39,7 +39,7 @@ public class serviserKontroler {
 	}
 		return tabela.getRowCount()==zahtjevi.size();
 	}
-	public static void uzmiZahtjevNaIzvrsavanje (JTable tabela, List <Zahtjev> zahtjevi, long zaposlenik, int red) {
+	public static void uzmiZahtjevNaIzvrsavanje (JTable tabela, List <Zahtjev> zahtjevi, long zaposlenik, int red) throws Exception {
 		zahtjevi.get(red).setStatus("u izvrsavanju");
 		zahtjevi.get(red).setZaposlenik(zaposlenik);
 		((DefaultTableModel)tabela.getModel()).removeRow(red);
@@ -50,7 +50,7 @@ public class serviserKontroler {
 			tr.commit();
 		}
 		catch (Exception ex) { 
-			JOptionPane.showMessageDialog(tabela, ex.toString());
+			throw ex;
 	   }
 		finally { 
 			session.close();

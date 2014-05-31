@@ -68,7 +68,7 @@ public class IzvjestajiKontrolerTest {
 		zahtjevi.add(prvi);
 		zahtjevi.add(drugi);
 		
-		Assert.assertEquals(IzvjestajiKontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi,proba.get(Calendar.WEEK_OF_YEAR)),500);
+		Assert.assertEquals(IzvjestajiKontroler.sabiranjeCijenaZahtjevaZaOdabranuSedmicu(zahtjevi,proba.get(Calendar.WEEK_OF_YEAR)),500.0);
 		
 		
 	}

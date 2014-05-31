@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -17,9 +18,10 @@ import junit.framework.Assert;
 
 @RunWith(JUnit4.class)
 public class DodavanjeZaposlenikaTest {
+	
 	private static Long id;
 	
-	@Test
+	@Test (expected = Exception.class)
 	public void testDodajZaposlenikaUnosLos() throws Exception {
 		JTextField t_imeIPrezime = new JTextField("" );
 		JTextField t_mjestoStanovanja= new JTextField("Mjesto");
@@ -55,13 +57,15 @@ public class DodavanjeZaposlenikaTest {
 		Assert.assertTrue(test);
 		
 	}
+	
+	@AfterClass
 	public static void tearDown()
 	{
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		
-		Zaposlenik zaposlenik = (Zaposlenik) session.get(Klijent.class, id); 
+		Zaposlenik zaposlenik = (Zaposlenik) session.get(Zaposlenik.class, id); 
 		session.delete(zaposlenik); 
 		tx.commit();
 		session.close();

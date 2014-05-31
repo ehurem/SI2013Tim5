@@ -180,7 +180,7 @@ public class ZahtjevController {
 
 	}
 	
-	public static boolean validirajCijenu(String s){
+	public static boolean validirajCijenu(String s) throws NumberFormatException{
 	    
 	    return (Double.parseDouble(s)>=0);
 	  }

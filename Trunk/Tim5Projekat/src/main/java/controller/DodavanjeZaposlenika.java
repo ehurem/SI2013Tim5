@@ -71,10 +71,11 @@ public class DodavanjeZaposlenika {
 				Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
 				//infoBox(datum.toString(), null);
 				
-				novi.setId( (Long ) session.save(novi));
 				novi.set_status(true);
-				
 				novi.set_datumRodjenja(datum);
+				
+				novi.setId( (Long ) session.save(novi));
+				
 				t.commit();
 				
 				t_imeIPrezime.setText("");

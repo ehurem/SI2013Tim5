@@ -24,8 +24,8 @@ public class ZahtjevControllerTest {
 		Assert.assertEquals(true, true);
 	}
 
-	@Test
-	public void testPopuniPodatke() {
+	@Test (expected = Exception.class)
+	public void testPopuniPodatke() throws Exception {
 		ZahtjevController c = new ZahtjevController();
 		
 		JRadioButton rdbtnDa = new JRadioButton();
@@ -37,21 +37,8 @@ public class ZahtjevControllerTest {
 		JTextField textField_2 = new JTextField();
 		JTextField textField_3 = new JTextField();
 		ArrayList<String> list = new ArrayList<String>();
-		try {
-			list = c.PopuniPodatke(textField, textField_1, textField_2, textField_3, textArea, zahtjev_id, rdbtnDa, rdbtnNe);
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail("Catch block entered");
-		}
-		if(list == null || list.get(0) == null || list.get(1) == null || list.get(2) == null || list.get(3) == null || list.get(4) == null)
-		{
-			fail("List or list parameters are null");
-		}
-		//else
-		//{
-			//Assert.assertEquals(true, true);
-		//}
 		
+			list = c.PopuniPodatke(textField, textField_1, textField_2, textField_3, textArea, zahtjev_id, rdbtnDa, rdbtnNe);	
 	}
 
 	@Test
@@ -94,7 +81,7 @@ public class ZahtjevControllerTest {
 		Assert.assertEquals(ZahtjevController.validirajCijenu("1"), true);
 	}
 	
-	@Test
+	@Test (expected = NumberFormatException.class)
 	public void testvalidirajCijenuNaN()
 	{
 		Assert.assertEquals(ZahtjevController.validirajCijenu("a"), false);

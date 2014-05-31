@@ -40,7 +40,7 @@ public class serviserKontrolerTest {
 	}
 
 
-	@Test   //ako nema otvorenih zahtjeva u bazi baca exception
+	@Test (expected = Exception.class)  //ako nema otvorenih zahtjeva u bazi baca exception
 	public final void testUzmiZahtjevNaIzvrsavanje() throws Exception {
 		List <Zahtjev> zahtjevi = serviserKontroler.ucitajOtvoreneZahtjeve();
 		int size = zahtjevi.size();
