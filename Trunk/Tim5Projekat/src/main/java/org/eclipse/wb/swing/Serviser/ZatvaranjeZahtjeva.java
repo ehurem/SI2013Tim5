@@ -151,7 +151,7 @@ public class ZatvaranjeZahtjeva {
 		frmZatvaranjeZahtjeva.setResizable(false);
 		frmZatvaranjeZahtjeva.setTitle("Zatvaranje zahtjeva");
 		frmZatvaranjeZahtjeva.setBounds(100, 100, 336, 373);
-		frmZatvaranjeZahtjeva.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmZatvaranjeZahtjeva.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -176,9 +176,7 @@ public class ZatvaranjeZahtjeva {
 						//session.close();
 					}
 					
-					serviser s = new serviser();
 					frmZatvaranjeZahtjeva.dispose();
-					s.Show();
 
 				}
 				else
@@ -303,8 +301,23 @@ public class ZatvaranjeZahtjeva {
 		);
 		
 		rdbtnDa = new JRadioButton("Da");
+		rdbtnDa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnDa.isSelected()) {
+					textField_3.setText("0.00");
+					textField_3.setEditable(false);
+				}
+			}
+		});
 		rdbtnDa.setSelected(true);
 		rdbtnNe = new JRadioButton("Ne");
+		rdbtnNe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnNe.isSelected()) {
+					textField_3.setEditable(true);
+				}
+			}
+		});
 		
 		final ButtonGroup grupaGarancija = new ButtonGroup();
 		grupaGarancija.add(rdbtnDa);
