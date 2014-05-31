@@ -101,7 +101,7 @@ public class serviser {
 		frmInterfejsZaServisera = new JFrame();
 		frmInterfejsZaServisera.setResizable(false);
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
-		frmInterfejsZaServisera.setBounds(100, 100, 332, 365);
+		frmInterfejsZaServisera.setBounds(100, 100, 332, 351);
 		//frmInterfejsZaServisera.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -199,11 +199,15 @@ public class serviser {
 
 		
 		panel.setLayout(gl_panel);
-	
+		
+
+		//final JList list = new JList();
+		//final DefaultListModel listModel = new DefaultListModel();
 		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        try {
+		        	//list.
 					listModel = kontroler.PopunjavanjeListePreuzetihZahtjeva();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -213,10 +217,7 @@ public class serviser {
 		      }
 		    };
 		tabbedPane.addChangeListener(changeListener);
-		
-
-		
-		
+				
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Zatvaranje zahtjeva", null, panel_1, null);
 		
@@ -232,7 +233,13 @@ public class serviser {
 				if (list.getSelectedValue()!=null)
 				{
 				String id_zahtjeva = String.valueOf(list.getSelectedValue());
+	//			Zahtjev z = (Zahtjev) list.getSelectedValue();
+				//String info[] = new String[2];
+				//info[0] = String.valueOf(z.getID());
+				//info[0] = "2";
+				//info[1] = "1";
 				ZatvaranjeZahtjeva jf = new ZatvaranjeZahtjeva();
+				//frmInterfejsZaServisera.dispose();
 				jf.main(null, id_zahtjeva, get_zaposlenik());
 				//jf.Show();
 				}
@@ -254,12 +261,12 @@ public class serviser {
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel_1.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_panel_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnNewButton)
-					.addGap(18))
+					.addContainerGap(42, Short.MAX_VALUE))
 		);
 		
 		JLabel lblZahtjeviUIzvavanju = new JLabel("Zahtjevi u izvr\u0161avanju");
