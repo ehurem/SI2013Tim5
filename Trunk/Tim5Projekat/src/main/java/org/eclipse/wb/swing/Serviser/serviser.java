@@ -149,39 +149,10 @@ public class serviser {
 		JButton btnStatus = new JButton("Odaberi");
 		btnStatus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int i=-1;
-			 i=tabela.getSelectedRow();  
-			 if(i>=0) {
-				 String s = tabela.getValueAt(i, 0).toString();
-				 int k=-1;
-				  Session session = HibernateUtil.getSessionFactory().openSession();
-				  try {
-					
-					Transaction tr = session.beginTransaction();
-					Query queryZahtjev = session.createQuery("from Zahtjev where _status='Otvoren'");
-					zahtjevi = queryZahtjev.list();
-					for (int j=0; j<zahtjevi.size(); j++) {
-						if (zahtjevi.get(j).getID()==Integer.parseInt(s)) {
-							zahtjevi.get(j).setStatus("U izvrsavanju");
-							zahtjevi.get(j).setZaposlenik(get_zaposlenik());
-							((DefaultTableModel)tabela.getModel()).removeRow(i);
-							JOptionPane.showMessageDialog(tabela, "Uspješno ste uzeli zahtjev na izvršavanje!");
-							k=j;
-							break;
-		        	 } 
-		         }
-				
-				session.save(zahtjevi.get(k));
-				tr.commit();
-				zahtjevi.remove(k);
-				//session.close();
-				 }
-				  catch (Exception ex) {
-					  JOptionPane.showMessageDialog(tabela, ex.toString());
-				  }
-				finally { 
-					session.close(); 
-					}
+				int red=-1;
+			 red=tabela.getSelectedRow();  
+			 if(red>=0) {
+				 metoda.uzmiZahtjevNaIzvrsavanje(tabela, zahtjevi, get_zaposlenik(), red);
 			 }
 			 else JOptionPane.showMessageDialog(tabela, "Niste odabrali nijedan red!");
 			}

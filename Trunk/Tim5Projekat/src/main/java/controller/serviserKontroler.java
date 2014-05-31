@@ -42,4 +42,23 @@ public class serviserKontroler {
 	}
 		return tabela.getRowCount()==zahtjevi.size();
 	}
-}
+	public void uzmiZahtjevNaIzvrsavanje (JTable table, List <Zahtjev> zahtjevi, long zaposlenik, int red) {
+		zahtjevi.get(red).setStatus("u izvrsavanju");
+		zahtjevi.get(red).setZaposlenik(zaposlenik);
+		((DefaultTableModel)table.getModel()).removeRow(red);
+		JOptionPane.showMessageDialog(table, "Uspješno ste uzeli zahtjev na izvršavanje!");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			Transaction tr = session.beginTransaction();	
+			session.update(zahtjevi.get(red));
+			tr.commit();
+		}
+		catch (Exception ex) { 
+			JOptionPane.showMessageDialog(null, ex.toString());
+	   }
+		finally { 
+			session.close();
+		}
+		zahtjevi.remove(red);
+	}
+}	
