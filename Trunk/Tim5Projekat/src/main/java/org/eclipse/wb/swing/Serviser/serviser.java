@@ -47,6 +47,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class serviser {
 
@@ -74,10 +76,6 @@ public class serviser {
 			}
 		});
 	}
-	public void Show()
-	{
-		frmInterfejsZaServisera.setVisible(true);
-	}
 	
 	public static void infoBox(String infoMessage, String naslov)
     {
@@ -99,6 +97,20 @@ public class serviser {
 		listModel = new DefaultListModel();
 	    metoda = new serviserKontroler();
 		frmInterfejsZaServisera = new JFrame();
+		frmInterfejsZaServisera.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+				try {
+					listModel = kontroler.PopunjavanjeListePreuzetihZahtjeva();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        list.setModel(listModel);
+		        ///OVDJE
+				
+			}
+		});
 		frmInterfejsZaServisera.setResizable(false);
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
 		frmInterfejsZaServisera.setBounds(100, 100, 332, 351);
