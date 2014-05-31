@@ -182,7 +182,7 @@ public class ZahtjevController {
 	
 	public static boolean validirajCijenu(String s){
 	    
-	    return (Double.parseDouble(s)>0);
+	    return (Double.parseDouble(s)>=0);
 	  }
 	public static Boolean validirajPrazno(JTextArea t1) {
 		
