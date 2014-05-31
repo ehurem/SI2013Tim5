@@ -10,6 +10,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -159,26 +160,18 @@ public class serviser {
 		});
 		
 		// event za dvostruki klik na red tabele
-				 tabela.addMouseListener(new MouseAdapter() {
-					   public void mouseClicked(MouseEvent e) {
-						   JTable target = (JTable)e.getSource();
-						   if (e.getClickCount() == 2) {
-					         int row = target.getSelectedRow();
-					         int column = target.getSelectedColumn();
-					         String s = target.getValueAt(row, 0).toString();
-					         int index = 0;
-					         for (int i=0; i<zahtjevi.size(); i++) {
-					        	 if (zahtjevi.get(i).getID()==Integer.parseInt(s)) {
-					        		 index=i;
-					        		 break;
-					        	 } 
-					         }
-					         PregledOdabranogZahtjeva forma = new PregledOdabranogZahtjeva();
-					         forma.main(null, zahtjevi.get(index));
-					         }
-					      
-					   }
-					});
+		tabela.addMouseListener(new MouseAdapter() {	
+		public void mouseClicked(MouseEvent e) {
+			JTable target = (JTable)e.getSource();
+			if (e.getClickCount() == 2) {
+				if (SwingUtilities.isLeftMouseButton(e)) {
+					int row = target.getSelectedRow();
+					PregledOdabranogZahtjeva forma = new PregledOdabranogZahtjeva();
+					forma.main(null, zahtjevi.get(row));
+				}
+			}
+		}
+		});
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

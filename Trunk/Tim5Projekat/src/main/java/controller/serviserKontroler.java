@@ -42,11 +42,11 @@ public class serviserKontroler {
 	}
 		return tabela.getRowCount()==zahtjevi.size();
 	}
-	public void uzmiZahtjevNaIzvrsavanje (JTable table, List <Zahtjev> zahtjevi, long zaposlenik, int red) {
+	public void uzmiZahtjevNaIzvrsavanje (JTable tabela, List <Zahtjev> zahtjevi, long zaposlenik, int red) {
 		zahtjevi.get(red).setStatus("u izvrsavanju");
 		zahtjevi.get(red).setZaposlenik(zaposlenik);
-		((DefaultTableModel)table.getModel()).removeRow(red);
-		JOptionPane.showMessageDialog(table, "Uspješno ste uzeli zahtjev na izvršavanje!");
+		((DefaultTableModel)tabela.getModel()).removeRow(red);
+		JOptionPane.showMessageDialog(tabela, "Uspješno ste uzeli zahtjev na izvršavanje!");
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			Transaction tr = session.beginTransaction();	
@@ -54,7 +54,7 @@ public class serviserKontroler {
 			tr.commit();
 		}
 		catch (Exception ex) { 
-			JOptionPane.showMessageDialog(null, ex.toString());
+			JOptionPane.showMessageDialog(tabela, ex.toString());
 	   }
 		finally { 
 			session.close();

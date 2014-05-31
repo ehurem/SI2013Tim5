@@ -38,7 +38,7 @@ public class PregledOdabranogZahtjeva {
 	private static String adresa;
 	private static String tipuredaja;
 	private static String komentar;
-	static List<Klijent> listKlijent;
+	private static Klijent klijent;
 	/**
 	 * Launch the application.
 	 */
@@ -47,18 +47,12 @@ public class PregledOdabranogZahtjeva {
 		   try {
 			   	Session session = HibernateUtil.getSessionFactory().openSession();
 				Transaction tr = session.beginTransaction();
-				Query queryKlijent= session.createQuery("from Klijent");
-				listKlijent = queryKlijent.list();
-				for(int i=0;i<listKlijent.size();i++){
-					if(listKlijent.get(i).getId()==z.getKlijent())
-					{
-						imeiprezime=listKlijent.get(i).get_imeIPrezime();
-						adresa=listKlijent.get(i).get_adresa();
-					}
-				}
+				Query queryKlijent= session.createQuery("from Klijent where id='"+z.getKlijent()+"'");
+				klijent=(Klijent) queryKlijent.uniqueResult();
+				imeiprezime=klijent.get_imeIPrezime();
+				adresa=klijent.get_adresa();
 				tr.commit();
 				session.close();
-				
 			}
 			catch (Exception ex) {
 				JOptionPane.showMessageDialog(null, ex.toString());
