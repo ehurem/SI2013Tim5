@@ -243,7 +243,7 @@ public class serviser {
 				//info[0] = "2";
 				//info[1] = "1";
 				ZatvaranjeZahtjeva jf = new ZatvaranjeZahtjeva();
-				frmInterfejsZaServisera.dispose();
+				//frmInterfejsZaServisera.dispose();
 				jf.main(null, id_zahtjeva, get_zaposlenik());
 				//jf.Show();
 				}
