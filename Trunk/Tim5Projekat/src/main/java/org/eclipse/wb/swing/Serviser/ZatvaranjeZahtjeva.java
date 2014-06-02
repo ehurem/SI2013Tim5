@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.JScrollPane;
 
 public class ZatvaranjeZahtjeva {
@@ -164,6 +165,12 @@ public class ZatvaranjeZahtjeva {
 			public void actionPerformed(ActionEvent e) {
 				//Session session = HibernateUtil.getSessionFactory().openSession();
 				//Transaction t = session.beginTransaction();
+				try {
+					ZahtjevController.validirajCijenu(textField_3.getText(), rdbtnDa.isSelected());
+				} catch (NumberFormatException e1) {
+					//e1.printStackTrace();
+					infoBox("Vrijednost za polje 'Cijena' nije ispravno, unesite pozitivan broj.", "Greska");
+				}
 				if(ZahtjevController.validirajPrazno(textField_3) && ZahtjevController.validirajPrazno(textArea) && ZahtjevController.validirajCijenu(textField_3.getText(), rdbtnDa.isSelected()))
 				{
 					try {
