@@ -185,8 +185,11 @@ public class ZahtjevController {
 	    Double cijena = Double.parseDouble(s);
 	    
 	    if(!imaGaranciju && cijena == 0.0) return false;
+	    else if(cijena < 0) return false;
+	   
 	    return true;
 	  }
+	  
 	public static Boolean validirajPrazno(JTextArea t1) {
 		
 		Boolean izlaz = false;
