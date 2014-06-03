@@ -675,8 +675,11 @@ public class Main {
 					Long id = DodavanjeZaposlenika.DodajZaposlenik(t_imeIPrezime, t_mjestoStanovanja, t_brojTelefona, t_emailAdresa, t_korisnickaSifra, t_korisnickoIme, c_privilegije, t_datumRodjenja);
 					if (id == 0) throw new Exception("Nešto je krenulo po zlu!!!");
 					else infoBox("Uspješno dodan novi zaposlenik", "Poruka");
-				} catch (Exception e) {
-					infoBox(e.getLocalizedMessage(), "Greška");
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					if(e1.getMessage().equals("could not execute statement"))
+						infoBox("Zaposlenik sa tim podacima već postoji !", "Greška");
+					else infoBox(e1.getLocalizedMessage(), "Greška");
 				}
 			}
 		});
