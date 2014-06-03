@@ -8,6 +8,10 @@ import javax.swing.JTextField;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.DataException;
+import org.hibernate.exception.SQLGrammarException;
+
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import Models.Klijent;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
@@ -17,7 +21,7 @@ public class DodavanjeKlijenta {
 		
 	public DodavanjeKlijenta(){}
 	
-	public static Long unesiKlijentaUBazu(Klijent _klijent, JTextField textField, JTextField textField_2, JTextField textField_3, JTextField textField_1 ) throws IllegalArgumentException
+	public static Long unesiKlijentaUBazu(Klijent _klijent, JTextField textField, JTextField textField_2, JTextField textField_3, JTextField textField_1 ) throws Exception
 	{
 		Session sesija = HibernateUtil.getSessionFactory().openSession(); 
 		
@@ -48,6 +52,10 @@ public class DodavanjeKlijenta {
 		catch(IllegalArgumentException e1)
 		{
 			throw e1;
+		}
+		catch(Exception e2)
+		{
+			throw e2;
 		}
 		finally
 		{

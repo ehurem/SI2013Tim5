@@ -14,6 +14,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JTextField;
 
+import org.hibernate.exception.DataException;
+import org.hibernate.exception.SQLGrammarException;
+
 import Models.*;
 import controller.DodavanjeKlijenta;
 
@@ -91,8 +94,12 @@ public class DodajKlijenta {
 						infoBox("Uspješno unesen klijent", "Unos OK");
 						frmUnosNovogKlijenta.dispose();
 					}
-				} catch (Exception e1) {
-					infoBox(e1.getLocalizedMessage(), "Greška");
+				} 
+				catch (Exception e1) {
+					e1.printStackTrace();
+					if(e1.getMessage().equals("could not execute statement"))
+						infoBox("Klijent sa tim podacima već postoji !", "Greška");
+					else infoBox(e1.getLocalizedMessage(), "Greška");
 				}
 			}
 		});

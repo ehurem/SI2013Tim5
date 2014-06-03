@@ -573,6 +573,7 @@ public class Main {
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		final JList list_zaposlenici = new JList(model);
+		list_zaposlenici.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_1.setViewportView(list_zaposlenici);
 		panel_6.setLayout(gl_panel_6);
 		panel_3.setLayout(gl_panel_3);
