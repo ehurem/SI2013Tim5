@@ -49,8 +49,8 @@ public class DodavanjeZaposlenika {
 					throw new IllegalArgumentException("Adresa nije u dobrom formatu");
 				}
 				
-				if (novi.getBrojTelefona().equals("")) {
-					throw new IllegalArgumentException("Broj telefona nije u dobrom formatu");
+				if (!validirajTelefon(novi.getBrojTelefona())) {
+					throw new IllegalArgumentException("Broj telefona nije u dobrom formatu XXX/XXX-XXX");
 				}
 				
 				if (t_korisnickaSifra.equals("")) {
@@ -105,6 +105,13 @@ public class DodavanjeZaposlenika {
 		catch (Exception ex) {
 			throw ex;
 		}
+	}
+	public static Boolean validirajTelefon(String t)
+	{
+		Pattern pattern = Pattern.compile("\\d{3}/\\d{3}-\\d{3}");
+	    Matcher matcher = pattern.matcher(t);
+	    if (matcher.matches()) return true;
+	    else return false;
 	}
 	
 	private static Boolean validirajAdresu(String t) {
