@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Color;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -41,7 +42,7 @@ public class DodavanjeZaposlenika {
 				if (!provjeraImena(novi.get_imeIPrezime())) {
 					throw new IllegalArgumentException("Ime i prezime nisu u dobrom formatu" );
 				}
-				if (novi.getEmail().equals("")) {
+				if (!validirajMail(novi.getEmail())) {
 					throw new IllegalArgumentException("Email nije u dobrom formatu");
 				}
 				if (novi.getAdresa().equals("")) {
@@ -105,6 +106,17 @@ public class DodavanjeZaposlenika {
 			throw ex;
 		}
 	}
+	
+	public static Boolean validirajMail(String t)
+	{
+		if (t.length() > 35) return false;
+		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		Matcher matcher = pattern.matcher(t);
+		if (matcher.matches()) return true;
+		else return false;
+	}
+	
 	private static Boolean provjeraImena(String ime) {
 		if (ime.length() > 30) return false;
 		String[] niz = ime.split(" ");
