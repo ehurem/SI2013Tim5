@@ -3,6 +3,8 @@ package controller;
 import java.awt.Color;
 import java.sql.Date;
 import java.util.List;
+import java.util.regex.*;
+
 
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
@@ -93,11 +95,15 @@ public class UnosZalbe {
 public static Boolean validirajPrazno(JTextArea t1) {
 		
 		Boolean izlaz = false;
-		
-		if(t1.getText().equals(""))
+		String pattern = "^[a-zA-Z0-9].*";
+		String text = t1.getText();      
+		Pattern p = Pattern.compile(pattern);       
+		Matcher m = p.matcher(text);
+
+		if(t1.getText().equals("") || t1.getText().length()<10 || !(m.matches()))
 		{
 			t1.setBackground(new Color(216,210,139));
-			throw new IllegalArgumentException("Morate unijeti komentar žalbe!");
+			throw new IllegalArgumentException("Morate unijeti komentar žalbe ne kraći od 10 karaktera!");
 		}
 		else
 		{
