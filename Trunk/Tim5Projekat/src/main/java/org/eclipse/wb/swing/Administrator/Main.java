@@ -878,7 +878,10 @@ public class Main {
 						
 						
 						for(int i=0;i<listZaposlenik.size();i++){
-							if(listZaposlenik.get(i).get_status()){
+							if(listZaposlenik.get(i).get_status() && listZaposlenik.get(i).getId()!=1 ){
+								if(listZaposlenik.get(i).getId()==1){
+									infoBox("Nije moguce obrisati administratora.", "Greška");
+								}
 								model.addElement(listZaposlenik.get(i));
 								elements[i] = listZaposlenik.get(i).toString();
 								}
@@ -887,7 +890,7 @@ public class Main {
 						
 						t.commit();
 						session.close();
-						
+					
 					}
 				catch (Exception ex) {
 						infoBox(ex.getLocalizedMessage(), "Greška");
