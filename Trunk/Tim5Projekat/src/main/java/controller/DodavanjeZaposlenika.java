@@ -37,11 +37,8 @@ public class DodavanjeZaposlenika {
 				novi.setKorisnickaSifra(encryptPassword(t_korisnickaSifra.getText()));
 				novi.setKorisnickoIme(t_korisnickoIme.getText());
 				novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
-				
-				Pattern pattern = Pattern.compile("^[A-Z]{1}[a-z]{2,}\\s[A-Z][a-z]{2,}$");
-				Matcher matcher = pattern.matcher(novi.get_imeIPrezime());
-				boolean dobro = matcher.matches();
-				if (!dobro) {
+
+				if (!provjeraImena(novi.get_imeIPrezime())) {
 					throw new IllegalArgumentException("Ime i prezime nisu u dobrom formatu" );
 				}
 				if (novi.getEmail().equals("")) {
@@ -108,7 +105,26 @@ public class DodavanjeZaposlenika {
 			throw ex;
 		}
 	}
-	
+	private static Boolean provjeraImena(String ime) {
+		if (ime.length() > 30) return false;
+		String[] niz = ime.split(" ");
+		
+		for (int i = 0; i<niz.length; i++) {
+			String dio = niz[i];
+			String[] patt = dio.split("-");
+			for (int j= 0; j<patt.length; j++) {
+				if (!patt[j].equals("di") && !patt[j].equals("I") &&
+						!patt[j].equals("II") && !patt[j].equals("III") &&
+						!patt[j].equals("IV") && !patt[j].equals("V")) {
+					Pattern pattern = Pattern.compile("^[A-Z]{1}[a-z]{2,}$");
+					Matcher matcher = pattern.matcher(patt[j]);
+					Boolean istina =  matcher.matches();
+					if (!istina) return false;
+				}
+			}
+		}
+		return true;
+	}
 	
 	
 	public static String encryptPassword(String password)
