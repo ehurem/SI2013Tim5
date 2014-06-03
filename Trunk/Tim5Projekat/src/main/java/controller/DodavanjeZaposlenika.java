@@ -135,7 +135,7 @@ public class DodavanjeZaposlenika {
 				if (!patt[j].equals("di") && !patt[j].equals("I") &&
 						!patt[j].equals("II") && !patt[j].equals("III") &&
 						!patt[j].equals("IV") && !patt[j].equals("V")) {
-					Pattern pattern = Pattern.compile("^[A-Z]{1}[a-z]{2,}$");
+					Pattern pattern = Pattern.compile("^[A-Z|Č|Ć|Ž|Š|Đ]{1}[a-z|č|ć|ž|š|đ]{2,}$");
 					Matcher matcher = pattern.matcher(patt[j]);
 					Boolean istina =  matcher.matches();
 					if (!istina) return false;
