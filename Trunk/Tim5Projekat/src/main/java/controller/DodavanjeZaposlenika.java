@@ -53,10 +53,10 @@ public class DodavanjeZaposlenika {
 					throw new IllegalArgumentException("Broj telefona nije u dobrom formatu XXX/XXX-XXX");
 				}
 				
-				if (t_korisnickaSifra.equals("")) {
+				if (!validirajSifru(novi.getKorisnickaSifra())) {
 					throw new IllegalArgumentException("Korisnicka sifra nije u dobrom formatu");
 				}
-				if (novi.getKorisnickoIme().equals("")) {
+				if (!validirajUsername(novi.getKorisnickoIme())) {
 					throw new IllegalArgumentException("Korisnicko ime nije u dobrom formatu");
 				}
 				if (t_datumRodjenja.getText().equals("")) {
@@ -106,7 +106,19 @@ public class DodavanjeZaposlenika {
 			throw ex;
 		}
 	}
-	public static Boolean validirajTelefon(String t)
+	private static Boolean validirajUsername(String t) {
+		if (t.length()<4 ) return false;
+		if (t.length() > 35) return false;
+		return true;
+	}
+	
+	private static Boolean validirajSifru(String t) {
+		if (t.length()<4 ) return false;
+		if (t.length() > 35) return false;
+		return true;
+	}
+	
+	private static Boolean validirajTelefon(String t)
 	{
 		Pattern pattern = Pattern.compile("\\d{3}/\\d{3}-\\d{3}");
 	    Matcher matcher = pattern.matcher(t);
