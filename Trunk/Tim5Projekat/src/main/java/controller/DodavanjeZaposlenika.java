@@ -45,7 +45,7 @@ public class DodavanjeZaposlenika {
 				if (!validirajMail(novi.getEmail())) {
 					throw new IllegalArgumentException("Email nije u dobrom formatu");
 				}
-				if (novi.getAdresa().equals("")) {
+				if (!validirajAdresu(novi.getAdresa())) {
 					throw new IllegalArgumentException("Adresa nije u dobrom formatu");
 				}
 				
@@ -107,7 +107,14 @@ public class DodavanjeZaposlenika {
 		}
 	}
 	
-	public static Boolean validirajMail(String t)
+	private static Boolean validirajAdresu(String t) {
+		if (t.length() > 44) return false;
+		if (t.equals("")) return false;
+		if (t.length() < 4 ) return false;
+		return true;
+	}
+	
+	private static Boolean validirajMail(String t)
 	{
 		if (t.length() > 35) return false;
 		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
