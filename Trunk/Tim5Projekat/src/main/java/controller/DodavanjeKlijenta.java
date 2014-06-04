@@ -36,7 +36,7 @@ public class DodavanjeKlijenta {
 			_klijent.set_adresa(textField_1.getText());		
 			
 			if(validirajPrazno(textField) && validirajPrazno(textField_1) && validirajPrazno(textField_2) && validirajPrazno(textField_3) 
-					&& validirajTelefon(textField_2) && validirajMail(textField_3))
+					&& validirajTelefon(textField_2) && validirajMail(textField_3) && provjeraImena(textField) && validirajAdresu(textField_1))
 			{
 				Long id = (Long)sesija.save(_klijent); 
 				transakcija.commit(); 
@@ -66,22 +66,28 @@ public class DodavanjeKlijenta {
 	}
 	
 public static Boolean validirajPrazno(JTextField t1) throws IllegalArgumentException {
-		Boolean izlaz = false;
-	
-		if(t1.getText().equals(""))
-		{
-			t1.setBackground(new Color(216,210,139));
-			throw new IllegalArgumentException("Sva polja moraju biti popunjena");
-		}
-		else
-		{
-			izlaz = true;
-			t1.setBackground(new Color(255,255,255));
-		}
-	
+	Boolean izlaz = false;
+	String pattern = "^[a-zA-Z0-9].*";
+	String text = t1.getText();      
+	Pattern p = Pattern.compile(pattern);       
+	Matcher m = p.matcher(text);
+
+	if(t1.getText().equals("") || !(m.matches()))
+	{
+		t1.setBackground(new Color(216,210,139));
+		throw new IllegalArgumentException("Polja ne smiju biti prazna! ");
+	}
+	else
+	{
+		izlaz = true;
+		t1.setBackground(new Color(255,255,255));
+	}
+
 	return izlaz;
 	
 }
+
+
 
 public static Boolean validirajTelefon(JTextField t) throws IllegalArgumentException
 {
@@ -123,6 +129,40 @@ public static Boolean validirajMail(JTextField t) throws IllegalArgumentExceptio
       }
       
       return izlaz;
+}
+
+public static Boolean provjeraImena(JTextField imeText) {
+	String ime = imeText.getText();
+	if (ime.length() > 30) return false;
+	String[] niz = ime.split(" ");
+	
+	for (int i = 0; i<niz.length; i++) {
+		String dio = niz[i];
+		String[] patt = dio.split("-");
+		for (int j= 0; j<patt.length; j++) {
+			if (!patt[j].equals("di") && !patt[j].equals("I") &&
+					!patt[j].equals("II") && !patt[j].equals("III") &&
+					!patt[j].equals("IV") && !patt[j].equals("V")) {
+				Pattern pattern = Pattern.compile("^[A-Z|Č|Ć|Ž|Š|Đ]{1}[a-z|č|ć|ž|š|đ]{2,}$");
+				Matcher matcher = pattern.matcher(patt[j]);
+				Boolean istina =  matcher.matches();
+				if (!istina) {
+					 imeText.setBackground(new Color(216,210,139));
+					 throw new IllegalArgumentException("Pogrešan format imena i prezimena.");
+				}
+			}
+		}
+	}
+	return true;
+}
+
+public static Boolean validirajAdresu(JTextField t1) {
+	String t = t1.getText();
+	if ((t.length() > 44) || (t.equals("")) || (t.length() < 4 )) {
+		t1.setBackground(new Color(216,210,139));
+		 throw new IllegalArgumentException("Pogrešan format imena i prezimena.");
+	}
+	return true;
 }
 
 }
