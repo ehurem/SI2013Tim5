@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Point;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -52,7 +53,7 @@ import java.awt.event.WindowEvent;
 
 public class serviser {
 
-	private JFrame frmInterfejsZaServisera;
+	private JDialog frmInterfejsZaServisera;
 	private JTable tabela;
 	private static Long _zaposlenik; //ID u bazi logovanog zaposlenika
 	List<Zahtjev> zahtjevi;
@@ -96,7 +97,7 @@ public class serviser {
 		kontroler = new ZahtjevController();
 		listModel = new DefaultListModel();
 	    metoda = new serviserKontroler();
-		frmInterfejsZaServisera = new JFrame();
+		frmInterfejsZaServisera = new JDialog();
 		frmInterfejsZaServisera.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent arg0) {

@@ -8,6 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.ButtonGroup;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -28,6 +29,7 @@ import Models.Klijent;
 import Models.Zahtjev;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ import javax.swing.JScrollPane;
 
 public class ZatvaranjeZahtjeva {
 
-	private JFrame frmZatvaranjeZahtjeva;
+	private JDialog frmZatvaranjeZahtjeva;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -149,10 +151,11 @@ public class ZatvaranjeZahtjeva {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmZatvaranjeZahtjeva = new JFrame();
+		frmZatvaranjeZahtjeva = new JDialog();
 		frmZatvaranjeZahtjeva.setResizable(false);
 		frmZatvaranjeZahtjeva.setTitle("Zatvaranje zahtjeva");
 		frmZatvaranjeZahtjeva.setBounds(100, 100, 336, 373);
+		frmZatvaranjeZahtjeva.setModalityType(ModalityType.APPLICATION_MODAL);
 		//frmZatvaranjeZahtjeva.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();

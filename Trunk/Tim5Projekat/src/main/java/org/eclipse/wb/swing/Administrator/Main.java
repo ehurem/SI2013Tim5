@@ -9,6 +9,7 @@ import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,6 +26,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.Timestamp;
@@ -51,7 +53,7 @@ import java.awt.event.MouseEvent;
 
 public class Main {
 
-	private JFrame frmDodavanjeZaposlenika;
+	private JDialog frmDodavanjeZaposlenika;
 	private JTextField t_imeIPrezime;
 	private JTextField t_datumRodjenja;
 	private JTextField t_mjestoStanovanja;
@@ -122,10 +124,11 @@ public class Main {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 	private void initialize() {
-		frmDodavanjeZaposlenika = new JFrame();
+		frmDodavanjeZaposlenika = new JDialog();
 		frmDodavanjeZaposlenika.setResizable(false);
 		frmDodavanjeZaposlenika.setTitle("Administratorski panel");
 		frmDodavanjeZaposlenika.setBounds(100, 100, 579, 284);
+		frmDodavanjeZaposlenika.setModalityType(ModalityType.APPLICATION_MODAL);
 		//frmDodavanjeZaposlenika.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmDodavanjeZaposlenika.getContentPane().setLayout(new BorderLayout(0, 0));
 		

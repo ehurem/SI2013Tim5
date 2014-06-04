@@ -2,6 +2,7 @@ package org.eclipse.wb.swing.Operater;
 
 import java.awt.EventQueue;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.JOptionPane;
@@ -20,12 +21,14 @@ import org.hibernate.exception.SQLGrammarException;
 import Models.*;
 import controller.DodavanjeKlijenta;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class DodajKlijenta {
 
-	private JFrame frmUnosNovogKlijenta;
+	//private JFrame frmUnosNovogKlijenta;
+	private JDialog frmUnosNovogKlijenta;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -73,10 +76,11 @@ public class DodajKlijenta {
     }
 	
 	private void initialize() {
-		frmUnosNovogKlijenta = new JFrame();
+		frmUnosNovogKlijenta = new JDialog();
 		frmUnosNovogKlijenta.setResizable(false);
 		frmUnosNovogKlijenta.setTitle("Unos novog klijenta");
 		frmUnosNovogKlijenta.setBounds(100, 100, 298, 217);
+		frmUnosNovogKlijenta.setModalityType(ModalityType.APPLICATION_MODAL);
 		//frmUnosNovogKlijenta.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();

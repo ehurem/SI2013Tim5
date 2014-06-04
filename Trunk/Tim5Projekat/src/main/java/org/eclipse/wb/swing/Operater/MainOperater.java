@@ -12,6 +12,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxEditor;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -64,7 +65,8 @@ import javax.swing.JScrollPane;
 
 public class MainOperater {
 
-	private JFrame frmInterfejsZaOperatera;
+	//private JFrame frmInterfejsZaOperatera;
+	private JDialog frmInterfejsZaOperatera;
 	private JTextField textField_2;
 	
 	//zaposlenik koji je logovan na sistem
@@ -121,7 +123,7 @@ public class MainOperater {
 	 */
 	private void initialize() {
 		
-		frmInterfejsZaOperatera = new JFrame();
+		frmInterfejsZaOperatera = new JDialog();
 		
 		final JComboBox comboBox_1 = new JComboBox();
 		
