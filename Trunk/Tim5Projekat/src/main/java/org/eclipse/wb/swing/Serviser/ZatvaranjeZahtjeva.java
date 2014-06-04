@@ -193,7 +193,7 @@ public class ZatvaranjeZahtjeva {
 				}
 				else
 				{
-					infoBox("Neispravni podaci - cijena ne smije biti prazna i mora biti broj, komentar ne smije biti prazan", "Greška");
+					infoBox("Neispravni podaci - cijena ne smije biti prazna i mora biti broj veći od 0.5, komentar ne smije biti prazan", "Greška");
 				}
 			}
 		});
