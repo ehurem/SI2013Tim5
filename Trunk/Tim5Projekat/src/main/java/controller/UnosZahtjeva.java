@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.TextField;
 import java.sql.Date;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -77,41 +79,47 @@ public class UnosZahtjeva {
 		}
 	}
 
-	public static Boolean validirajPrazno(JTextField t1) {
-		
+	public static Boolean validirajPrazno(JTextField t1) throws IllegalArgumentException {
 		Boolean izlaz = false;
-		
-		if(t1.getText().equals(""))
+		String pattern = "^[a-zA-Z0-9].*";
+		String text = t1.getText();      
+		Pattern p = Pattern.compile(pattern);       
+		Matcher m = p.matcher(text);
+
+		if(t1.getText().equals("") || !(m.matches()))
 		{
 			t1.setBackground(new Color(216,210,139));
-			throw new IllegalArgumentException("Sva polja moraju biti popunjena");
+			throw new IllegalArgumentException("Polja ne smiju biti prazna! ");
 		}
 		else
 		{
 			izlaz = true;
 			t1.setBackground(new Color(255,255,255));
 		}
-	
+
 		return izlaz;
-	
-	
+		
 	}
 	
 	public static Boolean validirajPrazno(JTextArea t1) {
 		
 		Boolean izlaz = false;
-		
-		if(t1.getText().equals(""))
+		String pattern = "^[a-zA-Z0-9].*";
+		String text = t1.getText();      
+		Pattern p = Pattern.compile(pattern);       
+		Matcher m = p.matcher(text);
+
+		if(t1.getText().equals("") || !(m.matches()))
 		{
 			t1.setBackground(new Color(216,210,139));
-			throw new IllegalArgumentException("Sva polja moraju biti popunjena");
+			throw new IllegalArgumentException("Polja ne smiju biti prazna! ");
 		}
 		else
 		{
 			izlaz = true;
 			t1.setBackground(new Color(255,255,255));
 		}
-	
+
 		return izlaz;
 	}
 	
