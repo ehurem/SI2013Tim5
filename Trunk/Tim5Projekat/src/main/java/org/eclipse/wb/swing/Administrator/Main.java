@@ -56,7 +56,7 @@ import java.awt.event.MouseEvent;
 
 public class Main {
 
-	private JDialog frmDodavanjeZaposlenika;
+	private JFrame frmDodavanjeZaposlenika;
 	private JTextField t_imeIPrezime;
 	private JTextField t_datumRodjenja;
 	private JTextField t_mjestoStanovanja;
@@ -127,7 +127,7 @@ public class Main {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 	private void initialize() {
-		frmDodavanjeZaposlenika = new JDialog();
+		frmDodavanjeZaposlenika = new JFrame();
 		frmDodavanjeZaposlenika.setResizable(false);
 		frmDodavanjeZaposlenika.setTitle("Administratorski panel");
 		frmDodavanjeZaposlenika.setBounds(100, 100, 579, 284);

@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -110,7 +111,7 @@ public class Ulaz {
 		Ulaz._zaposlenik = _zaposlenik;
 	}
 	
-	public static void izlazNaLogin(JDialog frame) 
+	public static void izlazNaLogin(JFrame frame) 
 	{ 
 	        	Login window = new Login();
 				window.getFrmLogin().setVisible(true);

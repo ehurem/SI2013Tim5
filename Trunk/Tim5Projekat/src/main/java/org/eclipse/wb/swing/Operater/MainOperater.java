@@ -67,7 +67,7 @@ import javax.swing.JScrollPane;
 public class MainOperater {
 
 	//private JFrame frmInterfejsZaOperatera;
-	private JDialog frmInterfejsZaOperatera;
+	private JFrame frmInterfejsZaOperatera;
 	private JTextField textField_2;
 	
 	//zaposlenik koji je logovan na sistem
@@ -124,7 +124,7 @@ public class MainOperater {
 	 */
 	private void initialize() {
 		
-		frmInterfejsZaOperatera = new JDialog();
+		frmInterfejsZaOperatera = new JFrame();
 		
 		final JComboBox comboBox_1 = new JComboBox();
 		

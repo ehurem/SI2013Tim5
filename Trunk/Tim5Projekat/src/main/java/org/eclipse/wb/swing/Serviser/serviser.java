@@ -56,7 +56,7 @@ import java.awt.event.WindowEvent;
 
 public class serviser {
 
-	private JDialog frmInterfejsZaServisera;
+	private JFrame frmInterfejsZaServisera;
 	private JTable tabela;
 	private static Long _zaposlenik; //ID u bazi logovanog zaposlenika
 	List<Zahtjev> zahtjevi;
@@ -100,7 +100,7 @@ public class serviser {
 		kontroler = new ZahtjevController();
 		listModel = new DefaultListModel();
 	    metoda = new serviserKontroler();
-		frmInterfejsZaServisera = new JDialog();
+		frmInterfejsZaServisera = new JFrame();
 		frmInterfejsZaServisera.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent arg0) {
