@@ -53,7 +53,7 @@ public class DodavanjeZaposlenika {
 					throw new IllegalArgumentException("Broj telefona nije u dobrom formatu XXX/XXX-XXX");
 				}
 				
-				if (!validirajSifru(novi.getKorisnickaSifra())) {
+				if (!validirajSifru(t_korisnickaSifra.getText())) {
 					throw new IllegalArgumentException("Korisnicka sifra nije u dobrom formatu");
 				}
 				if (!validirajUsername(novi.getKorisnickoIme())) {
@@ -113,7 +113,7 @@ public class DodavanjeZaposlenika {
 	}
 	
 	private static Boolean validirajSifru(String t) {
-		if (t.length()<4 ) return false;
+		if (t.length()< 4 ) return false;
 		if (t.length() > 35) return false;
 		return true;
 	}
