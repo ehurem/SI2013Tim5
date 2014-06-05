@@ -1,7 +1,9 @@
 package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
+import java.awt.Dialog.ModalityType;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -11,7 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Komentar {
 
-	private JFrame frmKomentar;
+	private JDialog frmKomentar;
 	static String komentar;
 
 	/**
@@ -47,10 +49,11 @@ public class Komentar {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmKomentar = new JFrame();
+		frmKomentar = new JDialog();
 		frmKomentar.setResizable(false);
 		frmKomentar.setTitle("Komentar");
 		frmKomentar.setBounds(100, 100, 322, 247);
+		frmKomentar.setModalityType(ModalityType.APPLICATION_MODAL);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout groupLayout = new GroupLayout(frmKomentar.getContentPane());

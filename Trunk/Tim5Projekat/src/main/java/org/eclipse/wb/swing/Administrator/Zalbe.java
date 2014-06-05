@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ComboBoxEditor;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -24,6 +25,7 @@ import Models.Klijent;
 import Models.Zalba;
 import Models.Zaposlenik;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -39,7 +41,7 @@ import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 public class Zalbe {
 
-	private JFrame frmzalbe;
+	private JDialog frmzalbe;
 	//private List<Zalba> listZalbe;
 	private Long id;
 	String komentari[];
@@ -79,10 +81,11 @@ public class Zalbe {
 	 */
 	private void initialize() {
 		final String[] komentari = new String[100];
-		frmzalbe = new JFrame();
+		frmzalbe = new JDialog();
 		frmzalbe.setResizable(false);
 		frmzalbe.setTitle("Pregled \u017Ealbi");
 		frmzalbe.setBounds(100, 100, 405, 350);
+		frmzalbe.setModalityType(ModalityType.APPLICATION_MODAL);
 		//frmzalbe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JLabel lblZaposlenik = new JLabel("Zaposlenik:");

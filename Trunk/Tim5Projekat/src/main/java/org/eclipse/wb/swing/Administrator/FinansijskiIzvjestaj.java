@@ -2,6 +2,7 @@ package org.eclipse.wb.swing.Administrator;
 
 import java.awt.EventQueue;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.JOptionPane;
@@ -15,18 +16,21 @@ import javax.swing.JTextField;
 
 
 
+
+
 import controller.IzvjestajiKontroler;
 
 import java.util.*;
 
 import Models.Zahtjev;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class FinansijskiIzvjestaj {
 
-	private JFrame frmFinansijskiIzvjestaj;
+	private JDialog frmFinansijskiIzvjestaj;
 	private JTable table;
 	private JTextField textField;
 	//kreiranje liste zahtjeva
@@ -90,10 +94,11 @@ public class FinansijskiIzvjestaj {
 		{
 			infoBox(ex.getLocalizedMessage(), "Greška");
 		}
-		frmFinansijskiIzvjestaj = new JFrame();
+		frmFinansijskiIzvjestaj = new JDialog();
 		frmFinansijskiIzvjestaj.setResizable(false);
 		frmFinansijskiIzvjestaj.setTitle("Finansijski izvjestaj");
 		frmFinansijskiIzvjestaj.setBounds(100, 100, 367, 346);
+		frmFinansijskiIzvjestaj.setModalityType(ModalityType.APPLICATION_MODAL);
 		//frmFinansijskiIzvjestaj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JScrollPane scrollPane = new JScrollPane();

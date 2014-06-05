@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import java.awt.EventQueue;
 import java.awt.List;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -34,7 +36,7 @@ import Models.Zahtjev;
 import Models.Zaposlenik;
 public class IzvjestajOPoslovanju {
 
-	private JFrame frmIzvjestajOPoslovanju;
+	private JDialog frmIzvjestajOPoslovanju;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -117,10 +119,11 @@ public class IzvjestajOPoslovanju {
 						//JOptionPane.showMessageDialog(null, "Nema zahtjeva u odabranoj sedmici", "InfoBox: " + ex.toString(), JOptionPane.INFORMATION_MESSAGE);
 					}
 				
-		frmIzvjestajOPoslovanju = new JFrame();
+		frmIzvjestajOPoslovanju = new JDialog();
 		frmIzvjestajOPoslovanju.setResizable(false);
 		frmIzvjestajOPoslovanju.setTitle("Izvje\u0161taj o poslovanju");
 		frmIzvjestajOPoslovanju.setBounds(100, 100, 452, 394);
+		frmIzvjestajOPoslovanju.setModalityType(ModalityType.APPLICATION_MODAL);
 		//frmIzvjestajOPoslovanju.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();

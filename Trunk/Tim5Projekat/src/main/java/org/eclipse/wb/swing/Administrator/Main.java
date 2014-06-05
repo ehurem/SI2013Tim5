@@ -131,7 +131,6 @@ public class Main {
 		frmDodavanjeZaposlenika.setResizable(false);
 		frmDodavanjeZaposlenika.setTitle("Administratorski panel");
 		frmDodavanjeZaposlenika.setBounds(100, 100, 579, 284);
-		//frmDodavanjeZaposlenika.setModalityType(ModalityType.APPLICATION_MODAL);
 		frmDodavanjeZaposlenika.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);

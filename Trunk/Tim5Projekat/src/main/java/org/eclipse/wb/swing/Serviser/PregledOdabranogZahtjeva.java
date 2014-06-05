@@ -3,6 +3,7 @@ package org.eclipse.wb.swing.Serviser;
 
 import java.awt.EventQueue;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -25,13 +26,14 @@ import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 import Models.Klijent;
 import Models.Zahtjev;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class PregledOdabranogZahtjeva {
 
-	private JFrame frmPregledZahtjeva;
+	private JDialog frmPregledZahtjeva;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -88,10 +90,11 @@ public class PregledOdabranogZahtjeva {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmPregledZahtjeva = new JFrame();
+		frmPregledZahtjeva = new JDialog();
 		frmPregledZahtjeva.setResizable(false);
 		frmPregledZahtjeva.setTitle("Pregled zahtjeva");
 		frmPregledZahtjeva.setBounds(100, 100, 329, 311);
+		frmPregledZahtjeva.setModalityType(ModalityType.APPLICATION_MODAL);
 		//frmPregledZahtjeva.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
