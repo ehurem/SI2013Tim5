@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -28,11 +29,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 
+import org.eclipse.wb.swing.Login;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import controller.TableHeaderMouseListener;
+import controller.Ulaz;
 import controller.ZahtjevController;
 import controller.serviserKontroler;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
@@ -82,7 +85,7 @@ public class serviser {
     {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
-	
+
 	/**
 	 * Create the application.
 	 */
@@ -110,11 +113,15 @@ public class serviser {
 		        ///OVDJE
 				
 			}
+			public void windowClosing(WindowEvent e) 
+	        { 
+	                Ulaz.izlazNaLogin(frmInterfejsZaServisera);
+	        }
 		});
 		frmInterfejsZaServisera.setResizable(false);
 		frmInterfejsZaServisera.setTitle("Interfejs za servisera");
 		frmInterfejsZaServisera.setBounds(100, 100, 332, 351);
-		//frmInterfejsZaServisera.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmInterfejsZaServisera.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout groupLayout = new GroupLayout(frmInterfejsZaServisera.getContentPane());

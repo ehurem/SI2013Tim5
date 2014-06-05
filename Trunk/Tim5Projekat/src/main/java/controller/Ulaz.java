@@ -6,8 +6,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import org.eclipse.wb.swing.Login;
 import org.eclipse.wb.swing.Administrator.Main;
 import org.eclipse.wb.swing.Operater.MainOperater;
 import org.hibernate.Criteria;
@@ -105,6 +108,14 @@ public class Ulaz {
 
 	public static void set_zaposlenik(long _zaposlenik) {
 		Ulaz._zaposlenik = _zaposlenik;
+	}
+	
+	public static void izlazNaLogin(JDialog frame) 
+	{ 
+	        	Login window = new Login();
+				window.getFrmLogin().setVisible(true);
+	        	frame.dispose(); 
+	        
 	}
 	
 }

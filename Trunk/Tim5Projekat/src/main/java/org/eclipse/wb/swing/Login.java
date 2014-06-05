@@ -39,7 +39,7 @@ public class Login {
 			public void run() {
 				try {
 					Login window = new Login();
-					window.frmLogin.setVisible(true);
+					window.getFrmLogin().setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -63,12 +63,12 @@ public class Login {
         JOptionPane.showMessageDialog(null, infoMessage, "" + naslov, JOptionPane.INFORMATION_MESSAGE);
     }
 	private void initialize() {
-		frmLogin = new JFrame();
-		frmLogin.setResizable(false);
-		frmLogin.setType(Type.UTILITY);
-		frmLogin.setTitle("Login");
-		frmLogin.setBounds(100, 100, 349, 178);
-		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setFrmLogin(new JFrame());
+		getFrmLogin().setResizable(false);
+		getFrmLogin().setType(Type.UTILITY);
+		getFrmLogin().setTitle("Login");
+		getFrmLogin().setBounds(100, 100, 349, 178);
+		getFrmLogin().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		
@@ -80,9 +80,18 @@ public class Login {
 					String id = ulaz.provjeraUlaznihPodataka(t_korisnickoIme, t_sifra);
 					//infoBox(ulaz.get_zaposlenik() + "", null);
 					if (id == null) throw new Exception("Niste logovani");
-					else if (id == "Administrator") org.eclipse.wb.swing.Administrator.Main.main(null, ulaz.get_zaposlenik());
-					else if (id == "Serviser") org.eclipse.wb.swing.Serviser.serviser.main(null, ulaz.get_zaposlenik());
-					else if (id == "Operater") org.eclipse.wb.swing.Operater.MainOperater.main(null, ulaz.get_zaposlenik());
+					else if (id == "Administrator") {
+						org.eclipse.wb.swing.Administrator.Main.main(null, ulaz.get_zaposlenik());
+						getFrmLogin().dispose();
+					}
+					else if (id == "Serviser"){
+						org.eclipse.wb.swing.Serviser.serviser.main(null, ulaz.get_zaposlenik());
+						getFrmLogin().dispose();
+					}
+					else if (id == "Operater"){
+						org.eclipse.wb.swing.Operater.MainOperater.main(null, ulaz.get_zaposlenik());
+						getFrmLogin().dispose();
+					}
 				} catch (Exception e1) {
 					infoBox(e1.getLocalizedMessage(), "Greška");
 				}
@@ -92,7 +101,7 @@ public class Login {
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(".\\Images\\Screenshot_2.png"));
 		
-		GroupLayout groupLayout = new GroupLayout(frmLogin.getContentPane());
+		GroupLayout groupLayout = new GroupLayout(getFrmLogin().getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -156,7 +165,15 @@ public class Login {
 					.addContainerGap(29, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
-		frmLogin.getContentPane().setLayout(groupLayout);
-		frmLogin.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmLogin.getContentPane(), panel, lblLozinka, lblKorisnikoIme, t_korisnickoIme}));
+		getFrmLogin().getContentPane().setLayout(groupLayout);
+		getFrmLogin().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{getFrmLogin().getContentPane(), panel, lblLozinka, lblKorisnikoIme, t_korisnickoIme}));
+	}
+
+	public JFrame getFrmLogin() {
+		return frmLogin;
+	}
+
+	public void setFrmLogin(JFrame frmLogin) {
+		this.frmLogin = frmLogin;
 	}
 }

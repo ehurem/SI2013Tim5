@@ -32,6 +32,7 @@ import org.hibernate.Transaction;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import controller.Ulaz;
 import controller.UnosZahtjeva;
 import controller.UnosZalbe;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
@@ -152,11 +153,15 @@ public class MainOperater {
 					sesija.close();
 				}			
 			}
+			public void windowClosing(WindowEvent e) 
+	        { 
+	                Ulaz.izlazNaLogin(frmInterfejsZaOperatera);
+	        }
 		});
 		frmInterfejsZaOperatera.setResizable(false);
 		frmInterfejsZaOperatera.setTitle("Interfejs za operatera");
 		frmInterfejsZaOperatera.setBounds(100, 100, 364, 475);
-		//frmInterfejsZaOperatera.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmInterfejsZaOperatera.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout groupLayout = new GroupLayout(frmInterfejsZaOperatera.getContentPane());

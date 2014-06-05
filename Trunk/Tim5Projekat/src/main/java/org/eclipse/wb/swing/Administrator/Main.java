@@ -29,6 +29,8 @@ import javax.swing.border.EtchedBorder;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
@@ -46,6 +48,7 @@ import org.hibernate.Transaction;
 
 import controller.DodavanjeZaposlenika;
 import controller.IzmjenaZaposlenika;
+import controller.Ulaz;
 import tim5.si.unsa.ba.Tim5Projekat.HibernateUtil;
 
 import java.awt.event.MouseAdapter;
@@ -128,12 +131,19 @@ public class Main {
 		frmDodavanjeZaposlenika.setResizable(false);
 		frmDodavanjeZaposlenika.setTitle("Administratorski panel");
 		frmDodavanjeZaposlenika.setBounds(100, 100, 579, 284);
-		frmDodavanjeZaposlenika.setModalityType(ModalityType.APPLICATION_MODAL);
-		//frmDodavanjeZaposlenika.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmDodavanjeZaposlenika.setModalityType(ModalityType.APPLICATION_MODAL);
 		frmDodavanjeZaposlenika.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmDodavanjeZaposlenika.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		frmDodavanjeZaposlenika.addWindowListener(new WindowAdapter() {
+			
+			public void windowClosing(WindowEvent e) 
+	        { 
+	                Ulaz.izlazNaLogin(frmDodavanjeZaposlenika);
+	        }
+		});
+		frmDodavanjeZaposlenika.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Dodavanje zaposlenika", null, panel, null);
