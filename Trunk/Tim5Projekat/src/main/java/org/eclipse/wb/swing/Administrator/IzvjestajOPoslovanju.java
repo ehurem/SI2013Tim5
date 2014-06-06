@@ -197,7 +197,7 @@ public class IzvjestajOPoslovanju {
 		);
 		panel_1.setLayout(gl_panel_1);
 		
-		JButton btnZatvori = new JButton("Zatvori");
+		JButton btnZatvori = new JButton("OK");
 		btnZatvori.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmIzvjestajOPoslovanju.dispose();
@@ -244,7 +244,7 @@ public class IzvjestajOPoslovanju {
 		tmodel.addColumn("ID Zahtjeva");
 		tmodel.addColumn("Datum otvaranja zahtjeva");
 		tmodel.addColumn("Datum zatvaranja zahtjeva");
-		tmodel.addColumn("Zaposlenik");
+		tmodel.addColumn("Serviser");
 
 
 		table.getColumnModel().getColumn(1).setPreferredWidth(103);
