@@ -185,6 +185,7 @@ public class ZahtjevController {
 	    Double cijena = Double.parseDouble(s);
 	    
 	    if(!imaGaranciju && cijena == 0.0) return false;
+	    if(imaGaranciju && cijena == 0.0) return true;
 	    else if(cijena < 0.5 ) return false;
 	   
 	    return true;
