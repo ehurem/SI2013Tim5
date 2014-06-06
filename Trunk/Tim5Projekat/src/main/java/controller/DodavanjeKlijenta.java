@@ -160,7 +160,7 @@ public static Boolean validirajAdresu(JTextField t1) {
 	String t = t1.getText();
 	if ((t.length() > 44) || (t.equals("")) || (t.length() < 4 )) {
 		t1.setBackground(new Color(216,210,139));
-		 throw new IllegalArgumentException("Pogrešan format imena i prezimena.");
+		 throw new IllegalArgumentException("Pogrešan format adrese. Adresa mora imati manje od 44 \n a više od 4 znaka");
 	}
 	return true;
 }

@@ -185,6 +185,7 @@ public class MainOperater {
 			}
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 				
+				
 				Session sesija = HibernateUtil.getSessionFactory().openSession();
 				Transaction t = sesija.beginTransaction();
 				
@@ -206,7 +207,13 @@ public class MainOperater {
 				finally
 				{
 					sesija.close();
-				}			
+				}	
+				
+				if(_noviKlijent != null){
+					comboBox_1.setSelectedItem(_noviKlijent);
+					_noviKlijent = null;
+				}
+				
 				
 			}
 		});		
@@ -283,7 +290,7 @@ public class MainOperater {
 						UnosZahtjeva.resetPolja(textArea, textField_2);
 					}
 				} catch (Exception e1) {
-					infoBox("Sva polja moraju biti popunjena!", "Neispravan unos");
+					infoBox(e1.getLocalizedMessage(), "Greška");
 				}
 				
 				
