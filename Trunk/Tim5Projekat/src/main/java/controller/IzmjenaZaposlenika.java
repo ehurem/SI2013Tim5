@@ -33,26 +33,34 @@ public class IzmjenaZaposlenika {
 		return novi;
 	}
 	
-	public static boolean ValidirajDodavanje(String adresa,String brojTel,String Email,String korisnickoIme,String sifra) throws Exception{
+	public static boolean ValidirajDodavanje(String ime,String adresa,String brojTel,String Email,String korisnickoIme,String sifra) throws Exception{
 		if(adresa.equals("")){
 			throw new Exception("Niste unijeli Adresu stanovanja.");
 			
 		}
 		
-		else if(brojTel.equals("")){
+		else if(brojTel.equals("") || brojTel.trim().isEmpty()){
 			
 			throw new Exception("Niste unijeli broj telefona.");
 		}
+		else if(ime.equals("") || ime.trim().isEmpty()){
+			
+			throw new Exception("Niste unijeli ime i prezime.");
+		}
 		
-		else if(Email.equals("")){
+		else if(Email.equals("") || Email.trim().isEmpty() ){
 			throw new Exception("Niste unijeli email.");
 		}
 		
-		else if(korisnickoIme.equals("")){
+		else if(!Email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
+			throw new Exception("Unijeli ste nepravilan Email.");
+		}
+		
+		else if(korisnickoIme.equals("") || korisnickoIme.trim().isEmpty()){
 			
 			throw new Exception("Niste unijeli Korisnicko ime.");
 		}
-		else if(sifra.equals("")){
+		else if(sifra.equals("") || sifra.trim().isEmpty() ){
 			
 			throw new Exception("Niste unijeli sifru.");
 		}

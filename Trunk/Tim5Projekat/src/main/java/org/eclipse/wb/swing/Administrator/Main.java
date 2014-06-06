@@ -125,9 +125,10 @@ public class Main {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "serial", "deprecation" })
 	private void initialize() {
 		frmDodavanjeZaposlenika = new JFrame();
+		
 		frmDodavanjeZaposlenika.setResizable(false);
 		frmDodavanjeZaposlenika.setTitle("Administratorski panel");
 		frmDodavanjeZaposlenika.setBounds(100, 100, 579, 284);
@@ -173,6 +174,9 @@ public class Main {
 		
 		JLabel lblNewLabel = new JLabel("Ime i prezime:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		final JLabel lbl_temp = new JLabel("New label");
+		lbl_temp.hide();
 		
 		JLabel lblAdresaStanovanja = new JLabel("Adresa stanovanja:");
 		lblAdresaStanovanja.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -309,7 +313,7 @@ public class Main {
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Izmjena zaposlenika", null, panel_1, null);
 		
-		JButton btnIzmjeni = new JButton("Sa\u010Duvaj promjene");
+		final JButton btnIzmjeni = new JButton("Sa\u010Duvaj promjene");
 		
 		
 		JPanel panel_5 = new JPanel();
@@ -363,6 +367,7 @@ public class Main {
 		c_i_Privilegije.setModel(new DefaultComboBoxModel(new String[] {"Administrator", "Serviser", "Operater"}));
 		
 		final JComboBox c_i_ImeIPrezime = new JComboBox(niz);
+		c_i_ImeIPrezime.setEditable(true);
 		
 		
 		c_i_ImeIPrezime.addPopupMenuListener(new PopupMenuListener() {
@@ -374,6 +379,8 @@ public class Main {
 				
 				Zaposlenik s = (Zaposlenik) c_i_ImeIPrezime.getSelectedItem();
 				//System.out.println("Tab changed to: " + s.getId());
+				String ssss = String.valueOf(s.getId());
+				lbl_temp.setText(ssss);
 				
 				try {
 					
@@ -496,15 +503,23 @@ public class Main {
 								.addComponent(label_17)))))
 		);
 		panel_5.setLayout(gl_panel_5);
+		
+		
+		lbl_temp.setEnabled(false);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 523, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnIzmjeni))
-					.addContainerGap(25, Short.MAX_VALUE))
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(Alignment.LEADING, gl_panel_1.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 523, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(49)
+							.addComponent(lbl_temp)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnIzmjeni)))
+					.addContainerGap(35, Short.MAX_VALUE))
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -512,8 +527,10 @@ public class Main {
 					.addContainerGap()
 					.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnIzmjeni)
-					.addContainerGap(17, Short.MAX_VALUE))
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnIzmjeni)
+						.addComponent(lbl_temp))
+					.addContainerGap(27, Short.MAX_VALUE))
 		);
 		panel_1.setLayout(gl_panel_1);
 		
@@ -730,7 +747,7 @@ public class Main {
 				
 				/*Validacija podataka koji se unose*/
 				try{
-					IzmjenaZaposlenika.ValidirajDodavanje(t_i_adresaStanovanja.getText(), t_i_brojTelefona.getText(), t_i_email.getText(), t_i_korisnickoIme.getText(),t_i_korisnickaSifra.getText());
+					IzmjenaZaposlenika.ValidirajDodavanje(c_i_ImeIPrezime.getSelectedItem().toString() ,t_i_adresaStanovanja.getText(), t_i_brojTelefona.getText(), t_i_email.getText(), t_i_korisnickoIme.getText(),t_i_korisnickaSifra.getText());
 				}
 				catch(Exception b){
 					infoBox(b.getLocalizedMessage(),"Greška");
@@ -743,13 +760,14 @@ public class Main {
 					
 					
 					Transaction t = session.beginTransaction();
-					long EmployeeID = ((Zaposlenik) c_i_ImeIPrezime.getSelectedItem()).getId();
+					long EmployeeID =Long.valueOf(lbl_temp.getText()).longValue(); 
+					
 					
 					novi = (Zaposlenik)session.get(Zaposlenik.class, EmployeeID); 
 					
 					/*Provjera da li postoji zaposlenik sa tim korisnickim imenom.*/
 					Query query = session.createQuery("from Zaposlenik where korisnickoIme = :ime ");
-			        query.setParameter("ime", t_i_korisnickoIme.getText());
+			        query.setParameter("ime", novi.get_imeIPrezime());
 			        List<Zaposlenik> list = (List<Zaposlenik>) query.list();
 			        
 			        /*U slucaju da ne postoji zaposlenik sa tim korisnickim imenom izmjenjuju se podaci u bazi*/
@@ -757,7 +775,7 @@ public class Main {
 			        	novi.setAdresa(t_i_adresaStanovanja.getText());
 						novi.setBrojTelefona(t_i_brojTelefona.getText());
 						novi.setEmail(t_i_email.getText());
-							
+						novi.set_imeIPrezime(c_i_ImeIPrezime.getSelectedItem().toString());
 						
 						novi.setKorisnickaSifra(DodavanjeZaposlenika.encryptPassword(t_i_korisnickaSifra.getText()));
 						
@@ -783,6 +801,7 @@ public class Main {
 			        novi.setAdresa(t_i_adresaStanovanja.getText());
 					novi.setBrojTelefona(t_i_brojTelefona.getText());
 					novi.setEmail(t_i_email.getText());
+					novi.set_imeIPrezime(c_i_ImeIPrezime.getSelectedItem().toString());
 						
 					if(!t_i_korisnickaSifra.getText().equals("")){
 						novi.setKorisnickaSifra(DodavanjeZaposlenika.encryptPassword(t_i_korisnickaSifra.getText()));
@@ -818,8 +837,30 @@ public class Main {
 					infoBox(ex.getLocalizedMessage(), "Greška");
 				}}
 				finally {
-						/*Nakon prikuljanja podataka iz baze spremno je sve za izmjenu podataka.*/
-			         session.close();
+					/*Nakon prikuljanja podataka iz baze spremno je sve za izmjenu podataka.*/
+					 c_i_ImeIPrezime.removeAllItems();
+					 t_i_DatumRodjenja.setText("YYYY-MM-DD");
+					 t_i_adresaStanovanja.setText("");
+					 t_i_brojTelefona.setText("");
+					 t_i_email.setText("");
+					 t_i_korisnickoIme.setText("");
+					 t_i_korisnickaSifra.setText("");
+					 int itemCount = c_i_ImeIPrezime.getItemCount();
+
+			            for(int i=0;i<itemCount;i++){
+			            	c_i_ImeIPrezime.removeItemAt(0);
+			             }
+												
+						Query queryZaposlenik = session.createQuery("from Zaposlenik");
+						List listZaposlenik = queryZaposlenik.list();
+						
+				
+						
+						for(int i=0;i<listZaposlenik.size();i++){
+							c_i_ImeIPrezime.addItem(listZaposlenik.get(i));;
+						}
+						
+						session.close();
 			         try{
 			         IzmjenaZaposlenika.izmjeni(novi);
 			         }
@@ -827,6 +868,10 @@ public class Main {
 			        	 infoBox("Dogodila se greska prilikom izmjene zaposlenika.", "Greška");
 			         }
 			      }
+				
+				
+		    	
+		    
 			}}
 		});
 		panel_7.setLayout(gl_panel_7);
@@ -968,5 +1013,4 @@ public class Main {
 	public static void set_zaposlenik(Long _zaposlenik) {
 		Main._zaposlenik = _zaposlenik;
 	}
-
 }

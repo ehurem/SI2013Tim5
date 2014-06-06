@@ -62,12 +62,12 @@ public class IzmjenaZaposlenikaTest extends IzmjenaZaposlenika {
 	}
 	@Test (expected = Exception.class)
 	public final void testValidirajDodavanje() throws Exception{
-		assertTrue(IzmjenaZaposlenika.ValidirajDodavanje(t,t1,t2,t3,"sifra"));
+		assertTrue(IzmjenaZaposlenika.ValidirajDodavanje("ime i prezime",t,t1,t2,t3,"sifra"));
 		
 	}
 	@Test(expected = Exception.class)
 	public final void testValidirajDodavanjeException() throws Exception{
-		IzmjenaZaposlenika.ValidirajDodavanje(t,t1,t2,t3,"");
+		IzmjenaZaposlenika.ValidirajDodavanje(" ",t,t1,t2,t3,"");
 	}
 	//za ponovno setovanje statusa zaposlenika
 		@AfterClass
