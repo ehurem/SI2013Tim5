@@ -129,7 +129,7 @@ public class MainOperater {
 		final JComboBox comboBox_1 = new JComboBox();
 		
 		frmInterfejsZaOperatera.addWindowListener(new WindowAdapter() {
-			@Override
+		/*	@Override
 			public void windowOpened(WindowEvent e) {
 				Session sesija = HibernateUtil.getSessionFactory().openSession();
 				Transaction t = sesija.beginTransaction();
@@ -138,7 +138,7 @@ public class MainOperater {
 				{
 					Query queryKlijent = sesija.createQuery("from Klijent");
 					List listKlijent = queryKlijent.list();
-				
+				    
 					for(int i=0;i<listKlijent.size();i++){
 						comboBox_1.addItem(listKlijent.get(i));
 					}
@@ -152,7 +152,7 @@ public class MainOperater {
 				{
 					sesija.close();
 				}			
-			}
+			}*/
 			public void windowClosing(WindowEvent e) 
 	        { 
 	                Ulaz.izlazNaLogin(frmInterfejsZaOperatera);
@@ -185,11 +185,28 @@ public class MainOperater {
 			}
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 				
-				if(_noviKlijent != null){
-					comboBox_1.addItem(_noviKlijent);
-					comboBox_1.setSelectedItem(_noviKlijent);
-					_noviKlijent = null;
+				Session sesija = HibernateUtil.getSessionFactory().openSession();
+				Transaction t = sesija.beginTransaction();
+				
+				try
+				{
+					Query queryKlijent = sesija.createQuery("from Klijent");
+					List listKlijent = queryKlijent.list();
+					comboBox_1.removeAllItems();
+					comboBox_1.addItem(listKlijent.get(listKlijent.size()-1));
+					for(int i=0;i<listKlijent.size()-1;i++){
+						comboBox_1.addItem(listKlijent.get(i));
+					}
+					t.commit();
 				}
+				catch(Exception izuzetak)
+				{
+					infoBox(izuzetak.getLocalizedMessage(), "Greska u čitanju iz baze !");
+				}
+				finally
+				{
+					sesija.close();
+				}			
 				
 			}
 		});		
