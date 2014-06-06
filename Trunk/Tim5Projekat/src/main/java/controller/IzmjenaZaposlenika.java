@@ -32,7 +32,13 @@ public class IzmjenaZaposlenika {
 		}
 		return novi;
 	}
+	public static void ValidirajDatum(java.util.Date s) throws Exception{
+		java.util.Date now = new java.util.Date();
+		if(!s.before(now))
+			throw new Exception("Neispravan datum");
+		
 	
+	}
 	public static boolean ValidirajDodavanje(String ime,String adresa,String brojTel,String Email,String korisnickoIme,String sifra) throws Exception{
 		if(adresa.equals("")){
 			throw new Exception("Niste unijeli Adresu stanovanja.");

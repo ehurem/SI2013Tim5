@@ -784,8 +784,10 @@ public class Main {
 						novi.setPrivilegija(c_i_Privilegije.getSelectedItem().toString());
 						java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 						java.util.Date trenutno = sdf.parse(t_i_DatumRodjenja.getText());
+						IzmjenaZaposlenika.ValidirajDatum(trenutno);
 						@SuppressWarnings("deprecation")
 						Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
+						
 						novi.set_datumRodjenja(datum);
 						
 						
@@ -812,6 +814,7 @@ public class Main {
 					
 					java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 					java.util.Date trenutno = sdf.parse(t_i_DatumRodjenja.getText());
+					IzmjenaZaposlenika.ValidirajDatum(trenutno);
 					@SuppressWarnings("deprecation")
 					Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
 					novi.set_datumRodjenja(datum);
