@@ -386,7 +386,7 @@ public class Main {
 							t_i_DatumRodjenja.setText("YYYY-MM-DD");
 						}
 						else{
-							t_i_DatumRodjenja.setText(s.get_datumRodjenja().toString());
+							t_i_DatumRodjenja.setText(s.get_datumRodjenja().toString().substring(0, 10));
 						}
 						t_i_korisnickoIme.setText(s.getKorisnickoIme());
 						if(s.getPrivilegija().equals("Administrator")){
