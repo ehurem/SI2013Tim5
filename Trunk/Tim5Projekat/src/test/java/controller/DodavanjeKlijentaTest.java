@@ -96,6 +96,30 @@ public class DodavanjeKlijentaTest{
 		DodavanjeKlijenta.unesiKlijentaUBazu(_klijent, t, t2, t3, t1);
 	}
 	
+	@Test
+	public final void testprovjeraImena(){
+		t.setText("Veliki Mujo");
+		assertTrue(DodavanjeKlijenta.provjeraImena(t));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public final void testprovjeraImenaNeispravan(){
+		t.setText("mali mujo");
+		DodavanjeKlijenta.provjeraImena(t);
+	}
+	
+	@Test
+	public final void testprovjeraAdrese(){
+		t.setText("Kovači do broja 21");
+		assertTrue(DodavanjeKlijenta.validirajAdresu(t));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public final void testprovjeraAdreseNeispravan(){
+		t.setText("hum");
+		DodavanjeKlijenta.validirajAdresu(t);
+	}
+	
 	@Test (expected = Exception.class)
 	//svi prisutni, jedan u neispravnom formatu
 	public final void testUnesiKlijenta() throws Exception {
