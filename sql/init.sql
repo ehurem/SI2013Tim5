@@ -6,6 +6,9 @@ DROP SCHEMA IF EXISTS `hajskontacemo` ;
 CREATE SCHEMA IF NOT EXISTS `hajskontacemo` DEFAULT CHARACTER SET utf8 ;
 USE `hajskontacemo` ;
 
+CREATE USER 'si'@'localhost' IDENTIFIED BY 'si';
+GRANT all on hajskontacemo.* to 'si'@'localhost';
+
 -- -----------------------------------------------------
 -- Table `hajskontacemo`.`tblklijenti`
 -- -----------------------------------------------------
@@ -116,8 +119,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 START TRANSACTION;
 USE `HaJskontacemo`;
 INSERT INTO `HaJskontacemo`.`tblZaposlenici` (`id`, `imeIPrezime`, `telefon`, `email`, `adresa`, `korisnickoIme`, `sifra`, `privilegija`) VALUES (1, 'Administrator', '/', 'admin@HaJskontacemo.com', 'HaJskontacemo', 'admin', '4259031dc85f451a2b7731e8f5ea93193dad63ad', 'Administrator');
-INSERT INTO `HaJskontacemo`.`tblZaposlenici` (`id`, `imeIPrezime`, `telefon`, `email`, `adresa`, `korisnickoIme`, `sifra`, `privilegija`) VALUES (2, 'Operater', '/', 'operater@HaJskontacemo.com', 'HaJskontacemo', 'operater', '4259031dc85f451a2b7731e8f5ea93193dad63ad', 'Operater');
-INSERT INTO `HaJskontacemo`.`tblZaposlenici` (`id`, `imeIPrezime`, `telefon`, `email`, `adresa`, `korisnickoIme`, `sifra`, `privilegija`) VALUES (3, 'Servviser', '/', 'serviser@HaJskontacemo.com', 'HaJskontacemo', 'serviser', '4259031dc85f451a2b7731e8f5ea93193dad63ad', 'Serviser');
-
 COMMIT;
+
+
 
