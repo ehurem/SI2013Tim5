@@ -32,7 +32,7 @@ public class IzmjenaZaposlenikaTest extends IzmjenaZaposlenika {
 		t3 = new String();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
-		_Zaposlenik  = (Zaposlenik)session.get(Zaposlenik.class, new Long(2)); 
+		_Zaposlenik  = (Zaposlenik)session.get(Zaposlenik.class, new Long(1)); 
 		session.close();
 		
 	}
