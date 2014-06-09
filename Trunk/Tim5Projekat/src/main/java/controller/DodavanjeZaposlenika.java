@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Formatter;
 import java.util.regex.Matcher;
@@ -39,38 +40,47 @@ public class DodavanjeZaposlenika {
 				novi.setKorisnickoIme(t_korisnickoIme.getText());
 				novi.setPrivilegija(c_privilegije.getSelectedItem().toString());
 
+				Timestamp datum = null;
+				try {
+					java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+					java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
+					datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
+					//infoBox(datum.toString(), null);
+				}
+				catch(Exception e1) {
+					throw new Exception( "Trebate unijeti ispravan format datuma YYYY-MM-dd");
+				}
+				novi.set_status(true);
+				novi.set_datumRodjenja(datum);
+				
+				String [] uneseno = t_datumRodjenja.getText().split("-");
+				if (uneseno.length != 3) throw new Exception ("Trebate unijeti ispravan format datuma YYYY-MM-DD");
+				if ( Integer.parseInt(uneseno[1]) <= 0 || Integer.parseInt(uneseno[1]) > 12) throw new Exception ("Trebate unijeti ispravan format datuma YYYY-MM-DD");
+				if (Integer.parseInt(uneseno[2]) <=0 || Integer.parseInt(uneseno[2]) > 32 )throw new Exception ("Trebate unijeti ispravan format datuma YYYY-MM-DD");
+
+
 				if (!provjeraImena(novi.get_imeIPrezime())) {
 					throw new IllegalArgumentException("Ime i prezime nisu u dobrom formatu" );
 				}
 				if (!validirajMail(novi.getEmail())) {
 					throw new IllegalArgumentException("Email nije u dobrom formatu");
 				}
-				if (!validirajAdresu(novi.getAdresa())) {
-					throw new IllegalArgumentException("Adresa nije u dobrom formatu");
-				}
-				
-				if (!validirajTelefon(novi.getBrojTelefona())) {
-					throw new IllegalArgumentException("Broj telefona nije u dobrom formatu XXX/XXX-XXX");
-				}
-				
-				if (!validirajSifru(t_korisnickaSifra.getText())) {
-					throw new IllegalArgumentException("Korisnicka sifra nije u dobrom formatu");
+				if (!validirajDatumRodjenja(novi.get_datumRodjenja())) {
+					throw new IllegalArgumentException("Datum rodjenja nije u dobrom formatu");
 				}
 				if (!validirajUsername(novi.getKorisnickoIme())) {
 					throw new IllegalArgumentException("Korisnicko ime nije u dobrom formatu");
 				}
-				if (t_datumRodjenja.getText().equals("")) {
-					throw new IllegalArgumentException("Datum rodjenja nije u dobrom formatu");
+				if (!validirajAdresu(novi.getAdresa())) {
+					throw new IllegalArgumentException("Adresa nije u dobrom formatu");
+				}
+				if (!validirajSifru(t_korisnickaSifra.getText())) {
+					throw new IllegalArgumentException("Korisnicka sifra nije u dobrom formatu");
+				}
+				if (!validirajTelefon(novi.getBrojTelefona())) {
+					throw new IllegalArgumentException("Broj telefona nije u dobrom formatu XXX/XXX-XXX");
 				}
 				
-				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-				java.util.Date trenutno = sdf.parse(t_datumRodjenja.getText());
-				@SuppressWarnings("deprecation")
-				Timestamp datum = new Timestamp(trenutno.getYear(), trenutno.getMonth(), trenutno.getDate(), 0,0,0, 0);
-				//infoBox(datum.toString(), null);
-				
-				novi.set_status(true);
-				novi.set_datumRodjenja(datum);
 				
 				novi.setId( (Long ) session.save(novi));
 				
@@ -105,6 +115,14 @@ public class DodavanjeZaposlenika {
 		catch (Exception ex) {
 			throw ex;
 		}
+	}
+	@SuppressWarnings("deprecation")
+	private static boolean validirajDatumRodjenja(Timestamp datumRodjenja) {
+		int godina = datumRodjenja.getYear(); //1900
+		if (godina <= 40) return false;
+		if (godina >= 100) return false;
+		
+		return true;
 	}
 	private static Boolean validirajUsername(String t) {
 		if (t.length()<4 ) return false;
