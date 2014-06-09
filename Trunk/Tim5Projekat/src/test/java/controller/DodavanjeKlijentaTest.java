@@ -135,7 +135,7 @@ public class DodavanjeKlijentaTest{
 	@Test 
 	public final void testUnesiKlijentaOK() throws Exception
 	{
-		t.setText("Ime i prezime");
+		t.setText("Ime Prezime");
 		t2.setText("123/456-789");
 		t3.setText("mail5@mail.com");
 		t1.setText("Neka adresa");
