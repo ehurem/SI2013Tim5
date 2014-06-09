@@ -99,7 +99,7 @@ public class Login {
 		});
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(".\\Images\\Screenshot_2.png"));
+		lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/org/eclipse/wb/swing/Screenshot_2.png")));
 		
 		GroupLayout groupLayout = new GroupLayout(getFrmLogin().getContentPane());
 		groupLayout.setHorizontalGroup(
