@@ -43,8 +43,8 @@ public class DodavanjeZaposlenikaTest {
 	public void testDodajZaposlenikDobriPodaci() throws Exception {
 		JTextField t_imeIPrezime = new JTextField("Alen Ismic" );
 		JTextField t_mjestoStanovanja= new JTextField("Mjesto");
-		JTextField t_brojTelefona= new JTextField("12312311232");
-		JTextField t_emailAdresa= new JTextField("nekimanil.com");
+		JTextField t_brojTelefona= new JTextField("061/154-526");
+		JTextField t_emailAdresa= new JTextField("neki@mail.com");
 		JTextField t_korisnickaSifra= new JTextField("sifra");
 		JTextField t_korisnickoIme= new JTextField("alen");
 		String[] niz = new String[1];
@@ -56,6 +56,14 @@ public class DodavanjeZaposlenikaTest {
 		Boolean test =  id != 0;
 		Assert.assertTrue(test);
 		
+	}
+	@Test
+	public void testProvjeraImena() throws Exception {
+		Assert.assertTrue(DodavanjeZaposlenika.provjeraImena("Alen"));
+	}
+	@Test
+	public void testValidirajMail() throws Exception {
+		Assert.assertTrue(DodavanjeZaposlenika.validirajMail("Alen@mail.com"));
 	}
 	
 	@AfterClass

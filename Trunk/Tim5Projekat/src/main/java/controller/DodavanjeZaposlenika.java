@@ -151,7 +151,7 @@ public class DodavanjeZaposlenika {
 		return true;
 	}
 	
-	private static Boolean validirajMail(String t)
+	protected static Boolean validirajMail(String t)
 	{
 		if (t.length() > 35) return false;
 		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -161,7 +161,7 @@ public class DodavanjeZaposlenika {
 		else return false;
 	}
 	
-	private static Boolean provjeraImena(String ime) {
+	protected static Boolean provjeraImena(String ime) {
 		if (ime.length() > 30) return false;
 		String[] niz = ime.split(" ");
 		
